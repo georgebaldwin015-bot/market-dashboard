@@ -64,7 +64,15 @@
       document.getElementById('content-' + name).classList.add('active');
       history.replaceState(null, '', '#' + name);
     }
-    const initial = window.location.hash.replace('#', '') || 'industry';
+    // Default to the industry tab, unless the URL says otherwise.
+    // Prefer ?tab=strategy (a query param) over #strategy (a hash) --
+    // the email link uses a query param specifically because hash
+    // fragments get stripped by many email link-scanners/click-trackers,
+    // while query params survive redirect-based link rewriting.
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get('tab');
+    const fromHash = window.location.hash.replace('#', '');
+    const initial = fromQuery || fromHash || 'industry';
     showTab(initial === 'strategy' ? 'strategy' : 'industry');
   </script>
 </body>
