@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Market Dashboard</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115;
+  --panel: #171a21;
+  --border: #2a2e37;
+  --text: #e6e8ec;
+  --muted: #9aa2af;
+  --up: #21c55d;
+  --down: #ef4444;
+  --accent: #4f8ff7;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 16px;
+}
+h1 { font-size: 1.3rem; margin: 0 0 4px; }
+.meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+.section { margin-bottom: 28px; }
+.section h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+.chart-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  height: 360px;
+}
+table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 0.85rem; }
+th, td { padding: 8px 10px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th {
+  background: var(--panel);
+  color: var(--muted);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+td.ticker a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+td.ticker a:hover { text-decoration: underline; }
+.pos { color: var(--up); }
+.neg { color: var(--down); }
+.badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  background: rgba(79,143,247,0.15);
+  color: var(--accent);
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+</head>
+<body>
+  <h1>Daily Market Dashboard</h1>
+  <div class="meta">Generated 2026-07-29 07:12:49 &middot; every ticker links to its TradingView chart</div>
+  
+    <div class="section">
+      <h2>Strategy Trend Chart</h2>
+      <div class="chart-wrap">
+        <canvas id="industryChart"></canvas>
+      </div>
+      <script>
+        (function() {
+          var chartData = {"labels": ["Advertising Agencies", "Apparel Retail", "Auto Manufacturers", "Auto Parts", "Beverages - Non-Alcoholic", "Biotechnology", "Communication Equipment", "Confectioners", "Conglomerates", "Consulting Services", "Consumer Electronics", "Diagnostics & Research", "Discount Stores", "Drug Manufacturers - General", "Electronic Gaming & Multimedia", "Entertainment", "Farm & Heavy Construction Machinery", "Industrial Distribution", "Information Technology Services", "Internet Content & Information", "Internet Retail", "Lodging", "Medical Devices", "Medical Instruments & Supplies", "Oil & Gas E&P", "Oil & Gas Equipment & Services", "Semiconductor Equipment & Materials", "Semiconductors", "Software - Application", "Software - Infrastructure", "Solar", "Telecom Services", "Travel Services", "Utilities - Independent Power Producers", "Utilities - Regulated Electric"], "datasets": [{"label": "1M %", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], "backgroundColor": "#4f8ff7"}, {"label": "3M %", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], "backgroundColor": "#21c55d"}]};
+          var ctx = document.getElementById('industryChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: { ticks: { color: '#9aa2af', maxRotation: 60, minRotation: 60 }, grid: { display: false } },
+                y: { ticks: { color: '#9aa2af', callback: function(v) { return v + '%'; } }, grid: { color: '#2a2e37' } }
+              },
+              plugins: {
+                legend: { labels: { color: '#e6e8ec' } },
+                tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + ctx.formattedValue + '%'; } } }
+              }
+            }
+          });
+        })();
+      </script>
+    </div>
+    
+  
+    <div class="section">
+      <h2>Industry Summary</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Industry</th><th>1M</th><th>3M</th><th>YoY</th></tr></thead>
+          <tbody><tr><td>Advertising Agencies</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Apparel Retail</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Auto Manufacturers</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Auto Parts</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Beverages - Non-Alcoholic</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Biotechnology</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Communication Equipment</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Confectioners</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Conglomerates</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Consulting Services</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Consumer Electronics</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Diagnostics &amp; Research</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Discount Stores</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Drug Manufacturers - General</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Electronic Gaming &amp; Multimedia</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Entertainment</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Farm &amp; Heavy Construction Machinery</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Industrial Distribution</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Information Technology Services</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Internet Content &amp; Information</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Internet Retail</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Lodging</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Medical Devices</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Medical Instruments &amp; Supplies</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Oil &amp; Gas E&amp;P</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Oil &amp; Gas Equipment &amp; Services</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Semiconductor Equipment &amp; Materials</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Semiconductors</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Software - Application</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Software - Infrastructure</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Solar</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Telecom Services</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Travel Services</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Utilities - Independent Power Producers</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Utilities - Regulated Electric</td><td>-</td><td>-</td><td>-</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    
+  
+    <div class="section">
+      <h2>Bull Flag Setups</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Ticker</th><th>Industry</th><th>Last Close</th><th>Breakout Level</th>
+            <th>Dist to BO</th><th>Pole %</th><th>Retrace %</th><th>Index</th>
+          </tr></thead>
+          <tbody><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3AMRVL" target="_blank" rel="noopener">MRVL</a></td><td>Semiconductors</td><td>-</td><td>329.80</td><td>-</td><td><span class="pos">100.9%</span></td><td><span class="pos">47.2%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3ADDOG" target="_blank" rel="noopener">DDOG</a></td><td>Software - Application</td><td>-</td><td>274.98</td><td>-</td><td><span class="pos">98.3%</span></td><td><span class="pos">42.1%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3ALCID" target="_blank" rel="noopener">LCID</a></td><td>Auto Manufacturers</td><td>-</td><td>7.79</td><td>-</td><td><span class="pos">63.6%</span></td><td><span class="pos">42.9%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3ACSCO" target="_blank" rel="noopener">CSCO</a></td><td>Communication Equipment</td><td>-</td><td>128.36</td><td>-</td><td><span class="pos">42.3%</span></td><td><span class="pos">45.6%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3AOKTA" target="_blank" rel="noopener">OKTA</a></td><td>Software - Infrastructure</td><td>-</td><td>157.00</td><td>-</td><td><span class="pos">37.6%</span></td><td><span class="pos">45.7%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3AADP" target="_blank" rel="noopener">ADP</a></td><td>Software - Application</td><td>-</td><td>261.31</td><td>-</td><td><span class="pos">19.9%</span></td><td><span class="pos">33.9%</span></td><td>NAS100</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=NASDAQ%3ACEG" target="_blank" rel="noopener">CEG</a></td><td>Utilities - Independent Power Producers</td><td>-</td><td>279.60</td><td>-</td><td><span class="pos">17.6%</span></td><td><span class="pos">19.6%</span></td><td>NAS100</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    
+  <div class="section"><h2>Top 50 by 3M Change</h2><p class="meta">No data.</p></div>
+  <div class="section"><h2>Top 50 by 1M Change</h2><p class="meta">No data.</p></div>
+</body>
+</html>
