@@ -3,6 +3,10 @@
 described methodologies. Not personalized financial advice; this is not a licensed advisor. Confirm every
 setup on an actual chart before acting.*
 *Data source: Yahoo Finance (via yfinance), end-of-day bars. Universe defined in `universe.csv` — edit that file to expand coverage. Sector/industry groupings are derived live from Yahoo Finance and shared with the Daily Market Report tab via `industry_map.py`.*
+## What's Going On
+
+The market is in a defensive posture, with breadth reading 66% of the scanned universe above its 50-day moving average and 7 distribution days in the past month -- an elevated count worth watching. Momentum under the surface is leaning firmly long -- 22 name(s) hit a fresh 52-week high today against 6 breaking down to a fresh 52-week low. Health Care is leading, with 42% of its 60 scanned names carrying an RS score of 70+ and 21 clearing a screen outright today, with Information Technology also showing real strength. It's being driven by names like LLY, JNJ and ABBV. With 47 name(s) clearing a screen across 11 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
+
 ## 1. Market Pulse
 
 SPY close: 729.46 | 10-day MA: 741.83 | 20-day MA: 745.79
