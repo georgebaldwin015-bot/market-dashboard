@@ -47,6 +47,7 @@
   <div class="tabs">
     <div class="tab" id="tab-industry" onclick="showTab('industry')">Industry Analysis</div>
     <div class="tab" id="tab-strategy" onclick="showTab('strategy')">Momentum Desk Strategy</div>
+    <div class="tab" id="tab-journal" onclick="showTab('journal')">Trade Journal</div>
   </div>
 
   <div class="tab-content" id="content-industry">
@@ -54,6 +55,9 @@
   </div>
   <div class="tab-content" id="content-strategy">
     <iframe src="strategy.html" title="Momentum Desk Strategy"></iframe>
+  </div>
+  <div class="tab-content" id="content-journal">
+    <iframe src="trade-journal.html" title="Trade Journal"></iframe>
   </div>
 
   <script>
@@ -73,7 +77,7 @@
     const fromQuery = params.get('tab');
     const fromHash = window.location.hash.replace('#', '');
     const initial = fromQuery || fromHash || 'industry';
-    showTab(initial === 'strategy' ? 'strategy' : 'industry');
+    showTab((initial === 'strategy' || initial === 'journal') ? initial : 'industry');
   </script>
 </body>
 </html>
