@@ -75,24 +75,20 @@ td.ticker a:hover { text-decoration: underline; }
 </head>
 <body>
 <h1>Trade Journal</h1>
-<div class="meta">Generated 2026-07-31 09:17:19 &middot; every ticker links to its TradingView chart</div>
+<div class="meta">Generated 2026-07-31 09:41:26 &middot; every ticker links to its TradingView chart</div>
 
 <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;">
 <h1>Trade Journal</h1>
 <div class="meta">Executed trades vs. Bull Flag / Qullamaggie momentum setups, with a day-by-day counterfactual against George's stated stop-discipline rule.</div>
 
 <div class="section">
-<h2>Equity Curve: Actual vs. Stop-Discipline Rule ($ P&amp;L)</h2>
+<h2>Equity Curve: Actual vs. Stop-Discipline Rule</h2>
 <div class="chart-wrap" style="height:360px;">
 <canvas id="tjEquityChart"></canvas>
 </div>
 <script>
 (function() {
-var chartData = {"labels": ["VST 2025-07-25", "CCL 2025-08-01", "IDXX 2025-08-04", "EL 2025-08-08", "ORCL 2025-08-08", "GEV 2025-08-11", "ORCL 2025-08-12", "GEV 2025-08-13", "ORCL 2025-08-13", "KLAC 2025-08-15", "VST 2025-08-15", "GDS 2025-10-07", "KLAC 2025-10-08", "TME 2025-10-09", "MPC 2026-05-21", "ROKU 2026-06-02", "AVGO 2026-06-04", "MPC 2026-06-15", "AMD 2026-06-23", "MCHP 2026-06-23", "ON 2026-06-23", "MU 2026-06-24", "GFS 2026-06-26", "NUE 2026-06-29", "AMD 2026-07-02", "UNH 2026-07-06", "MRVL 2026-07-17"], "datasets": [{"label": "Actual cumulative $ P&L", "data": [-124.48, -283.76, 75.8, 79.24, 85.23, -12.63, -14.13, -115.47, -230.86, -341.56, -476.38, -614.19, -138.54, 109.53, -24.42, -164.48, -391.71, -524.35, -684.23, -812.03, -946.36, -1079.91, -1218.15, -1214.66, -1345.23, -1481.66, -1450.81], "borderColor": "#4f8ff7", "backgroundColor": "rgba(79,143,247,0.12)", "tension": 0.15, "fill": false}, {"label": "Rule cumulative $ P&L", "data": [-129.47, -195.24, -178.48, -289.63, -406.2, -541.36, -656.79, -801.96, -934.89, -1096.18, -1225.33, -1349.72, -1458.83, -1044.79, -1180.26, -1308.31, -1100.75, -1235.35, -1363.5, -1490.12, -1622.13, -1750.87, -1867.07, -1623.49, -1762.37, -1899.07, -664.1], "borderColor": "#21c55d", "backgroundColor": "rgba(33,197,93,0.12)", "tension": 0.15, "fill": false, "borderDash": [6, 4]}]};
-function tjFmtDollar(v) {
-var sign = v < 0 ? '-' : '';
-return sign + '$' + Math.abs(Math.round(v)).toLocaleString();
-}
+var chartData = {"labels": ["VST 2025-07-25", "CCL 2025-08-01", "IDXX 2025-08-04", "EL 2025-08-08", "ORCL 2025-08-08", "GEV 2025-08-11", "ORCL 2025-08-12", "GEV 2025-08-13", "ORCL 2025-08-13", "KLAC 2025-08-15", "VST 2025-08-15", "GDS 2025-10-07", "KLAC 2025-10-08", "TME 2025-10-09", "MPC 2026-05-21", "ROKU 2026-06-02", "AVGO 2026-06-04", "MPC 2026-06-15", "AMD 2026-06-23", "MCHP 2026-06-23", "ON 2026-06-23", "MU 2026-06-24", "GFS 2026-06-26", "NUE 2026-06-29", "AMD 2026-07-02", "UNH 2026-07-06", "MRVL 2026-07-17"], "datasets": [{"label": "Actual cumulative R", "data": [-0.962, -3.383, 9.114, 9.145, 9.196, 8.472, 8.459, 7.761, 6.893, 6.207, 5.163, 4.055, 8.414, 11.209, 10.22, 9.126, 7.476, 6.49, 5.242, 4.233, 3.216, 2.178, 0.989, 1.017, 0.077, -0.922, -0.692], "borderColor": "#4f8ff7", "backgroundColor": "rgba(79,143,247,0.12)", "tension": 0.15, "fill": false}, {"label": "Rule cumulative R", "data": [-1.0, -2.0, -1.417, -2.417, -3.417, -4.418, -5.418, -6.418, -7.418, -8.418, -9.418, -10.418, -11.418, -6.753, -7.753, -8.753, -7.245, -8.245, -9.245, -10.245, -11.245, -12.245, -13.245, -11.277, -12.277, -13.277, -4.073], "borderColor": "#21c55d", "backgroundColor": "rgba(33,197,93,0.12)", "tension": 0.15, "fill": false, "borderDash": [6, 4]}]};
 var ctx = document.getElementById('tjEquityChart').getContext('2d');
 new Chart(ctx, {
 type: 'line',
@@ -102,11 +98,11 @@ responsive: true,
 maintainAspectRatio: false,
 scales: {
 x: { ticks: { color: '#9aa2af', maxRotation: 60, minRotation: 60 }, grid: { display: false } },
-y: { ticks: { color: '#9aa2af', callback: function(v) { return tjFmtDollar(v); } }, grid: { color: '#2a2e37' } }
+y: { ticks: { color: '#9aa2af', callback: function(v) { return v + 'R'; } }, grid: { color: '#2a2e37' } }
 },
 plugins: {
 legend: { labels: { color: '#e6e8ec' } },
-tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + tjFmtDollar(ctx.parsed.y); } } }
+tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + ctx.formattedValue + 'R'; } } }
 }
 }
 });
@@ -115,13 +111,13 @@ tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' +
 </div>
 
 <div class="section">
-<h2>Actual $ P&amp;L Distribution</h2>
+<h2>R-Multiple Distribution</h2>
 <div class="chart-wrap" style="height:300px;">
 <canvas id="tjHistogram"></canvas>
 </div>
 <script>
 (function() {
-var chartData = {"labels": ["-$400 to -$200", "-$200 to $0", "$0 to $200", "$200 to $400", "$400 to $600"], "datasets": [{"label": "Trades", "data": [1, 19, 4, 2, 1], "backgroundColor": ["#ef4444", "#ef4444", "#21c55d", "#21c55d", "#21c55d"]}]};
+var chartData = {"labels": ["< -2R", "-2R to -1R", "-1R to 0R", "0R to 1R", "1R to 2R", "2R to 3R", "> 3R"], "datasets": [{"label": "Trades", "data": [1, 9, 10, 4, 0, 1, 2], "backgroundColor": ["#ef4444", "#ef4444", "#ef4444", "#21c55d", "#21c55d", "#21c55d", "#21c55d"]}]};
 var ctx = document.getElementById('tjHistogram').getContext('2d');
 new Chart(ctx, {
 type: 'bar',
