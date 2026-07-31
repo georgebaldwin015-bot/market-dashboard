@@ -75,73 +75,77 @@ td.ticker a:hover { text-decoration: underline; }
 </head>
 <body>
 <h1>Trade Journal</h1>
-<div class="meta">Generated 2026-07-30 18:07:04 &middot; every ticker links to its TradingView chart</div>
+<div class="meta">Generated 2026-07-31 08:51:44 &middot; every ticker links to its TradingView chart</div>
 
 <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;">
 <h1>Trade Journal</h1>
 <div class="meta">Executed trades vs. Bull Flag / Qullamaggie momentum setups, with a day-by-day counterfactual against George's stated stop-discipline rule.</div>
 
 <div class="section">
-  <h2>Equity Curve: Actual vs. Stop-Discipline Rule</h2>
-  <div class="chart-wrap" style="height:360px;">
-    <canvas id="tjEquityChart"></canvas>
-  </div>
-  <script>
-  (function() {
-    var chartData = {"labels": ["VST 2025-07-25", "CCL 2025-08-01", "EL 2025-08-08", "ORCL 2025-08-08", "GEV 2025-08-13", "VST 2025-08-15", "GDS 2025-10-07", "TME 2025-10-09", "MPC 2026-05-21", "ROKU 2026-06-02", "MPC 2026-06-15", "AMD 2026-06-23", "MCHP 2026-06-23", "NUE 2026-06-29", "AMD 2026-07-02", "MRVL 2026-07-17"], "datasets": [{"label": "Actual cumulative R", "data": [-1.027, -3.449, -3.422, -3.377, -4.075, -5.119, -6.227, -3.432, -4.402, -5.504, -6.488, -7.706, -8.753, -8.724, -9.723, -9.493], "borderColor": "#4f8ff7", "backgroundColor": "rgba(79,143,247,0.12)", "tension": 0.15, "fill": false}, {"label": "Rule cumulative R", "data": [-1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -2.336, -3.336, -4.336, -5.336, -6.336, -7.336, -5.306, -6.306, 2.898], "borderColor": "#21c55d", "backgroundColor": "rgba(33,197,93,0.12)", "tension": 0.15, "fill": false, "borderDash": [6, 4]}]};
-    var ctx = document.getElementById('tjEquityChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: chartData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: { ticks: { color: '#9aa2af', maxRotation: 60, minRotation: 60 }, grid: { display: false } },
-          y: { ticks: { color: '#9aa2af', callback: function(v) { return v + 'R'; } }, grid: { color: '#2a2e37' } }
-        },
-        plugins: {
-          legend: { labels: { color: '#e6e8ec' } },
-          tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + ctx.formattedValue + 'R'; } } }
-        }
-      }
-    });
-  })();
-  </script>
+<h2>Equity Curve: Actual vs. Stop-Discipline Rule ($ P&amp;L)</h2>
+<div class="chart-wrap" style="height:360px;">
+<canvas id="tjEquityChart"></canvas>
+</div>
+<script>
+(function() {
+var chartData = {"labels": ["VST 2025-07-25", "CCL 2025-08-01", "EL 2025-08-08", "ORCL 2025-08-08", "GEV 2025-08-13", "VST 2025-08-15", "GDS 2025-10-07", "TME 2025-10-09", "MPC 2026-05-21", "ROKU 2026-06-02", "MPC 2026-06-15", "AMD 2026-06-23", "MCHP 2026-06-23", "NUE 2026-06-29", "AMD 2026-07-02", "MRVL 2026-07-17"], "datasets": [{"label": "Actual cumulative $ P&L", "data": [-124.48, -283.76, -280.32, -274.33, -375.67, -510.5, -648.3, -400.23, -534.18, -674.24, -806.88, -966.76, -1094.56, -1091.07, -1221.63, -1190.78], "borderColor": "#4f8ff7", "backgroundColor": "rgba(79,143,247,0.12)", "tension": 0.15, "fill": false}, {"label": "Rule cumulative $ P&L", "data": [-121.22, -186.99, -316.12, -447.93, -593.1, -722.24, -846.64, -432.6, -570.71, -697.78, -832.59, -963.86, -1085.9, -842.32, -973.07, 261.9], "borderColor": "#21c55d", "backgroundColor": "rgba(33,197,93,0.12)", "tension": 0.15, "fill": false, "borderDash": [6, 4]}]};
+function tjFmtDollar(v) {
+var sign = v < 0 ? '-' : '';
+return sign + '$' + Math.abs(Math.round(v)).toLocaleString();
+}
+var ctx = document.getElementById('tjEquityChart').getContext('2d');
+new Chart(ctx, {
+type: 'line',
+data: chartData,
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+x: { ticks: { color: '#9aa2af', maxRotation: 60, minRotation: 60 }, grid: { display: false } },
+y: { ticks: { color: '#9aa2af', callback: function(v) { return tjFmtDollar(v); } }, grid: { color: '#2a2e37' } }
+},
+plugins: {
+legend: { labels: { color: '#e6e8ec' } },
+tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + tjFmtDollar(ctx.parsed.y); } } }
+}
+}
+});
+})();
+</script>
 </div>
 
 <div class="section">
-  <h2>R-Multiple Distribution</h2>
-  <div class="chart-wrap" style="height:300px;">
-    <canvas id="tjHistogram"></canvas>
-  </div>
-  <script>
-  (function() {
-    var chartData = {"labels": ["< -2R", "-2R to -1R", "-1R to 0R", "0R to 1R", "1R to 2R", "2R to 3R", "> 3R"], "datasets": [{"label": "Trades", "data": [1, 6, 4, 4, 0, 1, 0], "backgroundColor": ["#ef4444", "#ef4444", "#ef4444", "#21c55d", "#21c55d", "#21c55d", "#21c55d"]}]};
-    var ctx = document.getElementById('tjHistogram').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: chartData,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: '#9aa2af' }, grid: { display: false } },
-          y: { ticks: { color: '#9aa2af', precision: 0 }, grid: { color: '#2a2e37' } }
-        }
-      }
-    });
-  })();
-  </script>
+<h2>Actual $ P&amp;L Distribution</h2>
+<div class="chart-wrap" style="height:300px;">
+<canvas id="tjHistogram"></canvas>
+</div>
+<script>
+(function() {
+var chartData = {"labels": ["-$200 to -$100", "-$100 to $0", "$0 to $100", "$100 to $200", "$200 to $300"], "datasets": [{"label": "Trades", "data": [11, 0, 4, 0, 1], "backgroundColor": ["#ef4444", "#ef4444", "#21c55d", "#21c55d", "#21c55d"]}]};
+var ctx = document.getElementById('tjHistogram').getContext('2d');
+new Chart(ctx, {
+type: 'bar',
+data: chartData,
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: { legend: { display: false } },
+scales: {
+x: { ticks: { color: '#9aa2af' }, grid: { display: false } },
+y: { ticks: { color: '#9aa2af', precision: 0 }, grid: { color: '#2a2e37' } }
+}
+}
+});
+})();
+</script>
 </div>
 
 <div class="section">
-  <h2>Win Rate &amp; Avg R by Setup Type</h2>
+  <h2>Win Rate &amp; Avg $ P&amp;L by Setup Type</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Setup Type</th><th># Trades</th><th>Win Rate</th><th>Avg R</th></tr></thead>
-      <tbody><tr><td>bull_flag</td><td>16</td><td><span class="pos">31.2%</span></td><td><span class="neg">-0.59R</span></td></tr><tr><td>unmatched</td><td>11</td><td>-</td><td>-</td></tr></tbody>
+      <thead><tr><th>Setup Type</th><th># Trades</th><th>Win Rate</th><th>Avg $ P&amp;L</th></tr></thead>
+      <tbody><tr><td>bull_flag</td><td>16</td><td><span class="pos">31.2%</span></td><td><span class="neg">-$74</span></td></tr><tr><td>unmatched</td><td>11</td><td>-</td><td>-</td></tr></tbody>
     </table>
   </div>
 </div>
