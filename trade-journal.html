@@ -36,7 +36,12 @@ h1 { font-size: 1.3rem; margin: 0 0 4px; }
   padding-bottom: 6px;
   margin-bottom: 10px;
 }
-.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+.table-wrap {
+  overflow: auto;
+  max-height: 70vh;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
 .chart-wrap {
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -52,6 +57,7 @@ th {
   font-weight: 600;
   position: sticky;
   top: 0;
+  z-index: 2;
 }
 tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
 td.ticker a {
@@ -75,7 +81,7 @@ td.ticker a:hover { text-decoration: underline; }
 </head>
 <body>
 <h1>Trade Journal</h1>
-<div class="meta">Generated 2026-07-31 13:46:41 &middot; every ticker links to its TradingView chart</div>
+<div class="meta">Generated 2026-07-31 14:11:49 &middot; every ticker links to its TradingView chart</div>
 
 <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;">
 <h1>Trade Journal</h1>
