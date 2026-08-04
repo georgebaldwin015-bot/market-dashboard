@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backtest -- 5-Year Historical</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px;
+    background-color: rgb(15, 17, 21);
+    color: rgb(230, 232, 236);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  h1 { font-size: 1.4rem; margin-bottom: 4px; }
+  .meta { color: rgb(150,154,162); font-size: 0.85rem; margin-bottom: 20px; }
+  .caveat {
+    background: rgba(210, 153, 34, 0.12); border: 1px solid rgba(210, 153, 34, 0.4);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5;
+  }
+  .caveat b { color: rgb(230, 195, 100); }
+  .regime-banner {
+    background: rgba(46, 160, 67, 0.12); border: 1px solid rgba(46, 160, 67, 0.4);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.95rem;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+  .card {
+    background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; padding: 16px 18px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+  .card p { margin: 4px 0; font-size: 0.88rem; color: rgb(190, 194, 200); }
+  .headline { color: rgb(230,232,236) !important; }
+  .note { color: rgb(150,154,162) !important; font-size: 0.8rem !important; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgb(40,44,52); }
+  th { color: rgb(150,154,162); font-weight: 500; }
+</style>
+</head>
+<body>
+  <h1>5-Year Historical Backtest</h1>
+  <div class="meta">Generated 2026-08-04T18:51:07Z &middot; Period: 5y &middot; Universe: 520 tickers</div>
+  <div class="caveat"><b>Survivorship bias caveat:</b> This backtest runs on TODAY's ~521-ticker NASDAQ100+S&P500 universe (momentum_desk/universe.csv), not the index membership as it stood at each historical date over the trailing window. Tickers that were added to the index because they already ran are backtested as if they had always been screenable; tickers removed from the index for underperforming are entirely absent from this test. There is no fix for this without a paid historical index-membership data feed. Treat every win rate and dollar figure below as optimistically biased versus what a real point-in-time scan over the same period would have produced.</div>
+  <div class="regime-banner"><b>Today's Market Pulse regime: DEFENSIVE</b><br>SPY close: 772.22 | 10-day MA: 745.25 | 20-day MA: 747.24</div>
+  <div class="grid">
+    
+        <div class="card">
+          <h3>Trend Template</h3>
+          <p>0 trades total &middot; 0 closed &middot; 0 still open</p>
+          <p class="headline">Win rate: <b>None%</b> &middot; Avg R: <b>None</b> &middot;
+             Total $ ($100/trade risk): <b>$0.00</b></p>
+          <table>
+            <thead><tr><th>Regime</th><th>Closed</th><th>Win rate</th><th>Avg R</th><th>Total $</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="note">Best regime: <b>None</b> &middot; Worst regime: <b>None</b></p>
+        </div>
+
+        <div class="card">
+          <h3>Qullamaggie Momentum</h3>
+          <p>0 trades total &middot; 0 closed &middot; 0 still open</p>
+          <p class="headline">Win rate: <b>None%</b> &middot; Avg R: <b>None</b> &middot;
+             Total $ ($100/trade risk): <b>$0.00</b></p>
+          <table>
+            <thead><tr><th>Regime</th><th>Closed</th><th>Win rate</th><th>Avg R</th><th>Total $</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="note">Best regime: <b>None</b> &middot; Worst regime: <b>None</b></p>
+        </div>
+
+        <div class="card">
+          <h3>Pattern Combo</h3>
+          <p>0 trades total &middot; 0 closed &middot; 0 still open</p>
+          <p class="headline">Win rate: <b>None%</b> &middot; Avg R: <b>None</b> &middot;
+             Total $ ($100/trade risk): <b>$0.00</b></p>
+          <table>
+            <thead><tr><th>Regime</th><th>Closed</th><th>Win rate</th><th>Avg R</th><th>Total $</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="note">Best regime: <b>None</b> &middot; Worst regime: <b>None</b></p>
+        </div>
+
+        <div class="card">
+          <h3>Bull Flag</h3>
+          <p>0 trades total &middot; 0 closed &middot; 0 still open</p>
+          <p class="headline">Win rate: <b>None%</b> &middot; Avg R: <b>None</b> &middot;
+             Total $ ($100/trade risk): <b>$0.00</b></p>
+          <table>
+            <thead><tr><th>Regime</th><th>Closed</th><th>Win rate</th><th>Avg R</th><th>Total $</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="note">Best regime: <b>None</b> &middot; Worst regime: <b>None</b></p>
+        </div>
+  </div>
+</body>
+</html>

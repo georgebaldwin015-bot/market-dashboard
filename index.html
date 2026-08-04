@@ -48,6 +48,7 @@
     <div class="tab" id="tab-industry" onclick="showTab('industry')">Industry Analysis</div>
     <div class="tab" id="tab-strategy" onclick="showTab('strategy')">Momentum Desk Strategy</div>
     <div class="tab" id="tab-journal" onclick="showTab('journal')">Trade Journal</div>
+    <div class="tab" id="tab-backtest" onclick="showTab('backtest')">Backtest</div>
   </div>
 
   <div class="tab-content" id="content-industry">
@@ -59,6 +60,9 @@
   <div class="tab-content" id="content-journal">
     <iframe src="trade-journal.html" title="Trade Journal"></iframe>
   </div>
+  <div class="tab-content" id="content-backtest">
+    <iframe src="backtest.html" title="Backtest"></iframe>
+  </div>
 
   <script>
     function showTab(name) {
@@ -69,7 +73,7 @@
       history.replaceState(null, '', '#' + name);
     }
     // Default to the industry tab, unless the URL says otherwise.
-    // Prefer ?tab=strategy (a query param) over #strategy (a hash) --
+    // Prefer #tab=strategy (a query param) over #strategy (a hash) --
     // the email link uses a query param specifically because hash
     // fragments get stripped by many email link-scanners/click-trackers,
     // while query params survive redirect-based link rewriting.
@@ -77,8 +81,7 @@
     const fromQuery = params.get('tab');
     const fromHash = window.location.hash.replace('#', '');
     const initial = fromQuery || fromHash || 'industry';
-    showTab((initial === 'strategy' || initial === 'journal') ? initial : 'industry');
+    showTab(initial);
   </script>
 </body>
 </html>
-
