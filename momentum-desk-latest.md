@@ -5,7 +5,7 @@ setup on an actual chart before acting.*
 *Data source: Yahoo Finance (via yfinance), end-of-day bars. Universe defined in `universe.csv` — edit that file to expand coverage. Sector/industry groupings are derived live from Yahoo Finance and shared with the Daily Market Report tab via `industry_map.py`.*
 ## What's Going On
 
-The market is in a defensive posture, with breadth reading 69% of the scanned universe above its 50-day moving average and 6 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been improving over the last 60 sessions (+16.7 pt change in % above the 50-day MA) and improving over the last two weeks (+6.0 pt), while SPY is climbing (+4.8% over 60 sessions, +3.2% over the last two weeks). That trend is broadly consistent with today's snapshot, not diverging from it. Momentum under the surface is leaning firmly long -- 37 name(s) hit a fresh 52-week high today against 4 breaking down to a fresh 52-week low. Information Technology is leading, with 47% of its 90 scanned names carrying an RS score of 70+ and 20 clearing a screen outright today, with Health Care also showing real strength. It's being driven by names like ZBRA, ANET and Q. With 36 name(s) clearing a screen across 11 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
+The market is in a defensive posture, with breadth reading 69% of the scanned universe above its 50-day moving average and 6 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been improving over the last 60 sessions (+16.6 pt change in % above the 50-day MA) and improving over the last two weeks (+6.2 pt), while SPY is climbing (+4.8% over 60 sessions, +3.2% over the last two weeks). That trend is broadly consistent with today's snapshot, not diverging from it. Momentum under the surface is leaning firmly long -- 37 name(s) hit a fresh 52-week high today against 4 breaking down to a fresh 52-week low. Information Technology is leading, with 47% of its 90 scanned names carrying an RS score of 70+ and 20 clearing a screen outright today, with Health Care also showing real strength. It's being driven by names like ZBRA, ANET and Q. With 36 name(s) clearing a screen across 11 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
 
 ## 1. Market Pulse
 
@@ -14,7 +14,7 @@ SPY close: 771.33 | 10-day MA: 745.17 | 20-day MA: 747.20
 **Defensive** — 10-day MA below the 20-day. Per Qullamaggie's market filter, long breakouts/EPs are lower-probability here; Minervini would favor raising cash. Parabolic-short context becomes more relevant, not breakout longs.
 
 - Breadth: 69% of the scanned universe above its 50-day MA, 71% above its 200-day MA.
-- 52-week breakouts vs breakdowns today: 37 breakouts / 4 breakdowns (out of 519 names evaluated).
+- 52-week breakouts vs breakdowns today: 37 breakouts / 4 breakdowns (out of 520 names evaluated).
 - Distribution days (SPY, trailing 25 sessions): 6. Elevated -- a headwind even if price is holding up.
 - Follow-through day: none in the recent window.
 
@@ -27,7 +27,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 | Information Technology | 90 | 64 | 47% | 20 |
 | Health Care | 60 | 60 | 45% | 23 |
 | Industrials | 77 | 61 | 36% | 18 |
-| Financials | 69 | 53 | 33% | 27 |
+| Financials | 70 | 53 | 33% | 27 |
 | Energy | 21 | 60 | 29% | 6 |
 | Materials | 26 | 49 | 23% | 8 |
 | Communication Services | 24 | 22 | 21% | 4 |
@@ -168,7 +168,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 240.43
 - Volume vs 50-day avg: 1.01x
-- ADR%: 3.6% | RS score: 82.0
+- ADR%: 3.6% | RS score: 83.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -184,10 +184,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 82.0 (needs >= 70 for criterion 8)
+  - RS score used: 83.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 3.6% (needs >= 3.0% volatility to qualify)
-  - RS score: 82.0 (needs >= 80 for this screen)
+  - RS score: 83.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 
@@ -910,7 +910,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: Cleared pivot on light volume (unconfirmed — 0.78x avg, needs 1.5x)
 - Pivot / buy point: 129.35
 - Volume vs 50-day avg: 0.78x
-- ADR%: 3.0% | RS score: 78.0
+- ADR%: 3.0% | RS score: 79.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -926,10 +926,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 78.0 (needs >= 70 for criterion 8)
+  - RS score used: 79.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
-  - RS score: 78.0 (needs >= 80 for this screen)
+  - RS score: 79.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 
@@ -1165,7 +1165,7 @@ Market regime reads **defensive**, and **Information Technology** is leading wit
 - **MNST** (Consumer Staples) — VCP contraction (watch for trigger) [VCP-Watch], RS 86.0, pivot 99.94. [chart](https://www.tradingview.com/chart/?symbol=MNST)
 - **WSM** (Consumer Discretionary) — Cleared pivot on light volume (unconfirmed — 1.39x avg, needs 1.5x), RS 85.0, pivot 239.8. [chart](https://www.tradingview.com/chart/?symbol=WSM)
 - **CASY** (Consumer Discretionary) — VCP contraction (watch for trigger), RS 85.0, pivot 874.59. [chart](https://www.tradingview.com/chart/?symbol=CASY)
-- **CRL** (Health Care) — VCP contraction (watch for trigger), RS 82.0, pivot 240.43. [chart](https://www.tradingview.com/chart/?symbol=CRL)
+- **CRL** (Health Care) — VCP contraction (watch for trigger), RS 83.0, pivot 240.43. [chart](https://www.tradingview.com/chart/?symbol=CRL)
 
 ## 5. Other Setups (context)
 
