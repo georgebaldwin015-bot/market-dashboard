@@ -66,6 +66,16 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgb(40,44,52); }
 th { color: rgb(150,154,162); font-weight: 500; }
 .pareto-chart { margin-top: 8px; }
+
+.highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-top: 8px; }
+.highlight-card { background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; overflow: hidden; }
+.highlight-card img { width: 100%; display: block; background: rgb(15,17,21); }
+.highlight-meta { padding: 12px 14px; }
+.highlight-title { font-size: 0.95rem; font-weight: 600; color: rgb(230,232,236); margin-bottom: 6px; }
+.highlight-stats { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: rgb(190,194,200); margin-bottom: 4px; }
+.hl-pos { color: #3fb950; font-weight: 700; }
+.hl-neg { color: #f85149; font-weight: 700; }
+.highlight-prices { font-size: 0.8rem; color: rgb(150,154,162); }
 </style>
 </head>
 <body>
@@ -242,6 +252,137 @@ th { color: rgb(150,154,162); font-weight: 500; }
         consistent with the backtest's own math -- most individual setups wash out flat or
         small over just a few trading days; the edge shows up over many trades and full hold
         periods, not in a one-week snapshot like this.</p>
+    </div>
+    
+
+    <div class="exec-summary">
+        <h2>Backtest Highlights</h2>
+        <p>Annotated charts for the best closed trade per ticker among the top historical
+        performers -- entry, stop, and exit marked directly on real price action, generated
+        as static images from the same backtest data used everywhere else on this page (no
+        live TradingView dependency).</p>
+        <div class="highlight-grid">
+        <div class="highlight-card">
+            <img src="backtest-highlights/WMT.png" alt="WMT annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">WMT &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+61.1R</span>
+                    <span>$6,108.50</span>
+                    <span>2024-01-08 &rarr; 2024-12-23</span>
+                </div>
+                <div class="highlight-prices">Entry $51.43 &middot; Stop $50.83 &middot; Exit $88.05</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/APP.png" alt="APP annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">APP &mdash; Unknown, qullamaggie_momentum</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+57.2R</span>
+                    <span>$5,721.45</span>
+                    <span>2024-08-14 &rarr; 2024-12-09</span>
+                </div>
+                <div class="highlight-prices">Entry $84.64 &middot; Stop $79.68 &middot; Exit $368.65</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/EME.png" alt="EME annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">EME &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+40.6R</span>
+                    <span>$4,055.38</span>
+                    <span>2024-01-04 &rarr; 2024-04-16</span>
+                </div>
+                <div class="highlight-prices">Entry $209.80 &middot; Stop $206.55 &middot; Exit $341.77</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/FOXA.png" alt="FOXA annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">FOXA &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+36.3R</span>
+                    <span>$3,627.37</span>
+                    <span>2024-07-03 &rarr; 2025-03-07</span>
+                </div>
+                <div class="highlight-prices">Entry $34.06 &middot; Stop $33.52 &middot; Exit $53.85</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/TMUS.png" alt="TMUS annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">TMUS &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+34.6R</span>
+                    <span>$3,460.36</span>
+                    <span>2024-05-21 &rarr; 2024-12-09</span>
+                </div>
+                <div class="highlight-prices">Entry $158.49 &middot; Stop $156.57 &middot; Exit $224.93</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/GDDY.png" alt="GDDY annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">GDDY &mdash; Unknown, trend_template</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.7R</span>
+                    <span>$3,367.25</span>
+                    <span>2024-01-08 &rarr; 2024-09-04</span>
+                </div>
+                <div class="highlight-prices">Entry $101.94 &middot; Stop $100.34 &middot; Exit $155.91</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/VST.png" alt="VST annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">VST &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.2R</span>
+                    <span>$3,324.01</span>
+                    <span>2023-10-30 &rarr; 2024-03-11</span>
+                </div>
+                <div class="highlight-prices">Entry $31.81 &middot; Stop $31.06 &middot; Exit $56.73</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/VRT.png" alt="VRT annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">VRT &mdash; EP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.0R</span>
+                    <span>$3,299.63</span>
+                    <span>2023-04-26 &rarr; 2023-08-10</span>
+                </div>
+                <div class="highlight-prices">Entry $13.54 &middot; Stop $12.94 &middot; Exit $33.32</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/GLW.png" alt="GLW annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">GLW &mdash; Unknown, trend_template</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+31.7R</span>
+                    <span>$3,172.94</span>
+                    <span>2025-07-17 &rarr; 2025-10-28</span>
+                </div>
+                <div class="highlight-prices">Entry $53.61 &middot; Stop $52.69 &middot; Exit $82.92</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/WDC.png" alt="WDC annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title">WDC &mdash; Flag, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+30.6R</span>
+                    <span>$3,060.39</span>
+                    <span>2025-05-02 &rarr; 2025-10-07</span>
+                </div>
+                <div class="highlight-prices">Entry $44.49 &middot; Stop $41.96 &middot; Exit $121.64</div>
+            </div>
+        </div>
+        </div>
     </div>
     
 <details class="appendix" open>
