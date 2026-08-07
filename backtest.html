@@ -23,7 +23,7 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; }
     background: rgba(46, 160, 67, 0.12); border: 1px solid rgba(46, 160, 67, 0.4);
     border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.95rem;
 }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 16px; }
 .card {
     background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; padding: 16px 18px;
 }
@@ -66,9 +66,10 @@ table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgb(40,44,52); }
 th { color: rgb(150,154,162); font-weight: 500; }
 .pareto-chart { margin-top: 8px; }
+.pareto-chart svg { max-width: 100%; height: auto; display: block; }
 .table-wrap { overflow: auto; max-height: 70vh; border: 1px solid rgb(40,44,52); border-radius: 10px; }
 
-.highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-top: 8px; }
+.highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 16px; margin-top: 8px; }
 .highlight-card { background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; overflow: hidden; }
 .highlight-card img { width: 100%; display: block; background: rgb(15,17,21); }
 .highlight-meta { padding: 12px 14px; }
