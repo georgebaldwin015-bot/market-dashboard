@@ -38,6 +38,30 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; }
     border-radius: 6px; padding: 8px 10px; font-size: 0.83rem !important; line-height: 1.5; margin: 6px 0 !important;
 }
 .callout b { color: rgb(120, 190, 255); }
+.exec-summary {
+    background: linear-gradient(135deg, rgba(46,160,67,0.10), rgba(35,42,54,0.6));
+    border: 1px solid rgb(60,110,80);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+.exec-summary h2 { margin: 0 0 12px; font-size: 1.3rem; color: #7ee787; }
+.exec-summary p { margin: 8px 0; font-size: 0.92rem; color: rgb(200,204,210); line-height: 1.5; }
+.exec-summary table { margin-top: 14px; }
+details.appendix { margin-top: 8px; }
+details.appendix > summary {
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgb(170,174,182);
+    padding: 12px 0;
+    border-top: 1px solid rgb(40,44,52);
+    list-style: none;
+}
+details.appendix > summary::-webkit-details-marker { display: none; }
+details.appendix > summary::before { content: "▸ "; color: #7ee787; }
+details.appendix[open] > summary::before { content: "▾ "; }
+details.appendix[open] > summary { border-bottom: 1px solid rgb(40,44,52); margin-bottom: 16px; }
 table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgb(40,44,52); }
 th { color: rgb(150,154,162); font-weight: 500; }
@@ -49,6 +73,70 @@ th { color: rgb(150,154,162); font-weight: 500; }
 <div class="meta">Generated 2026-08-04T20:51:03Z &middot; Period: 5y &middot; Universe: 520 tickers</div>
 <div class="caveat"><b>Survivorship bias caveat:</b> This backtest runs on TODAY's ~521-ticker NASDAQ100+S&P500 universe (momentum_desk/universe.csv), not the index membership as it stood at each historical date over the trailing window. Tickers that were added to the index because they already ran are backtested as if they had always been screenable; tickers removed from the index for underperforming are entirely absent from this test. There is no fix for this without a paid historical index-membership data feed. Treat every win rate and dollar figure below as optimistically biased versus what a real point-in-time scan over the same period would have produced.</div>
 <div class="regime-banner"><b>Today's Market Pulse regime: DEFENSIVE</b><br>SPY close: 771.33 | 10-day MA: 745.17 | 20-day MA: 747.20</div>
+
+    <div class="exec-summary">
+        <h2>Executive Summary &mdash; Recommended Strategy</h2>
+        <p class="headline"><b>Prioritize Qullamaggie Momentum setups.</b> Best win rate,
+        best avg R, and by far the best $10k capital-constrained outcome of the three
+        systems (see table below) -- and it happens to be the system that performs BEST
+        in today's DEFENSIVE regime, not worse.</p>
+        <p><b>Trend Template</b> is the steady complement: lower drawdown than the other
+        two, a much larger sample size (more statistically reliable), and solid results
+        across all regimes. Use it to diversify, not as the primary edge.</p>
+        <p><b>De-prioritize Pattern Combo.</b> Weakest win rate, weakest avg R, weakest
+        capital-constrained return, and by far the worst drawdown of the three -- the
+        numbers don't support giving it equal weight with the other two.</p>
+        <table>
+            <thead><tr><th>System</th><th>Win rate</th><th>Avg R</th>
+            <th>$10k &rarr; (capital-constrained)</th><th>Max drawdown</th>
+            <th>Defensive-regime WR / Avg R</th></tr></thead>
+            <tbody><tr>
+            <td>Qullamaggie Momentum</td>
+            <td>39.2%</td>
+            <td>0.65</td>
+            <td>$53,000 (+430%)</td>
+            <td>19.77%</td>
+            <td>43.7% / 1.14</td>
+        </tr><tr>
+            <td>Trend Template</td>
+            <td>27.0%</td>
+            <td>0.34</td>
+            <td>$30,001 (+200%)</td>
+            <td>14.35%</td>
+            <td>29.0% / 0.43</td>
+        </tr><tr>
+            <td>Pattern Combo</td>
+            <td>23.1%</td>
+            <td>0.26</td>
+            <td>$21,253 (+113%)</td>
+            <td>38.49%</td>
+            <td>24.3% / 0.3</td>
+        </tr></tbody>
+        </table>
+        
+        <p><b>Exit-rule finding (trailing-ADR sweep):</b> the CURRENT live rule
+        (2x ADR OR 7%) closes trades at avg R
+        <b>0.3</b> on <b>20,489</b> closed trades
+        (total <b>$633,275</b>, fixed $/trade risk model).
+        Widening the trailing stop to <b>8x ADR OR 7%</b> instead
+        -- letting winners run further before the trail triggers -- lifts that to avg R
+        <b>0.62</b> / total <b>$1,234,062</b> on the
+        same trade set, then reverses hard beyond that point. Confirmed a genuine peak,
+        not a mark-to-market artifact (still-open trades are a controlled slice --
+        670 open vs 19986 closed -- excluded from these
+        totals). <b>Not yet re-tested in the $10k capital-constrained simulator below</b>
+        -- flagged as the top next step before changing the live rule.</p>
+        
+        <p class="note">Caveats: backtested on today's ~520-ticker universe applied
+        retroactively (survivorship bias -- see appendix below), not live trading, and
+        each system's $10k simulation runs independently rather than as one blended
+        multi-system portfolio. Sample sizes differ a lot by system, so treat
+        Qullamaggie Momentum's edge as directionally strong but based on a smaller
+        sample than the other two.</p>
+    </div>
+    
+<details class="appendix" open>
+<summary>Appendix: Full Detail (per-system breakdowns, trailing-stop sweep tables, $10k portfolio simulations, Pareto concentration, top tickers, hold-time stats)</summary>
 <div class="caveat" style="margin-top:12px;"><b>Note:</b> Bull Flag produced 0 trades across the full 5-year walk -- flagged as an open question, not shown in the Top Tickers/Pareto sections below since there's nothing to aggregate.</div>
 <div class="grid">
 
@@ -385,5 +473,6 @@ th { color: rgb(150,154,162); font-weight: 500; }
             
         </div>
 </div>
+</details>
 </body>
 </html>
