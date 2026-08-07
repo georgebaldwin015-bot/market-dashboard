@@ -135,6 +135,115 @@ th { color: rgb(150,154,162); font-weight: 500; }
         sample than the other two.</p>
     </div>
     
+
+    <div class="exec-summary track-record">
+        <h2>Live Recommendations Track Record</h2>
+        <p>What actually happened to the real tickers synced to George's live TradingView
+        watchlist, as of 2026-08-07 -- not backtest data. <b>ALL, TGT, CRL</b> have an exact
+        flag price/date from the automated setup screener; the rest are "Worth Watching"
+        picks whose entry reference is the closing price nearest the sync date (2026-08-03,
+        or the earlier ~2026-07-29 batch for VTRS/LLY/BMY), sourced from public market data.</p>
+        <table>
+            <thead><tr><th>Ticker</th><th>Setup</th><th>Flagged</th><th>Entry ref</th>
+            <th>Current</th><th>Change</th><th>Status</th></tr></thead>
+            <tbody><tr>
+            <td><b>ALL</b></td>
+            <td>Bull Flag</td>
+            <td>2026-07-31</td>
+            <td>$263.16</td>
+            <td>$262.56</td>
+            <td style="color:rgb(190,194,200);">-0.2%</td>
+            <td class="note">Flat -- still in play, no stop hit</td>
+        </tr><tr>
+            <td><b>TGT</b></td>
+            <td>Bull Flag</td>
+            <td>2026-07-31</td>
+            <td>$142.39</td>
+            <td>$147.80</td>
+            <td style="color:#7ee787;">+3.8%</td>
+            <td class="note">Working -- up ~4%, in play</td>
+        </tr><tr>
+            <td><b>CRL</b></td>
+            <td>Qullamaggie Momentum</td>
+            <td>2026-08-05</td>
+            <td>$260.72</td>
+            <td>$234.12</td>
+            <td style="color:#f0883e;">-10.2%</td>
+            <td class="note">Down ~10% -- beyond a typical 7% stop, likely would have been stopped out</td>
+        </tr><tr>
+            <td><b>DAL</b></td>
+            <td>Worth Watching</td>
+            <td>~2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$91.59</td>
+            <td>$87.42</td>
+            <td style="color:#f0883e;">-4.6%</td>
+            <td class="note">Gave back its Aug 3 earnings pop -- down ~5%, choppy</td>
+        </tr><tr>
+            <td><b>ROST</b></td>
+            <td>Worth Watching</td>
+            <td>~2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$251.07</td>
+            <td>$251.90</td>
+            <td style="color:rgb(190,194,200);">+0.3%</td>
+            <td class="note">Flat -- holding near 52-week highs</td>
+        </tr><tr>
+            <td><b>CASY</b></td>
+            <td>Worth Watching</td>
+            <td>2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$860.37</td>
+            <td>$852.86</td>
+            <td style="color:#f0883e;">-0.9%</td>
+            <td class="note">Flat -- down ~1%</td>
+        </tr><tr>
+            <td><b>MRK</b></td>
+            <td>Worth Watching</td>
+            <td>~2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$128.30</td>
+            <td>$128.64</td>
+            <td style="color:rgb(190,194,200);">+0.3%</td>
+            <td class="note">Flat -- near highs</td>
+        </tr><tr>
+            <td><b>AIZ</b></td>
+            <td>Worth Watching</td>
+            <td>~2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$267.00</td>
+            <td>$279.19</td>
+            <td style="color:#7ee787;">+4.6%</td>
+            <td class="note">Up meaningfully -- pushed to fresh all-time highs above $300 mid-week, some giveback since</td>
+        </tr><tr>
+            <td><b>VTRS</b></td>
+            <td>Worth Watching</td>
+            <td>2026-08-03</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$17.62</td>
+            <td>$17.57</td>
+            <td style="color:rgb(190,194,200);">-0.3%</td>
+            <td class="note">Flat</td>
+        </tr><tr>
+            <td><b>LLY</b></td>
+            <td>Worth Watching (earlier session)</td>
+            <td>~2026-07-29</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$1,121</td>
+            <td>$1,192</td>
+            <td style="color:#7ee787;">+6.3%</td>
+            <td class="note">Working well -- up ~6%</td>
+        </tr><tr>
+            <td><b>BMY</b></td>
+            <td>Worth Watching (earlier session)</td>
+            <td>~2026-07-29</td>
+            <td><span style="color:rgb(140,144,152);" title="Approximate entry -- no automated setup log; nearest-date closing price used instead">~</span>$64.00</td>
+            <td>$64.00</td>
+            <td style="color:rgb(190,194,200);">+0.0%</td>
+            <td class="note">Choppy -- spiked ~4% on unconfirmed AstraZeneca merger-talk reports, gave most of it back</td>
+        </tr></tbody>
+        </table>
+        <p class="note">Read: 3 of 11 clearly working so far (TGT +4%, LLY +6%, AIZ +5%),
+        1 clearly not (CRL -10%, beyond a standard 7% stop), 1 modest pullback (DAL -5%),
+        and the remaining 6 are roughly flat within a few percent either way. That's broadly
+        consistent with the backtest's own math -- most individual setups wash out flat or
+        small over just a few trading days; the edge shows up over many trades and full hold
+        periods, not in a one-week snapshot like this.</p>
+    </div>
+    
 <details class="appendix" open>
 <summary>Appendix: Full Detail (per-system breakdowns, trailing-stop sweep tables, $10k portfolio simulations, Pareto concentration, top tickers, hold-time stats)</summary>
 <div class="caveat" style="margin-top:12px;"><b>Note:</b> Bull Flag produced 0 trades across the full 5-year walk -- flagged as an open question, not shown in the Top Tickers/Pareto sections below since there's nothing to aggregate.</div>
