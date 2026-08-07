@@ -300,6 +300,99 @@ cluster near the top as more reliable than the single best-labeled row.</p>
 </div>
 
 
+<div class="exec-summary">
+<h2>A++ Setup Analysis: What Do the Biggest &amp; Fastest Winners Have in Common?</h2>
+<p>Pulled the top 40 closed trades by R-multiple ("grinders" -- the biggest total winners) and,
+separately, the fastest 40 winners among the 1283 closed trades with R-multiple &ge; 5.0
+("rockets" -- big winners that resolved quickest), then compared their setup-time characteristics
+against the 20478-trade baseline of every closed trade in the backtest. Everything
+below is derived from fields already on each trade record plus cached daily OHLC (SMA position,
+% off the 52-week high, a base-tightness ratio comparing the 10-day range to the 50-day range) --
+no new price data downloaded.</p>
+<p class="note"><b>Read with caution:</b> no volume data is available in the cached price panels
+(price_panel_cache.json.gz has no volume field), and true cross-sectional RS rank could not be
+reconstructed either -- that needs the whole scanned universe's returns on each historical date,
+not just the traded tickers. Both Minervini's and Qullamaggie's methodologies weight volume
+heavily (breakout volume surge, VCP volume dry-up), so this analysis is necessarily incomplete on
+that front. Each group is also only 40 trades out of 20478 -- enough to see a
+directional lean, not enough to call any of this a hard rule.</p>
+
+<h3>Grinders: the biggest total winners</h3>
+<p class="callout">Avg 30.01R over an average
+149.6-day hold. Compared to the all-trade baseline, grinders
+sit <b>closer to their 52-week high</b> (6.4% off vs
+7.9% off), with a <b>tighter, more contracted base</b>
+at entry (10d-vs-50d range ratio 0.91 vs
+1.00 baseline -- lower means the 10-day
+range was narrower than the 50-day range, i.e. the stock was tightening up), and are <b>not wildly
+extended</b> above their moving averages (13.7% above the
+200d SMA vs 18.9% baseline). Pattern-tag and system mix
+for grinders essentially mirror the baseline (VCP 17 (81%), Flag 3 (14%), EP 1 (5%) vs baseline's own
+pattern_combo mix) -- the distinguishing signal here is setup structure (tight, near-highs base),
+not which system or pattern flagged it.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Ticker</th><th>System</th><th>Entry</th><th>Exit</th><th>Result</th><th>Hold</th><th>Pattern</th></tr>
+<tr><td>WMT</td><td>Pattern Combo</td><td>2024-01-08</td><td>2024-12-23</td><td>61.09R</td><td>350d</td><td>VCP</td></tr><tr><td>APP</td><td>Qullamaggie Momentum</td><td>2024-08-14</td><td>2024-12-09</td><td>57.21R</td><td>117d</td><td>-</td></tr><tr><td>EME</td><td>Pattern Combo</td><td>2024-01-04</td><td>2024-04-16</td><td>40.55R</td><td>103d</td><td>VCP</td></tr><tr><td>EME</td><td>Trend Template</td><td>2024-01-08</td><td>2024-04-16</td><td>40.55R</td><td>99d</td><td>-</td></tr><tr><td>FOXA</td><td>Pattern Combo</td><td>2024-07-03</td><td>2025-03-07</td><td>36.27R</td><td>247d</td><td>VCP</td></tr><tr><td>TMUS</td><td>Pattern Combo</td><td>2024-05-21</td><td>2024-12-09</td><td>34.60R</td><td>202d</td><td>VCP</td></tr><tr><td>GDDY</td><td>Trend Template</td><td>2024-01-08</td><td>2024-09-04</td><td>33.67R</td><td>240d</td><td>-</td></tr><tr><td>VST</td><td>Pattern Combo</td><td>2023-10-30</td><td>2024-03-11</td><td>33.24R</td><td>133d</td><td>VCP</td></tr>
+</table>
+</div>
+
+<h3>Rockets: the fastest big winners</h3>
+<p class="callout">Avg 8.30R over an average
+9.2-day hold (the fastest 40 out of 1283 trades that
+hit &ge;5R at all). These setups look almost the opposite of grinders at entry: already <b>well
+extended above every moving average</b> (17.3% above the 50d
+SMA, 45.5% above the 200d SMA -- roughly
+2.4x the baseline distance), with a <b>higher ADR%</b> at setup
+(4.0% vs 2.8%
+baseline -- more volatile, faster-moving names). The <b>Flag pattern is heavily over-represented</b>
+among rockets (63.6% of tagged rocket setups vs 14.0%
+of tagged baseline setups, roughly 4.5x), and
+<b>qullamaggie_momentum trades are disproportionately common</b> (15% of
+rockets vs 4% of the full baseline, roughly 3.8x),
+alongside trend_template (57% vs 43%), at the
+expense of pattern_combo (28% vs 53%).</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Ticker</th><th>System</th><th>Entry</th><th>Exit</th><th>Result</th><th>Hold</th><th>Pattern</th></tr>
+<tr><td>ORCL</td><td>Trend Template</td><td>2025-09-09</td><td>2025-09-11</td><td>10.47R</td><td>2d</td><td>-</td></tr><tr><td>ALGN</td><td>Pattern Combo</td><td>2023-01-31</td><td>2023-02-03</td><td>7.77R</td><td>3d</td><td>Flag</td></tr><tr><td>NBIS</td><td>Trend Template</td><td>2025-09-08</td><td>2025-09-11</td><td>6.47R</td><td>3d</td><td>-</td></tr><tr><td>RKLB</td><td>Qullamaggie Momentum</td><td>2024-11-11</td><td>2024-11-14</td><td>5.39R</td><td>3d</td><td>-</td></tr><tr><td>AMD</td><td>Pattern Combo</td><td>2025-10-03</td><td>2025-10-07</td><td>8.71R</td><td>4d</td><td>VCP</td></tr><tr><td>IDXX</td><td>Trend Template</td><td>2025-08-01</td><td>2025-08-05</td><td>9.25R</td><td>4d</td><td>-</td></tr><tr><td>SMCI</td><td>Trend Template</td><td>2024-01-18</td><td>2024-01-23</td><td>6.78R</td><td>5d</td><td>-</td></tr><tr><td>WRB</td><td>Trend Template</td><td>2025-03-26</td><td>2025-03-31</td><td>5.03R</td><td>5d</td><td>-</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table>
+<tr><th>Metric</th><th>Grinders (biggest winners)</th><th>Rockets (fastest big winners)</th><th>All-trade baseline</th></tr>
+
+<tr><td>Sample size</td><td>40 trades</td><td>40 trades</td><td>20478 trades (all closed)</td></tr>
+<tr><td>Avg R-multiple</td><td>30.01R</td><td>8.30R</td><td>0.31R</td></tr>
+<tr><td>Avg hold time</td><td>149.6 days</td><td>9.2 days</td><td>17.2 days</td></tr>
+<tr><td>Avg ADR% at setup</td><td>2.5%</td><td>4.0%</td><td>2.8%</td></tr>
+<tr><td>Avg % above 50d SMA</td><td>4.7%</td><td>17.3%</td><td>6.0%</td></tr>
+<tr><td>Avg % above 150d SMA</td><td>10.2%</td><td>38.2%</td><td>15.0%</td></tr>
+<tr><td>Avg % above 200d SMA</td><td>13.7%</td><td>45.5%</td><td>18.9%</td></tr>
+<tr><td>% of trades above 50 / 150 / 200d SMA</td><td>85% / 88% / 92%</td><td>98% / 98% / 98%</td><td>83% / 90% / 92%</td></tr>
+<tr><td>Avg % off 52-week high</td><td>6.4%</td><td>8.5%</td><td>7.9%</td></tr>
+<tr><td>Avg base-tightness ratio (10d vs 50d range)</td><td>0.91</td><td>1.07</td><td>1.00</td></tr>
+<tr><td>Pattern-tag mix (of tagged / pattern_combo trades)</td><td>VCP 17 (81%), Flag 3 (14%), EP 1 (5%)</td><td>Flag 7 (64%), VCP 3 (27%), EP 1 (9%)</td><td>VCP 8918 (82%), Flag 1522 (14%), EP 403 (4%)</td></tr>
+<tr><td>System mix</td><td>Pattern Combo 21 (52%), Trend Template 17 (42%), Qullamaggie Momentum 2 (5%)</td><td>Trend Template 23 (57%), Pattern Combo 11 (28%), Qullamaggie Momentum 6 (15%)</td><td>Pattern Combo 10843 (53%), Trend Template 8816 (43%), Qullamaggie Momentum 819 (4%)</td></tr>
+
+</table>
+</div>
+
+<h3>Practical checklist</h3>
+<p class="callout">A tight, contracting base sitting within roughly 6-7% of its 52-week high, and
+not badly extended above the 200-day SMA, favors a <b>multi-month grinder</b> -- the kind of trade
+that compounds into a huge total winner if held, regardless of which system or pattern flagged it.
+A name that's already extended well above its moving averages with an elevated ADR%, especially a
+tight Flag setup or a qullamaggie_momentum signal, favors a <b>fast pop</b> -- resolves in days,
+not months, but the total R is smaller. Treat this as a lean to weight setups by, not a filter to
+screen with -- the sample is 40 trades per group, and volume (which both Minervini and Qullamaggie
+treat as a primary signal) isn't part of this analysis at all.</p>
+</div>
+
+
     <div class="exec-summary">
         <h2>Backtest Highlights</h2>
         <p>Annotated charts for the best closed trade per ticker among the top historical
