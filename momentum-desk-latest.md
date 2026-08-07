@@ -53,7 +53,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 366.34
-- Volume vs 50-day avg: 0.7x
+- Volume vs 50-day avg: 0.73x
 - ADR%: 4.5% | RS score: 97.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -81,9 +81,9 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 ### CPAY — Information Technology [chart](https://www.tradingview.com/chart/?symbol=CPAY)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.89x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 1.06x avg, needs 1.5x)
 - Pivot / buy point: 396.52
-- Volume vs 50-day avg: 0.89x
+- Volume vs 50-day avg: 1.06x
 - ADR%: 2.8% | RS score: 88.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -146,7 +146,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 72.14
-- Volume vs 50-day avg: 0.43x
+- Volume vs 50-day avg: 0.44x
 - ADR%: 0.5% | RS score: 87.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -177,7 +177,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 239.23
-- Volume vs 50-day avg: 0.54x
+- Volume vs 50-day avg: 0.77x
 - ADR%: 2.2% | RS score: 83.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -210,7 +210,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 321.02
-- Volume vs 50-day avg: 0.69x
+- Volume vs 50-day avg: 0.96x
 - ADR%: 2.1% | RS score: 86.0
 - Stage: Stage 1 (Basing)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -241,7 +241,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: Continuation breakout (confirmed)
 - Pivot / buy point: 997.52
-- Volume vs 50-day avg: 1.74x
+- Volume vs 50-day avg: 2.0x
 - ADR%: 2.5% | RS score: 82.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -263,16 +263,15 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ADR%: 2.5% (needs >= 3.0% volatility to qualify)
   - RS score: 82.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-  - Setup: continuation breakout, volume 1.74x the 50-day average (needs >= 1.5x)
+  - Setup: continuation breakout, volume 2.0x the 50-day average (needs >= 1.5x)
 
 </details>
 
 ### HON — Industrials [chart](https://www.tradingview.com/chart/?symbol=HON)
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
-- Pattern tag: VCP-Watch
 - Pivot / buy point: 248.79
-- Volume vs 50-day avg: 0.89x
+- Volume vs 50-day avg: 1.07x
 - ADR%: 2.7% | RS score: 46.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -295,7 +294,6 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - RS score: 46.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
@@ -306,7 +304,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 161.71
-- Volume vs 50-day avg: 0.45x
+- Volume vs 50-day avg: 0.7x
 - ADR%: 2.0% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -338,7 +336,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 73.92
-- Volume vs 50-day avg: 0.64x
+- Volume vs 50-day avg: 0.82x
 - ADR%: 2.2% | RS score: 81.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -369,7 +367,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 64.47
-- Volume vs 50-day avg: 0.44x
+- Volume vs 50-day avg: 0.68x
 - ADR%: 1.8% | RS score: 79.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -400,7 +398,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 255.37
-- Volume vs 50-day avg: 0.5x
+- Volume vs 50-day avg: 0.71x
 - ADR%: 1.7% | RS score: 77.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -432,7 +430,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 32.4
-- Volume vs 50-day avg: 0.81x
+- Volume vs 50-day avg: 0.82x
 - ADR%: 1.9% | RS score: 69.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -496,7 +494,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
 - Pivot / buy point: 561.03
-- Volume vs 50-day avg: 0.36x
+- Volume vs 50-day avg: 0.63x
 - ADR%: 2.3% | RS score: 64.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -527,7 +525,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 108.02
-- Volume vs 50-day avg: 0.34x
+- Volume vs 50-day avg: 0.59x
 - ADR%: 2.1% | RS score: 59.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -557,7 +555,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 53.25
-- Volume vs 50-day avg: 0.51x
+- Volume vs 50-day avg: 0.65x
 - ADR%: 1.9% | RS score: 54.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -587,7 +585,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 180.55
-- Volume vs 50-day avg: 0.32x
+- Volume vs 50-day avg: 0.47x
 - ADR%: 2.1% | RS score: 53.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -617,7 +615,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 234.48
-- Volume vs 50-day avg: 0.34x
+- Volume vs 50-day avg: 0.5x
 - ADR%: 2.4% | RS score: 39.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -647,7 +645,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 637.24
-- Volume vs 50-day avg: 0.73x
+- Volume vs 50-day avg: 0.9x
 - ADR%: 2.7% | RS score: 26.0
 - Stage: Stage 1 (Basing)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -709,7 +707,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 149.35
-- Volume vs 50-day avg: 0.43x
+- Volume vs 50-day avg: 0.58x
 - ADR%: 2.5% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -767,10 +765,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 ### TPR — Consumer Discretionary [chart](https://www.tradingview.com/chart/?symbol=TPR)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.58x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 0.79x avg, needs 1.5x)
 - Pattern tag: VCP-Pivot
 - Pivot / buy point: 159.16
-- Volume vs 50-day avg: 0.58x
+- Volume vs 50-day avg: 0.79x
 - ADR%: 2.9% | RS score: 84.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -829,10 +827,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 ### GPC — Consumer Discretionary [chart](https://www.tradingview.com/chart/?symbol=GPC)
 - Screens passed: VCP forming (pre-breakout)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.39x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 0.62x avg, needs 1.5x)
 - Pattern tag: VCP-Pivot
 - Pivot / buy point: 132.55
-- Volume vs 50-day avg: 0.39x
+- Volume vs 50-day avg: 0.62x
 - ADR%: 3.2% | RS score: 55.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -861,9 +859,9 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 ### TJX — Consumer Discretionary [chart](https://www.tradingview.com/chart/?symbol=TJX)
 - Screens passed: VCP forming (pre-breakout)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.58x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 1.17x avg, needs 1.5x)
 - Pivot / buy point: 161.63
-- Volume vs 50-day avg: 0.58x
+- Volume vs 50-day avg: 1.17x
 - ADR%: 2.0% | RS score: 54.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -893,7 +891,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: VCP forming (pre-breakout)
 - Setup: VCP contraction (watch for trigger)
 - Pivot / buy point: 212.23
-- Volume vs 50-day avg: 0.6x
+- Volume vs 50-day avg: 0.77x
 - ADR%: 2.6% | RS score: 49.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -928,7 +926,7 @@ Market regime reads **constructive**, and **Information Technology** is leading 
 - **ROST** (Consumer Discretionary) — Cleared pivot on light volume (unconfirmed — 0.49x avg, needs 1.5x), RS 91.0, pivot 253.22. [chart](https://www.tradingview.com/chart/?symbol=ROST)
 - **BNY** (Financials) — VCP contraction (watch for trigger) [VCP-Watch], RS 89.0, pivot 161.71. [chart](https://www.tradingview.com/chart/?symbol=BNY)
 - **TGT** (Consumer Discretionary) — VCP contraction (watch for trigger), RS 89.0, pivot 149.35. [chart](https://www.tradingview.com/chart/?symbol=TGT)
-- **CPAY** (Information Technology) — Cleared pivot on light volume (unconfirmed — 0.89x avg, needs 1.5x), RS 88.0, pivot 396.52. [chart](https://www.tradingview.com/chart/?symbol=CPAY)
+- **CPAY** (Information Technology) — Cleared pivot on light volume (unconfirmed — 1.06x avg, needs 1.5x), RS 88.0, pivot 396.52. [chart](https://www.tradingview.com/chart/?symbol=CPAY)
 - **MRK** (Health Care) — VCP contraction (watch for trigger), RS 87.0, pivot 131.82. [chart](https://www.tradingview.com/chart/?symbol=MRK)
 - **TECH** (Health Care) — VCP contraction (watch for trigger) [VCP-Watch], RS 87.0, pivot 72.14. [chart](https://www.tradingview.com/chart/?symbol=TECH)
 - **FDX** (Industrials) — VCP contraction (watch for trigger) [VCP-Watch], RS 86.0, pivot 321.02. [chart](https://www.tradingview.com/chart/?symbol=FDX)
