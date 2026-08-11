@@ -88,138 +88,57 @@ th { color: rgb(150,154,162); font-weight: 500; }
 <div class="caveat"><b>Survivorship bias caveat:</b> This backtest runs on TODAY's ~521-ticker NASDAQ100+S&P500 universe (momentum_desk/universe.csv), not the index membership as it stood at each historical date over the trailing window. Tickers that were added to the index because they already ran are backtested as if they had always been screenable; tickers removed from the index for underperforming are entirely absent from this test. There is no fix for this without a paid historical index-membership data feed. Treat every win rate and dollar figure below as optimistically biased versus what a real point-in-time scan over the same period would have produced.</div>
 <div class="regime-banner"><b>Today's Market Pulse regime: DEFENSIVE</b><br>SPY close: 771.33 | 10-day MA: 745.17 | 20-day MA: 747.20</div>
 
-    <div class="exec-summary">
-        <h2>Executive Summary &mdash; Recommended Strategy</h2>
-        <p class="headline"><b>Prioritize Qullamaggie Momentum setups.</b> Best win rate,
-        best avg R, and by far the best $10k capital-constrained outcome of the three
-        systems (see table below) -- and it happens to be the system that performs BEST
-        in today's DEFENSIVE regime, not worse.</p>
-        <p><b>Trend Template</b> is the steady complement: lower drawdown than the other
-        two, a much larger sample size (more statistically reliable), and solid results
-        across all regimes. Use it to diversify, not as the primary edge.</p>
-        <p><b>De-prioritize Pattern Combo.</b> Weakest win rate, weakest avg R, weakest
-        capital-constrained return, and by far the worst drawdown of the three -- the
-        numbers don't support giving it equal weight with the other two.</p>
-        <div class="table-wrap"><table>
-            <thead><tr><th>System</th><th>Win rate</th><th>Avg R</th>
-            <th>$10k &rarr; (capital-constrained)</th><th>Max drawdown</th>
-            <th>Defensive-regime WR / Avg R</th></tr></thead>
-            <tbody><tr>
-            <td>Qullamaggie Momentum</td>
-            <td>39.2%</td>
-            <td>0.65</td>
-            <td>$53,000 (+430%)</td>
-            <td>19.77%</td>
-            <td>43.7% / 1.14</td>
-        </tr><tr>
-            <td>Trend Template</td>
-            <td>27.0%</td>
-            <td>0.34</td>
-            <td>$30,001 (+200%)</td>
-            <td>14.35%</td>
-            <td>29.0% / 0.43</td>
-        </tr><tr>
-            <td>Pattern Combo</td>
-            <td>23.1%</td>
-            <td>0.26</td>
-            <td>$21,253 (+113%)</td>
-            <td>38.49%</td>
-            <td>24.3% / 0.3</td>
-        </tr></tbody>
-        </table></div>
-        
-        <p><b>Exit-rule finding (trailing-ADR sweep):</b> the CURRENT live rule
-        (2x ADR OR 7%) closes trades at avg R
-        <b>0.3</b> on <b>20,489</b> closed trades
-        (total <b>$633,275</b>, fixed $/trade risk model).
-        Widening the trailing stop to <b>8x ADR OR 7%</b> instead
-        -- letting winners run further before the trail triggers -- lifts that to avg R
-        <b>0.62</b> / total <b>$1,234,062</b> on the
-        same trade set, then reverses hard beyond that point. Confirmed a genuine peak,
-        not a mark-to-market artifact (still-open trades are a controlled slice --
-        670 open vs 19986 closed -- excluded from these
-        totals). <b>Not yet re-tested in the $10k capital-constrained simulator below</b>
-        -- flagged as the top next step before changing the live rule.</p>
-        
-        <p class="note">Caveats: backtested on today's ~520-ticker universe applied
-        retroactively (survivorship bias -- see appendix below), not live trading, and
-        each system's $10k simulation runs independently rather than as one blended
-        multi-system portfolio. Sample sizes differ a lot by system, so treat
-        Qullamaggie Momentum's edge as directionally strong but based on a smaller
-        sample than the other two.</p>
-    </div>
-    
+<div class="exec-summary">
+<h2>Recommended Strategy</h2>
+<p>Figures below are execution-realistic: every trade enters at the next trading session's open after its signal fires, not the same-day close the signal was confirmed on (see Supporting Detail for why that distinction matters and how big a difference it makes). As-published (same-day-close) numbers are shown in parentheses next to any figure that moved.</p>
+<p>Qullamaggie Momentum still has the best win rate and a strong $10k-constrained outcome, and
+remains the system to prioritize. But the entry-timing correction changes Pattern Combo's standing
+meaningfully: its as-published max drawdown made it look like the clear system to de-prioritize,
+but on execution-realistic entries its drawdown falls to roughly the same level as the other two
+systems, and its $10k-constrained ending value comes out highest of the three. Trend Template
+remains the steady, higher-sample-size complement. Treat Pattern Combo as a real contender now, not
+a system to skip.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>System</th><th>Win Rate</th><th>Avg R</th><th>Total $ ($100/trade)</th>
+<th>$10k &rarr; Ending Value</th><th>$10k Return</th><th>$10k Max DD</th></tr></thead>
+<tbody>
+<tr>
+<td>Trend Template</td>
+<td>27.2% <span class="hl-pos">(+0.2pp was 27.0%)</span></td>
+<td>0.37 <span class="hl-pos">(+0.03 was 0.34)</span></td>
+<td>$315,295 <span class="hl-pos">(+11,686 was $303,609)</span></td>
+<td>$37,010 <span class="hl-pos">(+7,009 was $30,001)</span></td>
+<td>+270% <span class="hl-pos">(+70.1pp was 200.0%)</span></td>
+<td>16.9% <span class="hl-neg">(+2.6pp was 14.3%)</span></td>
+</tr>
+<tr>
+<td>Qullamaggie Momentum</td>
+<td>39.6% <span class="hl-pos">(+0.4pp was 39.2%)</span></td>
+<td>0.63 <span class="hl-neg">(-0.02 was 0.65)</span></td>
+<td>$50,396 <span class="hl-neg">(-3,003 was $53,398)</span></td>
+<td>$56,000 <span class="hl-pos">(+3,000 was $53,000)</span></td>
+<td>+460% <span class="hl-pos">(+30.0pp was 430.0%)</span></td>
+<td>16.6% <span class="hl-pos">(-3.2pp was 19.8%)</span></td>
+</tr>
+<tr>
+<td>Pattern Combo</td>
+<td>24.1% <span class="hl-pos">(+1.0pp was 23.1%)</span></td>
+<td>0.32 <span class="hl-pos">(+0.06 was 0.26)</span></td>
+<td>$329,051 <span class="hl-pos">(+51,922 was $277,129)</span></td>
+<td>$39,307 <span class="hl-pos">(+18,054 was $21,253)</span></td>
+<td>+293% <span class="hl-pos">(+180.5pp was 112.5%)</span></td>
+<td>15.0% <span class="hl-pos">(-23.5pp was 38.5%)</span></td>
+</tr>
+<tr>
+<td>Bull Flag</td>
+<td colspan="6" style="color: rgb(150,154,162);">No qualifying trades in this backtest.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
-    <div class="exec-summary" style="border-color: rgb(110,90,40); background: linear-gradient(135deg, rgba(210,153,34,0.10), rgba(35,42,54,0.6));">
-        <h2 style="color:#e3c364;">Entry-Timing Correction &mdash; As-Published vs. Execution-Realistic</h2>
-        <p>The as-published backtest (and the live daily report) both detect a signal using a
-        trading day's OWN closing price, then enter the hypothetical trade AT that same closing
-        price -- a fill only achievable by transacting in the last instant of the session whose
-        data just confirmed the signal. This variant corrects that: every trade instead enters at
-        the <b>next trading session's open</b>, the earliest price a trader reading this report the
-        next morning could actually get filled at. Signal detection, the stop/trail simulation,
-        universe, and date range are all identical between the two runs -- only entry price/timing
-        changed.</p>
-        <p class="note">Corrected run generated 2026-08-11T11:07:57Z &middot;
-        period 5y &middot; universe 520 tickers.</p>
-        <div class="table-wrap"><table>
-            <thead><tr><th>System</th>
-            <th>Win rate (as-published)</th><th>Win rate (corrected)</th><th>&Delta;</th>
-            <th>Avg R (as-published)</th><th>Avg R (corrected)</th><th>&Delta;</th>
-            <th>Total $ (as-published)</th><th>Total $ (corrected)</th><th>&Delta;</th>
-            </tr></thead>
-            <tbody><tr>
-            <td>Trend Template</td>
-            <td>27.0%</td>
-            <td>27.2%</td>
-            <td><span class="hl-pos">+0.2pp</span></td>
-            <td>0.34</td>
-            <td>0.37</td>
-            <td><span class="hl-pos">+0.03</span></td>
-            <td>$303,609</td>
-            <td>$315,295</td>
-            <td><span class="hl-pos">+11,686</span></td>
-        </tr><tr>
-            <td>Qullamaggie Momentum</td>
-            <td>39.2%</td>
-            <td>39.6%</td>
-            <td><span class="hl-pos">+0.4pp</span></td>
-            <td>0.65</td>
-            <td>0.63</td>
-            <td><span class="hl-neg">-0.02</span></td>
-            <td>$53,398</td>
-            <td>$50,396</td>
-            <td><span class="hl-neg">-3,003</span></td>
-        </tr><tr>
-            <td>Pattern Combo</td>
-            <td>23.1%</td>
-            <td>24.1%</td>
-            <td><span class="hl-pos">+1.0pp</span></td>
-            <td>0.26</td>
-            <td>0.32</td>
-            <td><span class="hl-pos">+0.06</span></td>
-            <td>$277,129</td>
-            <td>$329,051</td>
-            <td><span class="hl-pos">+51,922</span></td>
-        </tr><tr>
-            <td>Bull Flag</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>$0</td>
-            <td>$0</td>
-            <td><span class="hl-pos">+0</span></td>
-        </tr></tbody>
-        </table></div>
-        <p class="note">Total $ figures use the same standardized $100/trade risk
-        model as the rest of this report -- not the $10k capital-constrained portfolio simulation,
-        which has not yet been re-run against corrected entries and should not be read off the
-        Executive Summary table above until it has.</p>
-    </div>
-    
 
     <div class="exec-summary track-record">
         <h2>Live Recommendations Track Record</h2>
@@ -327,6 +246,79 @@ th { color: rgb(150,154,162); font-weight: 500; }
         consistent with the backtest's own math -- most individual setups wash out flat or
         small over just a few trading days; the edge shows up over many trades and full hold
         periods, not in a one-week snapshot like this.</p>
+    </div>
+    
+<details class="appendix">
+<summary>Supporting Detail: entry-timing correction, trailing-stop sweep, A++ Setup Analysis, backtest highlights</summary>
+
+    <div class="exec-summary" style="border-color: rgb(110,90,40); background: linear-gradient(135deg, rgba(210,153,34,0.10), rgba(35,42,54,0.6));">
+        <h2 style="color:#e3c364;">Entry-Timing Correction &mdash; As-Published vs. Execution-Realistic</h2>
+        <p>The as-published backtest (and the live daily report) both detect a signal using a
+        trading day's OWN closing price, then enter the hypothetical trade AT that same closing
+        price -- a fill only achievable by transacting in the last instant of the session whose
+        data just confirmed the signal. This variant corrects that: every trade instead enters at
+        the <b>next trading session's open</b>, the earliest price a trader reading this report the
+        next morning could actually get filled at. Signal detection, the stop/trail simulation,
+        universe, and date range are all identical between the two runs -- only entry price/timing
+        changed.</p>
+        <p class="note">Corrected run generated 2026-08-11T11:07:57Z &middot;
+        period 5y &middot; universe 520 tickers.</p>
+        <div class="table-wrap"><table>
+            <thead><tr><th>System</th>
+            <th>Win rate (as-published)</th><th>Win rate (corrected)</th><th>&Delta;</th>
+            <th>Avg R (as-published)</th><th>Avg R (corrected)</th><th>&Delta;</th>
+            <th>Total $ (as-published)</th><th>Total $ (corrected)</th><th>&Delta;</th>
+            </tr></thead>
+            <tbody><tr>
+            <td>Trend Template</td>
+            <td>27.0%</td>
+            <td>27.2%</td>
+            <td><span class="hl-pos">+0.2pp</span></td>
+            <td>0.34</td>
+            <td>0.37</td>
+            <td><span class="hl-pos">+0.03</span></td>
+            <td>$303,609</td>
+            <td>$315,295</td>
+            <td><span class="hl-pos">+11,686</span></td>
+        </tr><tr>
+            <td>Qullamaggie Momentum</td>
+            <td>39.2%</td>
+            <td>39.6%</td>
+            <td><span class="hl-pos">+0.4pp</span></td>
+            <td>0.65</td>
+            <td>0.63</td>
+            <td><span class="hl-neg">-0.02</span></td>
+            <td>$53,398</td>
+            <td>$50,396</td>
+            <td><span class="hl-neg">-3,003</span></td>
+        </tr><tr>
+            <td>Pattern Combo</td>
+            <td>23.1%</td>
+            <td>24.1%</td>
+            <td><span class="hl-pos">+1.0pp</span></td>
+            <td>0.26</td>
+            <td>0.32</td>
+            <td><span class="hl-pos">+0.06</span></td>
+            <td>$277,129</td>
+            <td>$329,051</td>
+            <td><span class="hl-pos">+51,922</span></td>
+        </tr><tr>
+            <td>Bull Flag</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td><span class="hl-pos">+0</span></td>
+        </tr></tbody>
+        </table></div>
+        <p class="note">Total $ figures use the same standardized $100/trade risk
+        model as the rest of this report -- not the $10k capital-constrained portfolio simulation,
+        which has not yet been re-run against corrected entries and should not be read off the
+        Executive Summary table above until it has.</p>
     </div>
     
 
@@ -467,94 +459,6 @@ treat as a primary signal) isn't part of this analysis at all.</p>
 
 
     <div class="exec-summary">
-    <h2>Worth Watching -- Today's Setups in Context</h2>
-    <p>Annotated charts for the 8 tickers currently on the Momentum Desk "Worth Watching"
-    list (as of 2026-08-07), each classified against the grinder/rocket archetypes from the A++
-    Setup Analysis above. The marked pivot is the current entry trigger, the stop is the tighter of the
-    Minervini 7.5%-below-pivot or Qullamaggie 1x-ADR%-below-pivot rule, and the dashed gray line is the
-    50-day SMA.</p>
-    <p class="note">This is a screener pass, not a recommendation -- "grinder-leaning" and "rocket-leaning"
-    describe which historical big-winner pattern a ticker's current structure most resembles, not a
-    guarantee it plays out that way. "Neither / mixed" tickers passed the Worth Watching screen on their
-    own criteria without cleanly matching either archetype.</p>
-    <div class="highlight-grid">
-        <div class="highlight-card">
-            <img src="worth-watching/BNY.png" alt="BNY annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-BNY/" target="_blank" rel="noopener">BNY</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Financials -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 161.71 / Stop 158.48 / ADR% 2.0%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 2.5% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.82 (grinder avg 0.91, baseline 1.0), 5.5% above the 50d SMA / 24.4% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.0% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/CPAY.png" alt="CPAY annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-CPAY/" target="_blank" rel="noopener">CPAY</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Information Technology -- Cleared pivot on light volume (unconfirmed -- 1.06x avg, needs 1.5x)</div>
-                <div class="highlight-prices">Pivot 396.52 / Stop 385.42 / ADR% 2.8%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 1.3% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.91 (grinder avg 0.91, baseline 1.0), 9.0% above the 50d SMA / 21.5% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.8% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/FDX.png" alt="FDX annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-FDX/" target="_blank" rel="noopener">FDX</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Industrials -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 321.02 / Stop 314.24 / ADR% 2.1%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 5.6% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.73 (grinder avg 0.91, baseline 1.0), -0.3% above the 50d SMA / 14.7% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.1% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/MRK.png" alt="MRK annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-MRK/" target="_blank" rel="noopener">MRK</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Health Care -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 131.82 / Stop 128.52 / ADR% 2.5%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 2.5% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 1.01 (grinder avg 0.91, baseline 1.0), 4.0% above the 50d SMA / 15.3% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.5% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/PANW.png" alt="PANW annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-PANW/" target="_blank" rel="noopener">PANW</a> <span class="hl-pos">rocket-leaning</span></div>
-                <div class="highlight-stats">Information Technology -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 366.34 / Stop 349.86 / ADR% 4.5%</div>
-                <p class="note">Already extended above its moving averages with an elevated ADR% lines up with the rocket profile -- the fast-mover archetype -- more than the grinder profile. 0.7% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.86 (grinder avg 0.91, baseline 1.0), 15.2% above the 50d SMA / 66.8% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 4.5% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/ROST.png" alt="ROST annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-ROST/" target="_blank" rel="noopener">ROST</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Consumer Discretionary -- Cleared pivot on light volume (unconfirmed -- 0.49x avg, needs 1.5x)</div>
-                <div class="highlight-prices">Pivot 253.22 / Stop 247.90 / ADR% 2.1%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.69 (grinder avg 0.91, baseline 1.0), 10.1% above the 50d SMA / 24.9% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.1% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/TECH.png" alt="TECH annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-TECH/" target="_blank" rel="noopener">TECH</a> <span class="hl-pos">grinder-leaning</span></div>
-                <div class="highlight-stats">Health Care -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 72.14 / Stop 71.78 / ADR% 0.5%</div>
-                <p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.14 (grinder avg 0.91, baseline 1.0), 11.6% above the 50d SMA / 20.9% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 0.5% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-        <div class="highlight-card">
-            <img src="worth-watching/TGT.png" alt="TGT annotated chart" loading="lazy">
-            <div class="highlight-meta">
-                <div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-TGT/" target="_blank" rel="noopener">TGT</a> <span class="hl-pos">neither / mixed</span></div>
-                <div class="highlight-stats">Consumer Discretionary -- VCP contraction (watch for trigger)</div>
-                <div class="highlight-prices">Pivot 149.35 / Stop 145.62 / ADR% 2.5%</div>
-                <p class="note">Doesn't cleanly match either reference profile -- some grinder traits and some rocket traits, or not enough price history for a confident read. Passed the screener on its own criteria (RS rank, pivot structure), just not a clean match to either A++ archetype. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.83 (grinder avg 0.91, baseline 1.0), 11.0% above the 50d SMA / 30.6% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.5% (rocket avg 3.99%, baseline 2.82%).</p>
-            </div>
-        </div>
-    </div>
-    </div>
-    
-
-    <div class="exec-summary">
         <h2>Backtest Highlights</h2>
         <p>Annotated charts for the best closed trade per ticker among the top historical
         performers -- entry, stop, and exit marked directly on real price action, generated
@@ -684,6 +588,7 @@ treat as a primary signal) isn't part of this analysis at all.</p>
         </div>
     </div>
     
+</details>
 <details class="appendix" open>
 <summary>Appendix: Full Detail (per-system breakdowns, trailing-stop sweep tables, $10k portfolio simulations, Pareto concentration, top tickers, hold-time stats)</summary>
 <div class="caveat" style="margin-top:12px;"><b>Note:</b> Bull Flag produced 0 trades across the full 5-year walk -- flagged as an open question, not shown in the Top Tickers/Pareto sections below since there's nothing to aggregate.</div>
