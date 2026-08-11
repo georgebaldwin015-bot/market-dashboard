@@ -150,6 +150,77 @@ th { color: rgb(150,154,162); font-weight: 500; }
     </div>
     
 
+    <div class="exec-summary" style="border-color: rgb(110,90,40); background: linear-gradient(135deg, rgba(210,153,34,0.10), rgba(35,42,54,0.6));">
+        <h2 style="color:#e3c364;">Entry-Timing Correction &mdash; As-Published vs. Execution-Realistic</h2>
+        <p>The as-published backtest (and the live daily report) both detect a signal using a
+        trading day's OWN closing price, then enter the hypothetical trade AT that same closing
+        price -- a fill only achievable by transacting in the last instant of the session whose
+        data just confirmed the signal. This variant corrects that: every trade instead enters at
+        the <b>next trading session's open</b>, the earliest price a trader reading this report the
+        next morning could actually get filled at. Signal detection, the stop/trail simulation,
+        universe, and date range are all identical between the two runs -- only entry price/timing
+        changed.</p>
+        <p class="note">Corrected run generated 2026-08-11T11:07:57Z &middot;
+        period 5y &middot; universe 520 tickers.</p>
+        <div class="table-wrap"><table>
+            <thead><tr><th>System</th>
+            <th>Win rate (as-published)</th><th>Win rate (corrected)</th><th>&Delta;</th>
+            <th>Avg R (as-published)</th><th>Avg R (corrected)</th><th>&Delta;</th>
+            <th>Total $ (as-published)</th><th>Total $ (corrected)</th><th>&Delta;</th>
+            </tr></thead>
+            <tbody><tr>
+            <td>Trend Template</td>
+            <td>27.0%</td>
+            <td>27.2%</td>
+            <td><span class="hl-pos">+0.2pp</span></td>
+            <td>0.34</td>
+            <td>0.37</td>
+            <td><span class="hl-pos">+0.03</span></td>
+            <td>$303,609</td>
+            <td>$315,295</td>
+            <td><span class="hl-pos">+11,686</span></td>
+        </tr><tr>
+            <td>Qullamaggie Momentum</td>
+            <td>39.2%</td>
+            <td>39.6%</td>
+            <td><span class="hl-pos">+0.4pp</span></td>
+            <td>0.65</td>
+            <td>0.63</td>
+            <td><span class="hl-neg">-0.02</span></td>
+            <td>$53,398</td>
+            <td>$50,396</td>
+            <td><span class="hl-neg">-3,003</span></td>
+        </tr><tr>
+            <td>Pattern Combo</td>
+            <td>23.1%</td>
+            <td>24.1%</td>
+            <td><span class="hl-pos">+1.0pp</span></td>
+            <td>0.26</td>
+            <td>0.32</td>
+            <td><span class="hl-pos">+0.06</span></td>
+            <td>$277,129</td>
+            <td>$329,051</td>
+            <td><span class="hl-pos">+51,922</span></td>
+        </tr><tr>
+            <td>Bull Flag</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td><span class="hl-pos">+0</span></td>
+        </tr></tbody>
+        </table></div>
+        <p class="note">Total $ figures use the same standardized $100/trade risk
+        model as the rest of this report -- not the $10k capital-constrained portfolio simulation,
+        which has not yet been re-run against corrected entries and should not be read off the
+        Executive Summary table above until it has.</p>
+    </div>
+    
+
     <div class="exec-summary track-record">
         <h2>Live Recommendations Track Record</h2>
         <p>What actually happened to the real tickers synced to George's live TradingView
