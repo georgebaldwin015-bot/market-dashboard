@@ -52,6 +52,27 @@ summary { cursor: pointer; color: rgb(120, 170, 255); font-size: 0.9rem; }
   line-height: 1.6;
 }
 .summary-box h2 { margin: 0 0 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: rgb(150, 154, 162); border: none; padding: 0; }
+.exec-summary {
+background: linear-gradient(135deg, rgba(46,160,67,0.10), rgba(35,42,54,0.6));
+border: 1px solid rgb(60,110,80);
+border-radius: 10px;
+padding: 20px 24px;
+margin-bottom: 24px;
+}
+.exec-summary h2 { margin: 0 0 12px; font-size: 1.3rem; color: #7ee787; border: none; padding: 0; }
+.exec-summary p { margin: 8px 0; font-size: 0.92rem; color: rgb(200,204,210); line-height: 1.5; }
+.note { margin-top: 8px; font-size: 0.85rem; color: rgb(200, 203, 210); }
+.highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 16px; margin-top: 8px; }
+.highlight-card { background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; overflow: hidden; }
+.highlight-card img { width: 100%; display: block; background: rgb(15,17,21); }
+.highlight-meta { padding: 12px 14px; }
+.highlight-title { font-size: 0.95rem; font-weight: 600; color: rgb(230,232,236); margin-bottom: 6px; }
+.highlight-title a { color: inherit; text-decoration: none; border-bottom: 1px dotted rgb(150,154,162); }
+.highlight-title a:hover { border-bottom-color: rgb(230,232,236); }
+.highlight-stats { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: rgb(190,194,200); margin-bottom: 4px; }
+.hl-pos { color: #3fb950; font-weight: 700; }
+.hl-neg { color: #f85149; font-weight: 700; }
+.highlight-prices { font-size: 0.8rem; color: rgb(150,154,162); }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 </head>
@@ -65,6 +86,94 @@ summary { cursor: pointer; color: rgb(120, 170, 255); font-size: 0.9rem; }
   <h2>What's Going On</h2>
   <p>The market is in a confirmed uptrend, with breadth reading 66% of the scanned universe above its 50-day moving average and 6 distribution days in the past month -- an elevated count worth watching. A follow-through day fired 4 session(s) ago (+1.8% on rising volume), adding some confidence to the rally attempt. Zooming out, breadth has been improving over the last 60 sessions (+18.2 pt change in % above the 50-day MA) and deteriorating over the last two weeks (-5.8 pt), while SPY is climbing (+3.6% over 60 sessions, +4.3% over the last two weeks). That's a narrow-leadership divergence worth flagging -- SPY's recent climb isn't being confirmed by broader participation. Momentum under the surface is leaning firmly long -- 25 name(s) hit a fresh 52-week high today against 4 breaking down to a fresh 52-week low. Energy is leading, with 57% of its 21 scanned names carrying an RS score of 70+ and 8 clearing a screen outright today, with Health Care also showing real strength. It's being driven by names like MPC and WMB. With 30 name(s) clearing a screen across 10 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.</p>
 </div>
+
+<div class="exec-summary">
+<h2>Worth Watching -- Today's Setups in Context</h2>
+<p>Annotated charts for the 8 tickers currently on the Momentum Desk "Worth Watching"
+list (as of 2026-08-07), each classified against the grinder/rocket archetypes from the
+backtest's A++ Setup Analysis. The marked pivot is the current entry trigger, the stop is the
+tighter of the Minervini 7.5%-below-pivot or Qullamaggie 1x-ADR%-below-pivot rule, and the dashed
+gray line is the 50-day SMA.</p>
+<p class="note">This is a screener pass, not a recommendation -- "grinder-leaning" and
+"rocket-leaning" describe which historical big-winner pattern a ticker's current structure most
+resembles, not a guarantee it plays out that way. "Neither / mixed" tickers passed the Worth
+Watching screen on their own criteria without cleanly matching either archetype.</p>
+<div class="highlight-grid">
+<div class="highlight-card">
+<img src="worth-watching/BNY.png" alt="BNY annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-BNY/" target="_blank" rel="noopener">BNY</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Financials -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 161.71 / Stop 158.48 / ADR% 2.0%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 2.5% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.82 (grinder avg 0.91, baseline 1.0), 5.5% above the 50d SMA / 24.4% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.0% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/CPAY.png" alt="CPAY annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-CPAY/" target="_blank" rel="noopener">CPAY</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Information Technology -- Cleared pivot on light volume (unconfirmed -- 1.06x avg, needs 1.5x)</div>
+<div class="highlight-prices">Pivot 396.52 / Stop 385.42 / ADR% 2.8%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 1.3% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.91 (grinder avg 0.91, baseline 1.0), 9.0% above the 50d SMA / 21.5% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.8% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/FDX.png" alt="FDX annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-FDX/" target="_blank" rel="noopener">FDX</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Industrials -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 321.02 / Stop 314.24 / ADR% 2.1%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 5.6% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.73 (grinder avg 0.91, baseline 1.0), -0.3% above the 50d SMA / 14.7% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.1% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/MRK.png" alt="MRK annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-MRK/" target="_blank" rel="noopener">MRK</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Health Care -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 131.82 / Stop 128.52 / ADR% 2.5%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 2.5% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 1.01 (grinder avg 0.91, baseline 1.0), 4.0% above the 50d SMA / 15.3% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.5% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/PANW.png" alt="PANW annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-PANW/" target="_blank" rel="noopener">PANW</a> <span class="hl-pos">rocket-leaning</span></div>
+<div class="highlight-stats">Information Technology -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 366.34 / Stop 349.86 / ADR% 4.5%</div>
+<p class="note">Already extended above its moving averages with an elevated ADR% lines up with the rocket profile -- the fast-mover archetype -- more than the grinder profile. 0.7% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.86 (grinder avg 0.91, baseline 1.0), 15.2% above the 50d SMA / 66.8% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 4.5% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/ROST.png" alt="ROST annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-ROST/" target="_blank" rel="noopener">ROST</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Consumer Discretionary -- Cleared pivot on light volume (unconfirmed -- 0.49x avg, needs 1.5x)</div>
+<div class="highlight-prices">Pivot 253.22 / Stop 247.90 / ADR% 2.1%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.69 (grinder avg 0.91, baseline 1.0), 10.1% above the 50d SMA / 24.9% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.1% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/TECH.png" alt="TECH annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NASDAQ-TECH/" target="_blank" rel="noopener">TECH</a> <span class="hl-pos">grinder-leaning</span></div>
+<div class="highlight-stats">Health Care -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 72.14 / Stop 71.78 / ADR% 0.5%</div>
+<p class="note">Tight, near-highs, not-overextended structure lines up with the grinder profile -- the multi-month, biggest-total-winner archetype -- more than the rocket profile. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.14 (grinder avg 0.91, baseline 1.0), 11.6% above the 50d SMA / 20.9% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 0.5% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+<div class="highlight-card">
+<img src="worth-watching/TGT.png" alt="TGT annotated chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/symbols/NYSE-TGT/" target="_blank" rel="noopener">TGT</a> <span class="hl-pos">neither / mixed</span></div>
+<div class="highlight-stats">Consumer Discretionary -- VCP contraction (watch for trigger)</div>
+<div class="highlight-prices">Pivot 149.35 / Stop 145.62 / ADR% 2.5%</div>
+<p class="note">Doesn't cleanly match either reference profile -- some grinder traits and some rocket traits, or not enough price history for a confident read. Passed the screener on its own criteria (RS rank, pivot structure), just not a clean match to either A++ archetype. 0.0% off the 52-week high (grinder avg 6.44%, rocket avg 7.92%), base-tightness ratio 0.83 (grinder avg 0.91, baseline 1.0), 11.0% above the 50d SMA / 30.6% above the 200d SMA (rocket avg 17.31% / 45.54%), ADR% 2.5% (rocket avg 3.99%, baseline 2.82%).</p>
+</div>
+</div>
+</div>
+</div>
+
 
 <div class="section">
   <h2>Market Pulse</h2>
@@ -1043,18 +1152,6 @@ summary { cursor: pointer; color: rgb(120, 170, 255); font-size: 0.9rem; }
   </div>
 </div>
 
-</div>
-
-
-<div class="section">
-  <h2>Worth Watching</h2>
-  <p>Market regime reads <strong>constructive</strong>, and <strong>Energy</strong> is leading with 57% of its names carrying RS 70+ and 8 clearing a screen outright today.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Ticker</th><th>Sector</th><th>Setup</th><th>Pattern</th><th>RS</th><th>Pivot</th><th>Entry</th></tr></thead>
-      <tbody><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=PANW" target="_blank" rel="noopener">PANW</a></td><td>Information Technology</td><td>Cleared pivot on light volume (unconfirmed — 0.75x avg, needs 1.5x)</td><td>VCP-Pivot</td><td>97.0</td><td>366.34</td><td>Entry: next session's open, only if volume confirms (price is already above pivot 366.34 on light volume)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=CRWD" target="_blank" rel="noopener">CRWD</a></td><td>Information Technology</td><td>Cleared pivot on light volume (unconfirmed — 0.72x avg, needs 1.5x)</td><td>VCP-Pivot</td><td>97.0</td><td>214.42</td><td>Entry: next session's open, only if volume confirms (price is already above pivot 214.42 on light volume)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=COHR" target="_blank" rel="noopener">COHR</a></td><td>Information Technology</td><td>Continuation breakout (confirmed)</td><td></td><td>96.0</td><td>317.22</td><td>Entry: next session's open (pivot 317.22 already cleared at today's close -- don't chase that level)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=MPC" target="_blank" rel="noopener">MPC</a></td><td>Energy</td><td>Continuation breakout (confirmed)</td><td></td><td>94.0</td><td>319.76</td><td>Entry: next session's open (pivot 319.76 already cleared at today's close -- don't chase that level)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=ASML" target="_blank" rel="noopener">ASML</a></td><td>Information Technology</td><td>VCP contraction (watch for trigger)</td><td></td><td>93.0</td><td>1812.93</td><td>Entry: pivot 1812.93 (not yet cleared -- still a live trigger level to watch for)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=ABNB" target="_blank" rel="noopener">ABNB</a></td><td>Consumer Discretionary</td><td>Continuation breakout (confirmed)</td><td></td><td>91.0</td><td>178.07</td><td>Entry: next session's open (pivot 178.07 already cleared at today's close -- don't chase that level)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=TGT" target="_blank" rel="noopener">TGT</a></td><td>Consumer Discretionary</td><td>Cleared pivot on light volume (unconfirmed — 1.24x avg, needs 1.5x)</td><td></td><td>90.0</td><td>149.7</td><td>Entry: next session's open, only if volume confirms (price is already above pivot 149.7 on light volume)</td></tr><tr><td class="ticker"><a href="https://www.tradingview.com/chart/?symbol=ROST" target="_blank" rel="noopener">ROST</a></td><td>Consumer Discretionary</td><td>VCP contraction (watch for trigger)</td><td>VCP-Watch</td><td>90.0</td><td>255.23</td><td>Entry: pivot 255.23 (not yet cleared -- still a live trigger level to watch for)</td></tr></tbody>
-    </table>
-  </div>
 </div>
 
 <div class="section">
