@@ -43,6 +43,8 @@
     border: none;
   }
 </style>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0d1117">
 </head>
 <body>
   <div class="tabs">
@@ -83,6 +85,11 @@
     const fromHash = window.location.hash.replace('#', '');
     const initial = fromQuery || fromHash || 'industry';
     showTab(initial);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
   </script>
 </body>
 </html>
