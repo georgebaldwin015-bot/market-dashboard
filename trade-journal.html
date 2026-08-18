@@ -110,12 +110,39 @@ td.ticker a:hover { text-decoration: underline; }
   background: rgba(79,143,247,0.15);
   color: var(--accent);
 }
+.treemap-desktop { }
+.top-movers-mobile { display: none; }
+.tm-sector { margin-bottom: 14px; }
+.tm-sector h3 {
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em;
+  color: var(--muted); margin: 0 0 6px;
+}
+.tm-row {
+  display: flex; align-items: center; gap: 8px; padding: 6px 4px;
+  text-decoration: none; color: var(--text); border-bottom: 1px solid var(--border);
+}
+.tm-row:last-child { border-bottom: none; }
+.tm-tk { width: 56px; flex-shrink: 0; font-weight: 600; }
+.tm-bar {
+  flex: 1; height: 8px; background: rgba(255,255,255,0.06);
+  border-radius: 4px; overflow: hidden;
+}
+.tm-fill { display: block; height: 100%; border-radius: 4px; }
+.tm-row.pos .tm-fill { background: var(--up); }
+.tm-row.neg .tm-fill { background: var(--down); }
+.tm-pct { width: 56px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.tm-row.pos .tm-pct { color: var(--up); }
+.tm-row.neg .tm-pct { color: var(--down); }
+@media (max-width: 700px) {
+  .treemap-desktop { display: none; }
+  .top-movers-mobile { display: block; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 </head>
 <body>
 <h1>Trade Journal</h1>
-<div class="meta">Generated 2026-08-18 08:58:42 &middot; every ticker links to its TradingView chart</div>
+<div class="meta">Generated 2026-08-18 20:10:56 &middot; every ticker links to its TradingView chart</div>
 
 <div class="meta">Executed trades vs. Bull Flag / Qullamaggie momentum setups, with a day-by-day counterfactual against George's stated stop-discipline rule.</div>
 
