@@ -88,7 +88,7 @@ th { color: rgb(150,154,162); font-weight: 500; }
 <div class="caveat"><b>Survivorship bias caveat:</b> This backtest runs on TODAY's ~521-ticker NASDAQ100+S&P500 universe (momentum_desk/universe.csv), not the index membership as it stood at each historical date over the trailing window. Tickers that were added to the index because they already ran are backtested as if they had always been screenable; tickers removed from the index for underperforming are entirely absent from this test. There is no fix for this without a paid historical index-membership data feed. Treat every win rate and dollar figure below as optimistically biased versus what a real point-in-time scan over the same period would have produced.</div>
 <div class="regime-banner">Market Pulse (live, always current) has moved to the <a href="strategy.html#market-pulse">Strategy tab</a> -- this backtest only re-checks it when manually re-run, so it's no longer duplicated here.</div>
 
-<div class="exec-summary">
+<div class="exec-summary" id="per-system-win-rate">
 <h2>Recommended Strategy</h2>
 <p>Figures below are execution-realistic: every trade enters at the next trading session's open after its signal fires, not the same-day close the signal was confirmed on (see Supporting Detail for why that distinction matters and how big a difference it makes). As-published (same-day-close) numbers are shown in parentheses next to any figure that moved.</p>
 <p>Qullamaggie Momentum still has the best win rate and a strong $10k-constrained outcome, and
