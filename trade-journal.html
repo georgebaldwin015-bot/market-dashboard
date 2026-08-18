@@ -112,6 +112,11 @@ td.ticker a:hover { text-decoration: underline; }
 }
 .treemap-desktop { }
 .top-movers-mobile { display: none; }
+.treemap-img-mobile { display: none; }
+.treemap-img-mobile img {
+  width: 100%; height: auto; display: block; border-radius: 10px;
+  border: 1px solid var(--border); touch-action: auto;
+}
 .tm-sector { margin-bottom: 14px; }
 .tm-sector h3 {
   font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em;
@@ -136,13 +141,14 @@ td.ticker a:hover { text-decoration: underline; }
 @media (max-width: 700px) {
   .treemap-desktop { display: none; }
   .top-movers-mobile { display: block; }
+  .treemap-img-mobile { display: block; }
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 </head>
 <body>
 <h1>Trade Journal</h1>
-<div class="meta">Generated 2026-08-18 20:10:56 &middot; every ticker links to its TradingView chart</div>
+<div class="meta">Generated 2026-08-18 20:56:49 &middot; every ticker links to its TradingView chart</div>
 
 <div class="meta">Executed trades vs. Bull Flag / Qullamaggie momentum setups, with a day-by-day counterfactual against George's stated stop-discipline rule.</div>
 
