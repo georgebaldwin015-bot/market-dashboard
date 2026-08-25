@@ -132,19 +132,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
 
 <div class="exec-summary" id="stopout-reentry">
 <h2>Stop-Out Re-Entry Edge</h2>
-<p>Question: after a trade gets stopped out at -1R, does re-entering when that ticker signals again do better than a random re-entry? Checked against the full 5-year backtest (19,741 closed trades, 12,407 stop-outs) by comparing each ticker+system's next signal after a stop-out against the same comparison after a winning close (control group).</p>
+<p>Question: after a trade gets stopped out at -1R, is waiting for price to reclaim its pre-entry pivot high (the resistance the original breakout had to clear) a logical re-entry trigger? Simulated against real daily OHLC for every Pattern Combo and Qullamaggie Momentum stop-out in the 5-year backtest: pivot high = highest high in the 20 trading days before the original entry, re-entry = next session's open after the first close back at or above that level.</p>
 <div class="table-wrap">
 <table>
-<thead><tr><th>System</th><th>Re-entry after stop-out: Avg R</th><th>Win Rate</th><th>Control (after a win): Avg R</th><th>Win Rate</th></tr></thead>
+<thead><tr><th>System</th><th>Stop-Outs</th><th>Reclaimed Pivot High</th><th>Re-Entry Avg R</th><th>Re-Entry Win Rate</th><th>Median Days to Reclaim</th></tr></thead>
 <tbody>
-<tr><td>Pattern Combo</td><td>0.40</td><td>24.7%</td><td>0.23</td><td>23.0%</td></tr>
-<tr><td>Trend Template</td><td>0.35</td><td>27.4%</td><td>0.43</td><td>27.8%</td></tr>
-<tr><td>Qullamaggie Momentum (small sample, 211 trades)</td><td>0.90</td><td>41.2%</td><td>0.41</td><td>42.9%</td></tr>
+<tr><td>Pattern Combo</td><td>6,673</td><td>78.9% (5,266)</td><td>0.36</td><td>25.4%</td><td>25</td></tr>
+<tr><td>Qullamaggie Momentum</td><td>520</td><td>82.5% (429)</td><td>0.73</td><td>35.7%</td><td>12</td></tr>
 </tbody>
 </table>
 </div>
-<p>Reading: Pattern Combo shows a real, repeatable edge for re-entering after a stop-out. Trend Template shows no edge. Qullamaggie's edge is large but on a small sample -- treat as promising, not proven. Aggregate across all systems the edge is mild (+0.40R vs +0.33R for controls, ~26% win rate either way), so this is system-specific, not a blanket rule.</p>
-<p style="color: rgb(150,154,162);">Next step: build the literal "price reclaims stop + ~1%, re-enter immediately" rule for Pattern Combo (and Qullamaggie with more data) using a real OHLC re-simulation -- this snapshot uses organic re-signals as a proxy, a looser and later trigger than what would actually be tradeable.</p>
+<p>Reading: most stopped-out trades in both systems do eventually reclaim their pre-entry pivot high (79-83% within 180 trading days), so this isn't a rare setup. When they do, re-entering shows positive expectancy for both systems -- notably stronger for Qullamaggie Momentum (+0.73R, 35.7% win rate) than Pattern Combo (+0.36R, 25.4% win rate). Trend Template is excluded -- the earlier organic-resignal proxy showed no edge there, per George's own steer.</p>
+<p style="color: rgb(150,154,162);">Methodology note: this replaces the earlier organic-resignal proxy (did the same system fire again on this ticker later?) with the literal price-trigger rule George described. No control/baseline comparison is computed for this version -- the numbers above are the re-entries' own performance, not a delta against a random re-entry.</p>
 </div>
 
 
