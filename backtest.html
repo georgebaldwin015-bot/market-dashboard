@@ -151,7 +151,7 @@ th { color: rgb(150,154,162); font-weight: 500; }
     <h2>Live Recommendations Track Record</h2>
     <p>What actually happened to the real tickers flagged by the live Bull Flag / Qullamaggie Momentum
     screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-08-25T18:48:25Z;
-    one row per ticker+system, at its earliest flag. 11 additional flagged setup(s) were dropped as already >20% past their displayed pivot when flagged (see build_live_track_record.py for the audit list) -- George asked these not be counted as recs.</p>
+    one row per ticker+system, at its earliest flag. 11 additional flagged setup(s) were excluded (11 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list).</p>
     <div class="table-wrap">
     <table>
     <thead><tr><th>Ticker</th><th>Setup</th><th>Flagged</th><th>Flag Price</th><th>Current</th><th>Change</th><th>Note</th></tr></thead>
