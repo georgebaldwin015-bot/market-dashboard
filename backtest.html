@@ -150,1428 +150,1528 @@ th { color: rgb(150,154,162); font-weight: 500; }
     <div class="exec-summary track-record">
     <h2>Live Recommendations Track Record</h2>
     <p>What actually happened to the real tickers flagged by the live Bull Flag / Qullamaggie Momentum
-    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-08-25T18:48:25Z;
-    one row per ticker+system, at its earliest flag. 11 additional flagged setup(s) were excluded (11 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list).</p>
+    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-08-26T06:36:06Z;
+    one row per ticker+system, at its earliest flag. Scored in R-multiples using the project's one
+    mechanical stop rule (1x ADR initial stop, breakeven at 2R, trail at max(2x ADR, 7%)) walked forward
+    against real daily prices -- not raw %-change, so a spike that later gave it all back is scored at
+    what the stop would have actually banked, not its peak. 11 additional flagged setup(s) were excluded (11 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). Of the graded trades, the 9 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.83R/trade vs +0.64R/trade for the 159 that hadn't.</p>
+    <p class="callout"><b>+109.85R</b> total if every one of these 168 setups had been taken exactly as flagged, sized to the project's standard risk (avg +0.65R/trade) -- 49 still open and marked to market, 119 closed (-35.33R realized, avg -0.30R/trade, 24% win rate).</p>
     <div class="table-wrap">
     <table>
-    <thead><tr><th>Ticker</th><th>Setup</th><th>Flagged</th><th>Flag Price</th><th>Current</th><th>Change</th><th>Note</th></tr></thead>
+    <thead><tr><th>Ticker</th><th>Setup</th><th>Flagged</th><th>Entry</th><th>Status</th><th>R</th><th>Worth Watching</th><th>Note</th></tr></thead>
     <tbody>
     <tr>
             <td><b>FCX</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-21</td>
             <td>$76.66</td>
-            <td>$79.39</td>
-            <td style="color:#7ee787;">+3.6%</td>
-            <td class="note">Up 3.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.18R</td>
+            <td title="2026-08-20, 2026-08-21">★ (2x)</td>
+            <td class="note">Still open -- +1.18R unrealized</td>
         </tr><tr>
             <td><b>MRNA</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-19</td>
             <td>$174.38</td>
-            <td>$158.49</td>
-            <td style="color:#f0883e;">-9.1%</td>
-            <td class="note">Down 9.1%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-20, 2026-08-21, 2026-08-24">★ (3x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>WDAY</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-13</td>
             <td>$206.45</td>
-            <td>$194.34</td>
-            <td style="color:#f0883e;">-5.9%</td>
-            <td class="note">Down 5.9%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>AVGO</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$416.08</td>
-            <td>$357.50</td>
-            <td style="color:#f0883e;">-14.1%</td>
-            <td class="note">Down sharply, 14.1%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BMY</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$63.61</td>
-            <td>$67.58</td>
-            <td style="color:#7ee787;">+6.2%</td>
-            <td class="note">Up 6.2%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.40R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.40R unrealized</td>
         </tr><tr>
             <td><b>FOX</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$55.34</td>
-            <td>$61.95</td>
-            <td style="color:#7ee787;">+11.9%</td>
-            <td class="note">Working -- up 11.9%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.76R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.76R unrealized</td>
         </tr><tr>
             <td><b>FOXA</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$62.14</td>
-            <td>$69.63</td>
-            <td style="color:#7ee787;">+12.1%</td>
-            <td class="note">Working -- up 12.1%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.71R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.71R unrealized</td>
         </tr><tr>
             <td><b>IFF</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$85.00</td>
-            <td>$86.45</td>
-            <td style="color:#7ee787;">+1.7%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>LULU</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$125.61</td>
-            <td>$118.20</td>
-            <td style="color:#f0883e;">-5.9%</td>
-            <td class="note">Down 5.9%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>NVDA</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$217.50</td>
-            <td>$213.16</td>
-            <td style="color:#f0883e;">-2.0%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ROST</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$251.81</td>
-            <td>$241.58</td>
-            <td style="color:#f0883e;">-4.1%</td>
-            <td class="note">Down 4.1%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SWKS</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$68.33</td>
-            <td>$65.29</td>
-            <td style="color:#f0883e;">-4.5%</td>
-            <td class="note">Down 4.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>NSC</b></td>
             <td>Bull Flag</td>
             <td>2026-08-12</td>
             <td>$334.60</td>
-            <td>$353.40</td>
-            <td style="color:#7ee787;">+5.6%</td>
-            <td class="note">Up 5.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.49R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.49R unrealized</td>
         </tr><tr>
             <td><b>LITE</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-12</td>
             <td>$932.47</td>
-            <td>$870.82</td>
-            <td style="color:#f0883e;">-6.6%</td>
-            <td class="note">Down 6.6%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>NBIS</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-12</td>
             <td>$259.20</td>
-            <td>$223.35</td>
-            <td style="color:#f0883e;">-13.8%</td>
-            <td class="note">Down sharply, 13.8%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BA</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$232.79</td>
-            <td>$210.60</td>
-            <td style="color:#f0883e;">-9.5%</td>
-            <td class="note">Down 9.5%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CCL</b></td>
+            <td>Bull Flag</td>
+            <td>2026-08-11</td>
+            <td>$27.75</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EME</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$809.33</td>
-            <td>$738.01</td>
-            <td style="color:#f0883e;">-8.8%</td>
-            <td class="note">Down 8.8%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>JBL</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$336.63</td>
-            <td>$307.88</td>
-            <td style="color:#f0883e;">-8.5%</td>
-            <td class="note">Down 8.5%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.57R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.57R -- win</td>
         </tr><tr>
             <td><b>KEYS</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$335.41</td>
-            <td>$318.69</td>
-            <td style="color:#f0883e;">-5.0%</td>
-            <td class="note">Down 5.0%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.41R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.41R -- win</td>
         </tr><tr>
             <td><b>MSI</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$461.98</td>
-            <td>$486.56</td>
-            <td style="color:#7ee787;">+5.3%</td>
-            <td class="note">Up 5.3%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.98R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.98R unrealized</td>
         </tr><tr>
             <td><b>WY</b></td>
             <td>Bull Flag</td>
             <td>2026-08-11</td>
             <td>$25.29</td>
-            <td>$24.36</td>
-            <td style="color:#f0883e;">-3.7%</td>
-            <td class="note">Down 3.7%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MPC</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-11</td>
             <td>$320.32</td>
-            <td>$358.97</td>
-            <td style="color:#7ee787;">+12.1%</td>
-            <td class="note">Working -- up 12.1%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.37R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.37R unrealized</td>
         </tr><tr>
             <td><b>ABNB</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-11</td>
             <td>$184.98</td>
-            <td>$189.85</td>
-            <td style="color:#7ee787;">+2.6%</td>
-            <td class="note">Up 2.6%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ANET</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$188.67</td>
-            <td>$189.38</td>
-            <td style="color:rgb(190,194,200);">+0.4%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>APH</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$169.18</td>
-            <td>$159.06</td>
-            <td style="color:#f0883e;">-6.0%</td>
-            <td class="note">Down 6.0%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DAL</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$91.34</td>
-            <td>$83.27</td>
-            <td style="color:#f0883e;">-8.8%</td>
-            <td class="note">Down 8.8%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>IR</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$86.97</td>
-            <td>$78.78</td>
-            <td style="color:#f0883e;">-9.4%</td>
-            <td class="note">Down 9.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>IVZ</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$31.58</td>
-            <td>$32.91</td>
-            <td style="color:#7ee787;">+4.2%</td>
-            <td class="note">Up 4.2%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.21R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.21R unrealized</td>
         </tr><tr>
             <td><b>RMD</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$211.94</td>
-            <td>$237.00</td>
-            <td style="color:#7ee787;">+11.8%</td>
-            <td class="note">Working -- up 11.8%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.87R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.87R unrealized</td>
         </tr><tr>
             <td><b>SYF</b></td>
             <td>Bull Flag</td>
             <td>2026-08-10</td>
             <td>$78.59</td>
-            <td>$80.57</td>
-            <td style="color:#7ee787;">+2.5%</td>
-            <td class="note">Up 2.5%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>COF</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$220.00</td>
-            <td>$216.76</td>
-            <td style="color:#f0883e;">-1.5%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CRWD</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$207.39</td>
-            <td>$184.55</td>
-            <td style="color:#f0883e;">-11.0%</td>
-            <td class="note">Down sharply, 11.0%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DELL</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$437.65</td>
-            <td>$451.57</td>
-            <td style="color:#7ee787;">+3.2%</td>
-            <td class="note">Up 3.2%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.04R</td>
+            <td title="2026-08-18, 2026-08-25">★ (2x)</td>
+            <td class="note">Stopped out at +0.04R -- win</td>
         </tr><tr>
             <td><b>FERG</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$253.37</td>
-            <td>$234.85</td>
-            <td style="color:#f0883e;">-7.3%</td>
-            <td class="note">Down 7.3%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>GOOG</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$356.62</td>
-            <td>$342.98</td>
-            <td style="color:#f0883e;">-3.8%</td>
-            <td class="note">Down 3.8%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>GOOGL</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$357.75</td>
-            <td>$346.20</td>
-            <td style="color:#f0883e;">-3.2%</td>
-            <td class="note">Down 3.2%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>KKR</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$103.35</td>
-            <td>$107.42</td>
-            <td style="color:#7ee787;">+3.9%</td>
-            <td class="note">Up 3.9%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.43R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.43R -- win</td>
         </tr><tr>
             <td><b>LYFT</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$16.30</td>
-            <td>$17.55</td>
-            <td style="color:#7ee787;">+7.6%</td>
-            <td class="note">Up 7.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.99R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.99R unrealized</td>
+        </tr><tr>
+            <td><b>ORCL</b></td>
+            <td>Bull Flag</td>
+            <td>2026-08-07</td>
+            <td>$143.47</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>PANW</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$359.49</td>
-            <td>$339.10</td>
-            <td style="color:#f0883e;">-5.7%</td>
-            <td class="note">Down 5.7%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.20R</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (7x)</td>
+            <td class="note">Stopped out at +0.20R -- win</td>
         </tr><tr>
             <td><b>PWR</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$667.84</td>
-            <td>$603.46</td>
-            <td style="color:#f0883e;">-9.6%</td>
-            <td class="note">Down 9.6%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.02R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.02R -- win</td>
         </tr><tr>
             <td><b>SMCI</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$29.38</td>
-            <td>$38.47</td>
-            <td style="color:#7ee787;">+30.9%</td>
-            <td class="note">Working -- up 30.9%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.89R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.89R -- win</td>
         </tr><tr>
             <td><b>TER</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$384.89</td>
-            <td>$368.13</td>
-            <td style="color:#f0883e;">-4.3%</td>
-            <td class="note">Down 4.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>ULTA</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$538.79</td>
-            <td>$531.72</td>
-            <td style="color:#f0883e;">-1.3%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>WSM</b></td>
             <td>Bull Flag</td>
             <td>2026-08-07</td>
             <td>$246.89</td>
-            <td>$234.56</td>
-            <td style="color:#f0883e;">-5.0%</td>
-            <td class="note">Down 5.0%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>COHR</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-07</td>
             <td>$379.13</td>
-            <td>$283.74</td>
-            <td style="color:#f0883e;">-25.2%</td>
-            <td class="note">Down sharply, 25.2%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>GEN</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-07</td>
             <td>$29.17</td>
-            <td>$29.07</td>
-            <td style="color:rgb(190,194,200);">-0.3%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SWK</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-07</td>
             <td>$103.89</td>
-            <td>$98.06</td>
-            <td style="color:#f0883e;">-5.6%</td>
-            <td class="note">Down 5.6%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>AMZN</b></td>
             <td>Bull Flag</td>
             <td>2026-08-06</td>
             <td>$272.65</td>
-            <td>$260.62</td>
-            <td style="color:#f0883e;">-4.4%</td>
-            <td class="note">Down 4.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DXCM</b></td>
             <td>Bull Flag</td>
             <td>2026-08-06</td>
             <td>$82.66</td>
-            <td>$89.38</td>
-            <td style="color:#7ee787;">+8.1%</td>
-            <td class="note">Up 8.1%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.16R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.16R unrealized</td>
         </tr><tr>
             <td><b>JD</b></td>
             <td>Bull Flag</td>
             <td>2026-08-06</td>
             <td>$32.54</td>
-            <td>$29.27</td>
-            <td style="color:#f0883e;">-10.1%</td>
-            <td class="note">Down sharply, 10.0%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MTD</b></td>
             <td>Bull Flag</td>
             <td>2026-08-06</td>
             <td>$1,422</td>
-            <td>$1,399</td>
-            <td style="color:#f0883e;">-1.6%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CRL</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-05</td>
             <td>$260.72</td>
-            <td>$299.44</td>
-            <td style="color:#7ee787;">+14.8%</td>
-            <td class="note">Working -- up 14.9%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.83R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.83R unrealized</td>
         </tr><tr>
             <td><b>ANET</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-04</td>
             <td>$190.51</td>
-            <td>$189.38</td>
-            <td style="color:#f0883e;">-0.6%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.11R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.11R -- win</td>
         </tr><tr>
             <td><b>ZBRA</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-04</td>
             <td>$368.83</td>
-            <td>$361.61</td>
-            <td style="color:#f0883e;">-2.0%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>COP</b></td>
             <td>Bull Flag</td>
             <td>2026-08-04</td>
             <td>$117.94</td>
-            <td>$132.59</td>
-            <td style="color:#7ee787;">+12.4%</td>
-            <td class="note">Working -- up 12.4%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CVX</b></td>
             <td>Bull Flag</td>
             <td>2026-08-04</td>
             <td>$190.40</td>
-            <td>$200.69</td>
-            <td style="color:#7ee787;">+5.4%</td>
-            <td class="note">Up 5.4%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EOG</b></td>
             <td>Bull Flag</td>
             <td>2026-08-04</td>
             <td>$143.52</td>
-            <td>$147.51</td>
-            <td style="color:#7ee787;">+2.8%</td>
-            <td class="note">Up 2.8%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>HII</b></td>
             <td>Bull Flag</td>
             <td>2026-08-04</td>
             <td>$323.06</td>
-            <td>$292.27</td>
-            <td style="color:#f0883e;">-9.5%</td>
-            <td class="note">Down 9.5%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DXCM</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-08-03</td>
             <td>$87.31</td>
-            <td>$89.38</td>
-            <td style="color:#7ee787;">+2.4%</td>
-            <td class="note">Up 2.4%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>INCY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$122.99</td>
-            <td>$129.80</td>
-            <td style="color:#7ee787;">+5.5%</td>
-            <td class="note">Up 5.5%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ABT</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$102.91</td>
-            <td>$115.89</td>
-            <td style="color:#7ee787;">+12.6%</td>
-            <td class="note">Working -- up 12.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+5.17R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +5.17R unrealized</td>
         </tr><tr>
             <td><b>ACN</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$160.50</td>
-            <td>$186.78</td>
-            <td style="color:#7ee787;">+16.4%</td>
-            <td class="note">Working -- up 16.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.77R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.77R unrealized</td>
         </tr><tr>
             <td><b>ADBE</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$241.98</td>
-            <td>$272.48</td>
-            <td style="color:#7ee787;">+12.6%</td>
-            <td class="note">Working -- up 12.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.17R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.17R unrealized</td>
         </tr><tr>
             <td><b>ADP</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$259.51</td>
-            <td>$281.80</td>
-            <td style="color:#7ee787;">+8.6%</td>
-            <td class="note">Up 8.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.29R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.29R unrealized</td>
         </tr><tr>
             <td><b>ADSK</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$229.41</td>
-            <td>$250.18</td>
-            <td style="color:#7ee787;">+9.1%</td>
-            <td class="note">Up 9.1%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.50R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.50R -- win</td>
         </tr><tr>
             <td><b>ALL</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$263.16</td>
-            <td>$257.64</td>
-            <td style="color:#f0883e;">-2.1%</td>
-            <td class="note">Down 2.1%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BBY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$86.85</td>
-            <td>$85.12</td>
-            <td style="color:#f0883e;">-2.0%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BF-B</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$28.47</td>
-            <td>$28.16</td>
-            <td style="color:#f0883e;">-1.1%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BKNG</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$192.07</td>
-            <td>$213.60</td>
-            <td style="color:#7ee787;">+11.2%</td>
-            <td class="note">Working -- up 11.2%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.35R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.35R unrealized</td>
         </tr><tr>
             <td><b>BR</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$152.68</td>
-            <td>$185.24</td>
-            <td style="color:#7ee787;">+21.3%</td>
-            <td class="note">Working -- up 21.3%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+2.89R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +2.89R -- win</td>
         </tr><tr>
             <td><b>BRO</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$70.16</td>
-            <td>$73.44</td>
-            <td style="color:#7ee787;">+4.7%</td>
-            <td class="note">Up 4.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.44R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.44R unrealized</td>
         </tr><tr>
             <td><b>CDW</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$144.34</td>
-            <td>$140.85</td>
-            <td style="color:#f0883e;">-2.4%</td>
-            <td class="note">Down 2.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CPAY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$385.76</td>
-            <td>$414.25</td>
-            <td style="color:#7ee787;">+7.4%</td>
-            <td class="note">Up 7.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.61R</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Still open, working -- +2.61R unrealized</td>
         </tr><tr>
             <td><b>CRM</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$179.41</td>
-            <td>$205.66</td>
-            <td style="color:#7ee787;">+14.6%</td>
-            <td class="note">Working -- up 14.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.76R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.76R unrealized</td>
         </tr><tr>
             <td><b>CTAS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$203.33</td>
-            <td>$204.66</td>
-            <td style="color:#7ee787;">+0.7%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CTSH</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$53.09</td>
-            <td>$62.93</td>
-            <td style="color:#7ee787;">+18.6%</td>
-            <td class="note">Working -- up 18.5%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.41R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.41R unrealized</td>
         </tr><tr>
             <td><b>DOCU</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$53.81</td>
-            <td>$60.65</td>
-            <td style="color:#7ee787;">+12.7%</td>
-            <td class="note">Working -- up 12.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.62R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.62R unrealized</td>
         </tr><tr>
             <td><b>DPZ</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$344.83</td>
-            <td>$349.14</td>
-            <td style="color:#7ee787;">+1.2%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>EFX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$174.64</td>
-            <td>$192.83</td>
-            <td style="color:#7ee787;">+10.4%</td>
-            <td class="note">Working -- up 10.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.45R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.45R unrealized</td>
         </tr><tr>
             <td><b>EXPE</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$291.10</td>
-            <td>$336.43</td>
-            <td style="color:#7ee787;">+15.6%</td>
-            <td class="note">Working -- up 15.6%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.39R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.39R -- win</td>
         </tr><tr>
             <td><b>FIS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$45.19</td>
-            <td>$40.37</td>
-            <td style="color:#f0883e;">-10.7%</td>
-            <td class="note">Down sharply, 10.7%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>GEHC</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$68.05</td>
-            <td>$74.18</td>
-            <td style="color:#7ee787;">+9.0%</td>
-            <td class="note">Up 9.0%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.65R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.65R unrealized</td>
         </tr><tr>
             <td><b>GPN</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$85.64</td>
-            <td>$93.98</td>
-            <td style="color:#7ee787;">+9.7%</td>
-            <td class="note">Up 9.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.91R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.91R unrealized</td>
         </tr><tr>
             <td><b>HPQ</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$26.74</td>
-            <td>$29.36</td>
-            <td style="color:#7ee787;">+9.8%</td>
-            <td class="note">Up 9.8%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.64R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.64R -- win</td>
         </tr><tr>
             <td><b>INTU</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$313.62</td>
-            <td>$358.75</td>
-            <td style="color:#7ee787;">+14.4%</td>
-            <td class="note">Working -- up 14.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.07R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.07R unrealized</td>
         </tr><tr>
             <td><b>IQV</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$234.34</td>
-            <td>$258.44</td>
-            <td style="color:#7ee787;">+10.3%</td>
-            <td class="note">Working -- up 10.3%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.43R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.43R unrealized</td>
         </tr><tr>
             <td><b>IT</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$150.82</td>
-            <td>$197.97</td>
-            <td style="color:#7ee787;">+31.3%</td>
-            <td class="note">Working -- up 31.3%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.99R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.99R -- win</td>
         </tr><tr>
             <td><b>JKHY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$152.24</td>
-            <td>$173.21</td>
-            <td style="color:#7ee787;">+13.8%</td>
-            <td class="note">Working -- up 13.8%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.83R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.83R unrealized</td>
         </tr><tr>
             <td><b>KHC</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$26.07</td>
-            <td>$25.18</td>
-            <td style="color:#f0883e;">-3.4%</td>
-            <td class="note">Down 3.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MDLZ</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$62.73</td>
-            <td>$63.10</td>
-            <td style="color:#7ee787;">+0.6%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MRSH</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$190.24</td>
-            <td>$194.41</td>
-            <td style="color:#7ee787;">+2.2%</td>
-            <td class="note">Up 2.2%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>NOW</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$110.20</td>
-            <td>$126.89</td>
-            <td style="color:#7ee787;">+15.1%</td>
-            <td class="note">Working -- up 15.1%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.77R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.77R unrealized</td>
         </tr><tr>
             <td><b>NWS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$31.33</td>
-            <td>$34.99</td>
-            <td style="color:#7ee787;">+11.7%</td>
-            <td class="note">Working -- up 11.7%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.90R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.90R -- win</td>
         </tr><tr>
             <td><b>NWSA</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$27.70</td>
-            <td>$30.86</td>
-            <td style="color:#7ee787;">+11.4%</td>
-            <td class="note">Working -- up 11.4%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.54R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.54R -- win</td>
         </tr><tr>
             <td><b>PAYX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$114.69</td>
-            <td>$124.89</td>
-            <td style="color:#7ee787;">+8.9%</td>
-            <td class="note">Up 8.9%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.25R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.25R unrealized</td>
         </tr><tr>
             <td><b>PDD</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$87.53</td>
-            <td>$87.61</td>
-            <td style="color:rgb(190,194,200);">+0.1%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>PYPL</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$57.32</td>
-            <td>$62.11</td>
-            <td style="color:#7ee787;">+8.4%</td>
-            <td class="note">Up 8.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.09R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.09R unrealized</td>
         </tr><tr>
             <td><b>RCL</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$318.11</td>
-            <td>$291.46</td>
-            <td style="color:#f0883e;">-8.4%</td>
-            <td class="note">Down 8.4%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ROP</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$388.36</td>
-            <td>$412.92</td>
-            <td style="color:#7ee787;">+6.3%</td>
-            <td class="note">Up 6.3%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.01R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.01R unrealized</td>
         </tr><tr>
             <td><b>SJM</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$120.93</td>
-            <td>$124.50</td>
-            <td style="color:#7ee787;">+3.0%</td>
-            <td class="note">Up 3.0%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SOLV</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$85.58</td>
-            <td>$91.76</td>
-            <td style="color:#7ee787;">+7.2%</td>
-            <td class="note">Up 7.2%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>TGT</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$142.39</td>
-            <td>$163.12</td>
-            <td style="color:#7ee787;">+14.6%</td>
-            <td class="note">Working -- up 14.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+5.44R</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19">★ (3x)</td>
+            <td class="note">Still open, working -- +5.44R unrealized</td>
         </tr><tr>
             <td><b>TYL</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$318.66</td>
-            <td>$347.52</td>
-            <td style="color:#7ee787;">+9.1%</td>
-            <td class="note">Up 9.1%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>UHS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$162.97</td>
-            <td>$175.78</td>
-            <td style="color:#7ee787;">+7.9%</td>
-            <td class="note">Up 7.9%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.14R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.14R -- win</td>
         </tr><tr>
             <td><b>VRSN</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$283.61</td>
-            <td>$293.80</td>
-            <td style="color:#7ee787;">+3.6%</td>
-            <td class="note">Up 3.6%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>WDAY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$155.27</td>
-            <td>$194.34</td>
-            <td style="color:#7ee787;">+25.2%</td>
-            <td class="note">Working -- up 25.2%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+5.74R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +5.74R -- win</td>
         </tr><tr>
             <td><b>ZBH</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$91.97</td>
-            <td>$100.53</td>
-            <td style="color:#7ee787;">+9.3%</td>
-            <td class="note">Up 9.3%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.01R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.01R -- win</td>
         </tr><tr>
             <td><b>AJG</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$251.97</td>
-            <td>$268.59</td>
-            <td style="color:#7ee787;">+6.6%</td>
-            <td class="note">Up 6.6%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CBOE</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$293.50</td>
-            <td>$309.35</td>
-            <td style="color:#7ee787;">+5.4%</td>
-            <td class="note">Up 5.4%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>APA</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$36.33</td>
-            <td>$41.72</td>
-            <td style="color:#7ee787;">+14.8%</td>
-            <td class="note">Working -- up 14.8%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>IP</b></td>
             <td>Bull Flag</td>
             <td>2026-07-31</td>
             <td>$42.17</td>
-            <td>$40.92</td>
-            <td style="color:#f0883e;">-3.0%</td>
-            <td class="note">Down 3.0%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MPWR</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-07-31</td>
             <td>$1,426</td>
-            <td>$1,311</td>
-            <td style="color:#f0883e;">-8.1%</td>
-            <td class="note">Down 8.1%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>APD</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$294.27</td>
-            <td>$303.19</td>
-            <td style="color:#7ee787;">+3.0%</td>
-            <td class="note">Up 3.0%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.33R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.33R unrealized</td>
         </tr><tr>
             <td><b>CEG</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$257.95</td>
-            <td>$278.65</td>
-            <td style="color:#7ee787;">+8.0%</td>
-            <td class="note">Up 8.0%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.04R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.04R -- win</td>
         </tr><tr>
             <td><b>CF</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$127.35</td>
-            <td>$128.34</td>
-            <td style="color:#7ee787;">+0.8%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>COO</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$73.06</td>
-            <td>$73.47</td>
-            <td style="color:#7ee787;">+0.6%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>GPC</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$129.98</td>
-            <td>$137.59</td>
-            <td style="color:#7ee787;">+5.9%</td>
-            <td class="note">Up 5.9%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>KVUE</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$19.79</td>
-            <td>$19.33</td>
-            <td style="color:#f0883e;">-2.3%</td>
-            <td class="note">Down 2.3%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>LMT</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$569.20</td>
-            <td>$557.75</td>
-            <td style="color:#f0883e;">-2.0%</td>
-            <td class="note">Down 2.0%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.04R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.04R -- win</td>
         </tr><tr>
             <td><b>LYB</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$60.49</td>
-            <td>$63.21</td>
-            <td style="color:#7ee787;">+4.5%</td>
-            <td class="note">Up 4.5%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>LYV</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$184.43</td>
-            <td>$185.22</td>
-            <td style="color:rgb(190,194,200);">+0.4%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MKC</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$51.99</td>
-            <td>$54.56</td>
-            <td style="color:#7ee787;">+4.9%</td>
-            <td class="note">Up 4.9%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MPC</b></td>
+            <td>Bull Flag</td>
+            <td>2026-07-30</td>
+            <td>$308.72</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>OKTA</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$136.91</td>
-            <td>$130.16</td>
-            <td style="color:#f0883e;">-4.9%</td>
-            <td class="note">Down 4.9%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.34R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.34R -- win</td>
         </tr><tr>
             <td><b>OXY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$56.03</td>
-            <td>$59.05</td>
-            <td style="color:#7ee787;">+5.4%</td>
-            <td class="note">Up 5.4%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>PLTR</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$123.00</td>
-            <td>$173.71</td>
-            <td style="color:#7ee787;">+41.2%</td>
-            <td class="note">Working -- up 41.2%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+8.21R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +8.21R unrealized</td>
         </tr><tr>
             <td><b>PSX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$206.81</td>
-            <td>$240.14</td>
-            <td style="color:#7ee787;">+16.1%</td>
-            <td class="note">Working -- up 16.1%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>RVTY</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$113.37</td>
-            <td>$124.47</td>
-            <td style="color:#7ee787;">+9.8%</td>
-            <td class="note">Up 9.8%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SLB</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$48.96</td>
-            <td>$53.65</td>
-            <td style="color:#7ee787;">+9.6%</td>
-            <td class="note">Up 9.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.25R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.25R unrealized</td>
         </tr><tr>
             <td><b>SPGI</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$419.64</td>
-            <td>$432.81</td>
-            <td style="color:#7ee787;">+3.1%</td>
-            <td class="note">Up 3.1%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>UNP</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$292.19</td>
-            <td>$310.99</td>
-            <td style="color:#7ee787;">+6.4%</td>
-            <td class="note">Up 6.4%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.86R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.86R unrealized</td>
         </tr><tr>
             <td><b>VLO</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$301.32</td>
-            <td>$343.82</td>
-            <td style="color:#7ee787;">+14.1%</td>
-            <td class="note">Working -- up 14.1%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.89R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.89R unrealized</td>
         </tr><tr>
             <td><b>VTR</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$97.72</td>
-            <td>$94.16</td>
-            <td style="color:#f0883e;">-3.6%</td>
-            <td class="note">Down 3.6%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EXPE</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-07-30</td>
             <td>$304.27</td>
-            <td>$336.43</td>
-            <td style="color:#7ee787;">+10.6%</td>
-            <td class="note">Working -- up 10.6%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>GRMN</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-07-30</td>
             <td>$294.83</td>
-            <td>$289.45</td>
-            <td style="color:#f0883e;">-1.8%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>AAPL</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$331.58</td>
-            <td>$309.18</td>
-            <td style="color:#f0883e;">-6.8%</td>
-            <td class="note">Down 6.8%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ALLE</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$153.87</td>
-            <td>$160.90</td>
-            <td style="color:#7ee787;">+4.6%</td>
-            <td class="note">Up 4.6%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.48R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.48R unrealized</td>
         </tr><tr>
             <td><b>AMP</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$536.28</td>
-            <td>$559.53</td>
-            <td style="color:#7ee787;">+4.3%</td>
-            <td class="note">Up 4.3%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.68R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.68R unrealized</td>
         </tr><tr>
             <td><b>AON</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$360.30</td>
-            <td>$356.31</td>
-            <td style="color:#f0883e;">-1.1%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ARES</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$122.92</td>
-            <td>$141.64</td>
-            <td style="color:#7ee787;">+15.2%</td>
-            <td class="note">Working -- up 15.2%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.10R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.10R -- win</td>
         </tr><tr>
             <td><b>BX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$126.78</td>
-            <td>$143.00</td>
-            <td style="color:#7ee787;">+12.8%</td>
-            <td class="note">Working -- up 12.8%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.24R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.24R -- win</td>
         </tr><tr>
             <td><b>DGX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$232.59</td>
-            <td>$243.63</td>
-            <td style="color:#7ee787;">+4.8%</td>
-            <td class="note">Up 4.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.85R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.85R unrealized</td>
         </tr><tr>
             <td><b>FDS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$264.44</td>
-            <td>$301.31</td>
-            <td style="color:#7ee787;">+13.9%</td>
-            <td class="note">Working -- up 13.9%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.80R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.80R unrealized</td>
         </tr><tr>
             <td><b>GM</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$86.95</td>
-            <td>$86.58</td>
-            <td style="color:rgb(190,194,200);">-0.4%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>HAS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$93.31</td>
-            <td>$96.98</td>
-            <td style="color:#7ee787;">+3.9%</td>
-            <td class="note">Up 3.9%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>LDOS</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$110.66</td>
-            <td>$135.54</td>
-            <td style="color:#7ee787;">+22.5%</td>
-            <td class="note">Working -- up 22.5%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+7.93R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +7.93R -- win</td>
         </tr><tr>
             <td><b>MCK</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$869.31</td>
-            <td>$897.77</td>
-            <td style="color:#7ee787;">+3.3%</td>
-            <td class="note">Up 3.3%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MET</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$96.27</td>
-            <td>$95.77</td>
-            <td style="color:#f0883e;">-0.5%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MMM</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$174.14</td>
-            <td>$180.24</td>
-            <td style="color:#7ee787;">+3.5%</td>
-            <td class="note">Up 3.5%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.20R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.20R unrealized</td>
         </tr><tr>
             <td><b>NDAQ</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$93.88</td>
-            <td>$99.21</td>
-            <td style="color:#7ee787;">+5.7%</td>
-            <td class="note">Up 5.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.90R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.90R unrealized</td>
+        </tr><tr>
+            <td><b>NUE</b></td>
+            <td>Bull Flag</td>
+            <td>2026-07-30</td>
+            <td>$255.67</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.67R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.67R -- win</td>
         </tr><tr>
             <td><b>PCAR</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$131.87</td>
-            <td>$129.26</td>
-            <td style="color:#f0883e;">-2.0%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>PM</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$193.56</td>
-            <td>$193.72</td>
-            <td style="color:rgb(190,194,200);">+0.1%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>PRU</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$122.67</td>
-            <td>$119.80</td>
-            <td style="color:#f0883e;">-2.3%</td>
-            <td class="note">Down 2.3%</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>RJF</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$173.12</td>
-            <td>$174.93</td>
-            <td style="color:#7ee787;">+1.0%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>RTX</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$210.54</td>
-            <td>$209.83</td>
-            <td style="color:rgb(190,194,200);">-0.3%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.09R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.09R -- win</td>
         </tr><tr>
             <td><b>SCHW</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$103.64</td>
-            <td>$112.84</td>
-            <td style="color:#7ee787;">+8.9%</td>
-            <td class="note">Up 8.9%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.73R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.73R unrealized</td>
         </tr><tr>
             <td><b>SHW</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$340.99</td>
-            <td>$349.15</td>
-            <td style="color:#7ee787;">+2.4%</td>
-            <td class="note">Up 2.4%, in play</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.55R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.55R -- win</td>
         </tr><tr>
             <td><b>STLD</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$251.93</td>
-            <td>$231.26</td>
-            <td style="color:#f0883e;">-8.2%</td>
-            <td class="note">Down 8.2%</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.28R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.28R -- win</td>
         </tr><tr>
             <td><b>SW</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$47.33</td>
-            <td>$49.51</td>
-            <td style="color:#7ee787;">+4.6%</td>
-            <td class="note">Up 4.6%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>T</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$23.25</td>
-            <td>$25.73</td>
-            <td style="color:#7ee787;">+10.7%</td>
-            <td class="note">Working -- up 10.7%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.58R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.58R unrealized</td>
         </tr><tr>
             <td><b>TRMB</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$56.00</td>
-            <td>$59.35</td>
-            <td style="color:#7ee787;">+6.0%</td>
-            <td class="note">Up 6.0%, in play</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
         </tr><tr>
             <td><b>TRV</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$372.58</td>
-            <td>$368.19</td>
-            <td style="color:#f0883e;">-1.2%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>VZ</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$46.01</td>
-            <td>$50.14</td>
-            <td style="color:#7ee787;">+9.0%</td>
-            <td class="note">Up 9.0%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.19R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.19R unrealized</td>
         </tr><tr>
             <td><b>WAB</b></td>
             <td>Bull Flag</td>
             <td>2026-07-30</td>
             <td>$288.57</td>
-            <td>$296.70</td>
-            <td style="color:#7ee787;">+2.8%</td>
-            <td class="note">Up 2.8%, in play</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.04R</td>
+            <td title="2026-08-21, 2026-08-25">★ (2x)</td>
+            <td class="note">Still open -- +1.04R unrealized</td>
         </tr><tr>
             <td><b>BAX</b></td>
             <td>Qullamaggie Momentum</td>
             <td>2026-07-30</td>
             <td>$26.55</td>
-            <td>$26.30</td>
-            <td style="color:#f0883e;">-0.9%</td>
-            <td class="note">Flat -- still in play, no stop hit</td>
-        </tr><tr>
-            <td><b>AMD</b></td>
-            <td>Bull Flag</td>
-            <td>2026-06-05</td>
-            <td>$466.38</td>
-            <td>$480.96</td>
-            <td style="color:#7ee787;">+3.1%</td>
-            <td class="note">Up 3.1%, in play</td>
-        </tr><tr>
-            <td><b>MCHP</b></td>
-            <td>Bull Flag</td>
-            <td>2026-06-05</td>
-            <td>$88.34</td>
-            <td>$73.80</td>
-            <td style="color:#f0883e;">-16.5%</td>
-            <td class="note">Down sharply, 16.5%</td>
-        </tr><tr>
-            <td><b>NUE</b></td>
-            <td>Bull Flag</td>
-            <td>2026-05-18</td>
-            <td>$225.93</td>
-            <td>$248.43</td>
-            <td style="color:#7ee787;">+10.0%</td>
-            <td class="note">Up 10.0%, in play</td>
-        </tr><tr>
-            <td><b>MRVL</b></td>
-            <td>Bull Flag</td>
-            <td>2026-05-18</td>
-            <td>$168.89</td>
-            <td>$242.38</td>
-            <td style="color:#7ee787;">+43.5%</td>
-            <td class="note">Working -- up 43.5%, in play</td>
-        </tr><tr>
-            <td><b>ROKU</b></td>
-            <td>Bull Flag</td>
-            <td>2026-05-12</td>
-            <td>$127.63</td>
-            <td>$159.04</td>
-            <td style="color:#7ee787;">+24.6%</td>
-            <td class="note">Working -- up 24.6%, in play</td>
-        </tr><tr>
-            <td><b>MPC</b></td>
-            <td>Bull Flag</td>
-            <td>2026-05-07</td>
-            <td>$241.34</td>
-            <td>$358.93</td>
-            <td style="color:#7ee787;">+48.7%</td>
-            <td class="note">Working -- up 48.7%, in play</td>
-        </tr><tr>
-            <td><b>GDS</b></td>
-            <td>Bull Flag</td>
-            <td>2025-09-15</td>
-            <td>$37.20</td>
-            <td>$32.79</td>
-            <td style="color:#f0883e;">-11.8%</td>
-            <td class="note">Down sharply, 11.9%</td>
-        </tr><tr>
-            <td><b>GEV</b></td>
-            <td>Bull Flag</td>
-            <td>2025-08-13</td>
-            <td>$632.87</td>
-            <td>$927.10</td>
-            <td style="color:#7ee787;">+46.5%</td>
-            <td class="note">Working -- up 46.5%, in play</td>
-        </tr><tr>
-            <td><b>EL</b></td>
-            <td>Bull Flag</td>
-            <td>2025-07-25</td>
-            <td>$89.09</td>
-            <td>$103.67</td>
-            <td style="color:#7ee787;">+16.4%</td>
-            <td class="note">Working -- up 16.4%, in play</td>
-        </tr><tr>
-            <td><b>ORCL</b></td>
-            <td>Bull Flag</td>
-            <td>2025-07-25</td>
-            <td>$242.36</td>
-            <td>$144.80</td>
-            <td style="color:#f0883e;">-40.2%</td>
-            <td class="note">Down sharply, 40.3%</td>
-        </tr><tr>
-            <td><b>TME</b></td>
-            <td>Bull Flag</td>
-            <td>2025-07-25</td>
-            <td>$20.74</td>
-            <td>$8.80</td>
-            <td style="color:#f0883e;">-57.6%</td>
-            <td class="note">Down sharply, 57.6%</td>
-        </tr><tr>
-            <td><b>CCL</b></td>
-            <td>Bull Flag</td>
-            <td>2025-07-17</td>
-            <td>$29.14</td>
-            <td>$25.82</td>
-            <td style="color:#f0883e;">-11.4%</td>
-            <td class="note">Down sharply, 11.4%</td>
-        </tr><tr>
-            <td><b>VST</b></td>
-            <td>Bull Flag</td>
-            <td>2025-07-14</td>
-            <td>$193.79</td>
-            <td>$139.39</td>
-            <td style="color:#f0883e;">-28.1%</td>
-            <td class="note">Down sharply, 28.1%</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:rgb(190,194,200);">-0.26R</td>
+            <td title="">—</td>
+            <td class="note">Still open, underwater -- -0.26R unrealized</td>
         </tr>
     </tbody>
     </table>
