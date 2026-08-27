@@ -37,12 +37,3549 @@
 </style>
 </head>
 <body>
+<<<<<<< HEAD
   <h1>5-Year Historical Backtest</h1>
   <div class="meta">Generated 2026-08-27T10:36:31Z &middot; Period: 5y &middot; Universe: 518 tickers</div>
   <div class="caveat"><b>Survivorship bias caveat:</b> This backtest runs on TODAY's ~521-ticker NASDAQ100+S&P500 universe (momentum_desk/universe.csv), not the index membership as it stood at each historical date over the trailing window. Tickers that were added to the index because they already ran are backtested as if they had always been screenable; tickers removed from the index for underperforming are entirely absent from this test. There is no fix for this without a paid historical index-membership data feed. Treat every win rate and dollar figure below as optimistically biased versus what a real point-in-time scan over the same period would have produced.</div>
   <div class="regime-banner"><b>Today's Market Pulse regime: CAUTION</b><br>SPY close: 766.08 | 10-day MA: 768.72 | 20-day MA: 766.63</div>
   <div class="grid">
     
+=======
+<h1>5-Year Historical Backtest</h1>
+<div class="meta">Generated 2026-08-04T20:51:03Z &middot; Period: 5y &middot; Universe: 520 tickers</div>
+<div class="caveat"><b>Survivorship bias caveat:</b> This backtest uses today's ~520-ticker universe, not point-in-time index membership -- tickers removed from the index over the window aren't included. We looked at fixing this with free point-in-time membership data, but the real blocker is that our price source doesn't reliably keep history for delisted or acquired tickers, so a proper fix needs a paid data feed. Treat these numbers as modestly optimistic vs. a true point-in-time scan.</div>
+<div class="regime-banner">Market Pulse (live, always current) has moved to the <a href="strategy.html#market-pulse">Strategy tab</a> -- this backtest only re-checks it when manually re-run, so it's no longer duplicated here.</div>
+
+<div class="exec-summary" id="per-system-win-rate">
+<h2>Recommended Strategy</h2>
+<p>Figures use execution-realistic entries (next session's open after the signal fires, not the same-day close). Full as-published comparison and the capital-allocation tie-break variant are in Supporting Detail below.</p>
+<p>Qullamaggie Momentum has the best win rate and a strong $10k-constrained outcome -- prioritize it. Pattern Combo is a real contender on execution-realistic entries, not a system to skip. Trend Template is the steady, higher-sample-size complement.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>System</th><th>Win Rate</th><th>Avg R</th><th>Total $</th><th>$10k Ending Value</th><th>$10k Max DD</th></tr></thead>
+<tbody>
+<tr>
+<td>Trend Template</td>
+<td>27.3%</td>
+<td>0.38</td>
+<td>$318,488</td>
+<td>$37,010</td>
+<td>16.9%</td>
+</tr>
+<tr>
+<td>Qullamaggie Momentum</td>
+<td>38.9%</td>
+<td>0.60</td>
+<td>$53,432</td>
+<td>$56,000</td>
+<td>16.6%</td>
+</tr>
+<tr>
+<td>Pattern Combo</td>
+<td>24.2%</td>
+<td>0.32</td>
+<td>$335,439</td>
+<td>$39,307</td>
+<td>15.0%</td>
+</tr>
+<tr>
+<td>Bull Flag</td>
+<td colspan="5" style="color: rgb(150,154,162);">No qualifying trades in this backtest.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div class="exec-summary" id="stopout-reentry">
+<h2>Stop-Out Re-Entry Edge</h2>
+<p>Question: after a trade gets stopped out at -1R, is waiting for price to reclaim its pre-entry pivot high (the resistance the original breakout had to clear) a logical re-entry trigger? Simulated against real daily OHLC for every Pattern Combo and Qullamaggie Momentum stop-out in the 5-year backtest: pivot high = highest high in the 20 trading days before the original entry, re-entry = next session's open after the first close back at or above that level.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>System</th><th>Stop-Outs</th><th>Reclaimed Pivot High</th><th>Re-Entry Avg R</th><th>Re-Entry Win Rate</th><th>Median Days to Reclaim</th></tr></thead>
+<tbody>
+<tr><td>Pattern Combo</td><td>6,673</td><td>78.9% (5,266)</td><td>0.36</td><td>25.4%</td><td>25</td></tr>
+<tr><td>Qullamaggie Momentum</td><td>520</td><td>82.5% (429)</td><td>0.73</td><td>35.7%</td><td>12</td></tr>
+</tbody>
+</table>
+</div>
+<p>Reading: most stopped-out trades in both systems do eventually reclaim their pre-entry pivot high (79-83% within 180 trading days), so this isn't a rare setup. When they do, re-entering shows positive expectancy for both systems -- notably stronger for Qullamaggie Momentum (+0.73R, 35.7% win rate) than Pattern Combo (+0.36R, 25.4% win rate). Trend Template is excluded -- the earlier organic-resignal proxy showed no edge there, per George's own steer.</p>
+<p style="color: rgb(150,154,162);">Methodology note: this replaces the earlier organic-resignal proxy (did the same system fire again on this ticker later?) with the literal price-trigger rule George described. No control/baseline comparison is computed for this version -- the numbers above are the re-entries' own performance, not a delta against a random re-entry.</p>
+</div>
+
+
+    <div class="exec-summary track-record">
+    <h2>Live Recommendations Track Record</h2>
+    <p>What actually happened to the real tickers flagged by the live Bull Flag / Qullamaggie Momentum
+    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-08-26T12:16:44Z;
+    one row per ticker+system, at its earliest flag. Scored in R-multiples using the project's one
+    mechanical stop rule (1x ADR initial stop, breakeven at 2R, trail at max(2x ADR, 7%)) walked forward
+    against real daily prices -- not raw %-change, so a spike that later gave it all back is scored at
+    what the stop would have actually banked, not its peak. 11 additional flagged setup(s) were excluded (11 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 177 flagged too recently to have a post-entry bar yet. Of the graded trades, the 9 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.59R/trade vs +0.66R/trade for the 159 that hadn't.</p>
+    <p class="callout"><b>+109.66R</b> total if every one of these 168 setups had been taken exactly as flagged, sized to the project's standard risk (avg +0.65R/trade) -- 47 still open and marked to market, 121 closed (-30.51R realized, avg -0.25R/trade, 24% win rate).</p>
+    <div class="table-wrap">
+    <table>
+    <thead><tr><th>Ticker</th><th>System</th><th>Flagged</th><th>Entry</th><th>Status</th><th>R</th><th>Worth Watching</th><th>Note</th></tr></thead>
+    <tbody>
+    <tr>
+            <td><b>AAPL</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$309.90</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ABBV</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$265.79</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ABNB</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$190.50</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ABNB</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$190.50</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ACN</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$186.93</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ADBE</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$273.92</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AEE</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$106.83</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AIZ</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$285.15</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ALB</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$133.18</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ALL</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$257.62</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ALLE</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$160.37</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AMD</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$479.18</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-24, 2026-08-25">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AMGN</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$442.24</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AMP</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$560.26</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AMT</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$178.57</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AMZN</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$261.06</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ANET</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$190.94</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>APA</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$41.35</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ASML</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,744</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-24, 2026-08-25">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>AXON</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$613.26</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BAC</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$62.43</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BAX</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$26.29</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BAX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$26.29</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BDX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$189.78</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BEN</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$35.03</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BIIB</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$220.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BIIB</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$220.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BMY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$67.92</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>BNY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$163.65</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CAH</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$237.92</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CF</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$127.26</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CINF</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$171.42</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CMS</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$68.74</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CNC</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$65.00</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-25">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CPAY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$412.37</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CRL</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$297.64</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CRL</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$297.64</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CRM</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$205.69</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CRWV</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$88.04</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CSX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$51.51</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>CTSH</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$63.06</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DASH</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$233.50</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DE</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$630.66</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DELL</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$451.50</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-18, 2026-08-25">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DELL</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$451.50</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-18, 2026-08-25">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DGX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$244.51</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DOC</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$21.66</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DRI</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$220.41</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DTE</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$136.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DXCM</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$89.16</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>DXCM</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$89.16</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ED</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$107.09</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EG</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$375.39</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EOG</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$146.83</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EQIX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,073</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ES</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$71.03</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ETN</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$409.20</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ETR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$106.24</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$90.87</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EXC</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$44.31</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EXPD</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$189.05</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EXPE</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$337.97</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>EXR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$144.87</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FANG</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$199.89</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FCX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$79.91</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-20, 2026-08-21">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FDX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$333.71</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-18">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FFIV</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$382.75</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FTNT</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$153.66</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>GRMN</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$288.45</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>GRMN</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$288.45</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>GS</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,059</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HLT</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$329.31</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HPE</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$53.44</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-19">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HPQ</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$29.52</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HSIC</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$89.65</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HST</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$23.00</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>HUM</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$389.71</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IBKR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$98.19</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IBKR</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$98.19</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IEX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$230.27</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IFF</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$87.16</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>INCY</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$129.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>INCY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$129.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>INVH</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$30.21</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IP</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$40.99</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$78.57</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IRM</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$120.90</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IT</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$195.79</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ITW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$281.65</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IVZ</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$32.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>IVZ</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$32.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>JCI</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$141.82</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>JNJ</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$273.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>JNJ</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$273.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>KO</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$91.64</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>L</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$110.81</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LDOS</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$134.54</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LH</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$337.68</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LITE</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$885.57</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LITE</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$885.57</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LLY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,234</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LYV</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$186.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>LYV</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$186.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MET</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$95.87</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MPC</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$354.88</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MPWR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,304</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MRK</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$156.45</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-19">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MRNA</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$158.83</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-20, 2026-08-21, 2026-08-24">★ (3x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MRVL</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$240.38</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MRVL</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$240.38</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MS</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$216.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MSFT</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$491.71</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>MU</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$932.97</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NBIS</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$221.97</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NDSN</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$333.58</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-20">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NEM</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$135.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NOW</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$127.00</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NTAP</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$187.43</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-18, 2026-08-19, 2026-08-20">★ (3x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NTRS</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$186.82</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NUE</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$247.55</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>NWSA</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$30.92</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ODFL</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$198.34</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PANW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$339.90</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (7x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PANW</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$339.90</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (7x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PCAR</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$129.22</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PCAR</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$129.22</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PFG</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$111.59</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PH</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$1,016</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PHM</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$130.86</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PLD</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$143.33</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PLTR</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$172.73</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PNW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$97.67</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PPG</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$113.65</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PSA</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$322.67</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PSKY</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$10.67</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PSX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$236.90</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PTC</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$151.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>REGN</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$833.56</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ROST</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$241.19</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>RSG</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$220.96</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>RTX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$210.28</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>RVTY</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$124.84</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SCHW</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$112.27</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SHOP</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$153.88</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SHW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$350.45</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SJM</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$125.45</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SNA</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$394.56</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SNDK</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$1,481</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>STT</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$192.95</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>STX</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$821.67</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-25">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SW</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$49.43</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SWK</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$98.46</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>SWK</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$98.46</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>T</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$25.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>TGT</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$163.47</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19">★ (3x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>TRGP</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$286.91</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-18">★ (1x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>TROW</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$112.87</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>TRV</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$369.66</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>UNP</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$309.59</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>UPS</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$105.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>USB</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$62.41</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>V</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$384.14</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>VEEV</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$246.78</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>VLO</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$340.41</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>VRTX</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$552.85</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>VTRS</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$16.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>VZ</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$50.25</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WAB</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$296.94</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-08-21, 2026-08-25">★ (2x)</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WDAY</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$194.42</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WEC</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$106.67</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WELL</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$241.15</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WELL</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$241.15</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WSM</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$234.74</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>WY</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$24.43</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>XYZ</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$82.72</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ZBRA</b></td>
+            <td title="Pattern Combo">QM</td>
+            <td>2026-08-26</td>
+            <td>$360.52</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>ZBRA</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-08-26</td>
+            <td>$360.52</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>FCX</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-21</td>
+            <td>$76.66</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-20, 2026-08-21">★ (2x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MRNA</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-19</td>
+            <td>$174.38</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-20, 2026-08-21, 2026-08-24">★ (3x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>WDAY</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-13</td>
+            <td>$206.45</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>AVGO</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$416.08</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>BMY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$63.61</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.40R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.40R unrealized</td>
+        </tr><tr>
+            <td><b>FOX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$55.34</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.76R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.76R unrealized</td>
+        </tr><tr>
+            <td><b>FOXA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$62.14</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.71R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.71R unrealized</td>
+        </tr><tr>
+            <td><b>IFF</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$85.00</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>LULU</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$125.61</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>NVDA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$217.50</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ROST</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$251.81</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>SWKS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$68.33</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>NSC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-12</td>
+            <td>$334.60</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.49R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.49R unrealized</td>
+        </tr><tr>
+            <td><b>LITE</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-12</td>
+            <td>$932.47</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>NBIS</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-12</td>
+            <td>$259.20</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>BA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$232.79</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CCL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$27.75</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>EME</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$809.33</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>JBL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$336.63</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.57R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.57R -- win</td>
+        </tr><tr>
+            <td><b>KEYS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$335.41</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.41R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.41R -- win</td>
+        </tr><tr>
+            <td><b>MSI</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$461.98</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.98R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.98R unrealized</td>
+        </tr><tr>
+            <td><b>WY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-11</td>
+            <td>$25.29</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MPC</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-11</td>
+            <td>$320.32</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.37R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.37R unrealized</td>
+        </tr><tr>
+            <td><b>ABNB</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-11</td>
+            <td>$184.98</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ANET</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$188.67</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>APH</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$169.18</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>DAL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$91.34</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>IR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$86.97</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>IVZ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$31.58</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.21R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.21R unrealized</td>
+        </tr><tr>
+            <td><b>RMD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$211.94</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.87R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.87R unrealized</td>
+        </tr><tr>
+            <td><b>SYF</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-10</td>
+            <td>$78.59</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>COF</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$220.00</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CRWD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$207.39</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>DELL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$437.65</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.04R</td>
+            <td title="2026-08-18, 2026-08-25">★ (2x)</td>
+            <td class="note">Stopped out at +0.04R -- win</td>
+        </tr><tr>
+            <td><b>FERG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$253.37</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>GOOG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$356.62</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>GOOGL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$357.75</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>KKR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$103.35</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.43R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.43R -- win</td>
+        </tr><tr>
+            <td><b>LYFT</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$16.30</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.99R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.99R unrealized</td>
+        </tr><tr>
+            <td><b>ORCL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$143.47</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>PANW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$359.49</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.20R</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (7x)</td>
+            <td class="note">Stopped out at +0.20R -- win</td>
+        </tr><tr>
+            <td><b>PWR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$667.84</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.02R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.02R -- win</td>
+        </tr><tr>
+            <td><b>SMCI</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$29.38</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.89R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.89R -- win</td>
+        </tr><tr>
+            <td><b>TER</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$384.89</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>ULTA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$538.79</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>WSM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-07</td>
+            <td>$246.89</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>COHR</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-07</td>
+            <td>$379.13</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>GEN</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-07</td>
+            <td>$29.17</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>SWK</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-07</td>
+            <td>$103.89</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>AMZN</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-06</td>
+            <td>$272.65</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>DXCM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-06</td>
+            <td>$82.66</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.16R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.16R unrealized</td>
+        </tr><tr>
+            <td><b>JD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-06</td>
+            <td>$32.54</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MTD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-06</td>
+            <td>$1,422</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CRL</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-05</td>
+            <td>$260.72</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ANET</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-04</td>
+            <td>$190.51</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.47R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.47R -- win</td>
+        </tr><tr>
+            <td><b>ZBRA</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-04</td>
+            <td>$368.83</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+5.46R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +5.46R -- win</td>
+        </tr><tr>
+            <td><b>COP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-04</td>
+            <td>$117.94</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CVX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-04</td>
+            <td>$190.40</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>EOG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-04</td>
+            <td>$143.52</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>HII</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-08-04</td>
+            <td>$323.06</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>DXCM</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-08-03</td>
+            <td>$87.31</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>INCY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$122.99</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ABT</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$102.91</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+5.17R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +5.17R unrealized</td>
+        </tr><tr>
+            <td><b>ACN</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$160.50</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.77R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.77R unrealized</td>
+        </tr><tr>
+            <td><b>ADBE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$241.98</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.17R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.17R unrealized</td>
+        </tr><tr>
+            <td><b>ADP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$259.51</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.29R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.29R unrealized</td>
+        </tr><tr>
+            <td><b>ADSK</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$229.41</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.50R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.50R -- win</td>
+        </tr><tr>
+            <td><b>ALL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$263.16</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>BBY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$86.85</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>BF-B</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$28.47</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>BKNG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$192.07</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.35R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.35R unrealized</td>
+        </tr><tr>
+            <td><b>BR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$152.68</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+2.89R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +2.89R -- win</td>
+        </tr><tr>
+            <td><b>BRO</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$70.16</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.44R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.44R unrealized</td>
+        </tr><tr>
+            <td><b>CDW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$144.34</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CPAY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$385.76</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.61R</td>
+            <td title="2026-08-07">★ (1x)</td>
+            <td class="note">Still open, working -- +2.61R unrealized</td>
+        </tr><tr>
+            <td><b>CRM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$179.41</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.76R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.76R unrealized</td>
+        </tr><tr>
+            <td><b>CTAS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$203.33</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CTSH</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$53.09</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.41R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.41R unrealized</td>
+        </tr><tr>
+            <td><b>DOCU</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$53.81</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.62R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.62R unrealized</td>
+        </tr><tr>
+            <td><b>DPZ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$344.83</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>EFX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$174.64</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.45R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.45R unrealized</td>
+        </tr><tr>
+            <td><b>EXPE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$291.10</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.39R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.39R -- win</td>
+        </tr><tr>
+            <td><b>FIS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$45.19</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>GEHC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$68.05</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.65R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.65R unrealized</td>
+        </tr><tr>
+            <td><b>GPN</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$85.64</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.91R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.91R unrealized</td>
+        </tr><tr>
+            <td><b>HPQ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$26.74</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.64R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.64R -- win</td>
+        </tr><tr>
+            <td><b>INTU</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$313.62</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.07R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.07R unrealized</td>
+        </tr><tr>
+            <td><b>IQV</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$234.34</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.43R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.43R unrealized</td>
+        </tr><tr>
+            <td><b>IT</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$150.82</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.99R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.99R -- win</td>
+        </tr><tr>
+            <td><b>JKHY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$152.24</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+4.83R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +4.83R unrealized</td>
+        </tr><tr>
+            <td><b>KHC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$26.07</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MDLZ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$62.73</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MRSH</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$190.24</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>NOW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$110.20</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.77R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.77R unrealized</td>
+        </tr><tr>
+            <td><b>NWS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$31.33</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.90R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.90R -- win</td>
+        </tr><tr>
+            <td><b>NWSA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$27.70</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.54R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.54R -- win</td>
+        </tr><tr>
+            <td><b>PAYX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$114.69</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.25R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.25R unrealized</td>
+        </tr><tr>
+            <td><b>PDD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$87.53</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>PYPL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$57.32</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.09R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.09R unrealized</td>
+        </tr><tr>
+            <td><b>RCL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$318.11</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ROP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$388.36</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.01R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.01R unrealized</td>
+        </tr><tr>
+            <td><b>SJM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$120.93</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>SOLV</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$85.58</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>TGT</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$142.39</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+5.44R</td>
+            <td title="2026-08-07, 2026-08-18, 2026-08-19">★ (3x)</td>
+            <td class="note">Still open, working -- +5.44R unrealized</td>
+        </tr><tr>
+            <td><b>TYL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$318.66</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>UHS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$162.97</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.14R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.14R -- win</td>
+        </tr><tr>
+            <td><b>VRSN</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$283.61</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>WDAY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$155.27</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+5.74R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +5.74R -- win</td>
+        </tr><tr>
+            <td><b>ZBH</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$91.97</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.01R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.01R -- win</td>
+        </tr><tr>
+            <td><b>AJG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$251.97</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>CBOE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$293.50</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>APA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$36.33</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>IP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-31</td>
+            <td>$42.17</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MPWR</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-07-31</td>
+            <td>$1,426</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>APD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$294.27</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.33R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.33R unrealized</td>
+        </tr><tr>
+            <td><b>CEG</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$257.95</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.04R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +1.04R -- win</td>
+        </tr><tr>
+            <td><b>CF</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$127.35</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>COO</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$73.06</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>GPC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$129.98</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>KVUE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$19.79</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>LMT</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$569.20</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.04R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.04R -- win</td>
+        </tr><tr>
+            <td><b>LYB</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$60.49</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>LYV</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$184.43</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MKC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$51.99</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MPC</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$308.72</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>OKTA</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$136.91</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.34R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.34R -- win</td>
+        </tr><tr>
+            <td><b>OXY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$56.03</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>PLTR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$123.00</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+8.21R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +8.21R unrealized</td>
+        </tr><tr>
+            <td><b>PSX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$206.81</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>RVTY</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$113.37</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>SLB</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$48.96</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.25R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.25R unrealized</td>
+        </tr><tr>
+            <td><b>SPGI</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$419.64</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>UNP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$292.19</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.86R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.86R unrealized</td>
+        </tr><tr>
+            <td><b>VLO</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$301.32</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.89R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.89R unrealized</td>
+        </tr><tr>
+            <td><b>VTR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$97.72</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>EXPE</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-07-30</td>
+            <td>$304.27</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>GRMN</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-07-30</td>
+            <td>$294.83</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>AAPL</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$331.58</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ALLE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$153.87</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.48R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.48R unrealized</td>
+        </tr><tr>
+            <td><b>AMP</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$536.28</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.68R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.68R unrealized</td>
+        </tr><tr>
+            <td><b>AON</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$360.30</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>ARES</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$122.92</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.10R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.10R -- win</td>
+        </tr><tr>
+            <td><b>BX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$126.78</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+3.24R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +3.24R -- win</td>
+        </tr><tr>
+            <td><b>DGX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$232.59</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.85R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.85R unrealized</td>
+        </tr><tr>
+            <td><b>FDS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$264.44</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+2.80R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +2.80R unrealized</td>
+        </tr><tr>
+            <td><b>GM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$86.95</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>HAS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$93.31</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>LDOS</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$110.66</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+7.93R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +7.93R -- win</td>
+        </tr><tr>
+            <td><b>MCK</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$869.31</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MET</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$96.27</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>MMM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$174.14</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.20R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.20R unrealized</td>
+        </tr><tr>
+            <td><b>NDAQ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$93.88</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.90R</td>
+            <td title="">—</td>
+            <td class="note">Still open -- +1.90R unrealized</td>
+        </tr><tr>
+            <td><b>NUE</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$255.67</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.67R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.67R -- win</td>
+        </tr><tr>
+            <td><b>PCAR</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$131.87</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>PM</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$193.56</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>PRU</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$122.67</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>RJF</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$173.12</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>RTX</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$210.54</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.09R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.09R -- win</td>
+        </tr><tr>
+            <td><b>SCHW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$103.64</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.73R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.73R unrealized</td>
+        </tr><tr>
+            <td><b>SHW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$340.99</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.55R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.55R -- win</td>
+        </tr><tr>
+            <td><b>STLD</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$251.93</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+0.28R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.28R -- win</td>
+        </tr><tr>
+            <td><b>SW</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$47.33</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>T</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$23.25</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.58R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.58R unrealized</td>
+        </tr><tr>
+            <td><b>TRMB</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$56.00</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">+0.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at +0.00R -- loss</td>
+        </tr><tr>
+            <td><b>TRV</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$372.58</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
+            <td title="">—</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
+        </tr><tr>
+            <td><b>VZ</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$46.01</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+3.19R</td>
+            <td title="">—</td>
+            <td class="note">Still open, working -- +3.19R unrealized</td>
+        </tr><tr>
+            <td><b>WAB</b></td>
+            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td>2026-07-30</td>
+            <td>$288.57</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+1.04R</td>
+            <td title="2026-08-21, 2026-08-25">★ (2x)</td>
+            <td class="note">Still open -- +1.04R unrealized</td>
+        </tr><tr>
+            <td><b>BAX</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-07-30</td>
+            <td>$26.55</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:rgb(190,194,200);">-0.26R</td>
+            <td title="">—</td>
+            <td class="note">Still open, underwater -- -0.26R unrealized</td>
+        </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    
+<details class="appendix">
+<summary>Supporting Detail: entry-timing correction, trailing-stop sweep, A++ Setup Analysis, backtest highlights</summary>
+
+    <div class="exec-summary" style="border-color: rgb(110,90,40); background: linear-gradient(135deg, rgba(210,153,34,0.10), rgba(35,42,54,0.6));">
+        <h2 style="color:#e3c364;">Entry-Timing Correction &mdash; As-Published vs. Execution-Realistic</h2>
+        <p>The as-published backtest (and the live daily report) both detect a signal using a
+        trading day's OWN closing price, then enter the hypothetical trade AT that same closing
+        price -- a fill only achievable by transacting in the last instant of the session whose
+        data just confirmed the signal. This variant corrects that: every trade instead enters at
+        the <b>next trading session's open</b>, the earliest price a trader reading this report the
+        next morning could actually get filled at. Signal detection, the stop/trail simulation,
+        universe, and date range are all identical between the two runs -- only entry price/timing
+        changed.</p>
+        <p class="note">Corrected run generated 2026-08-27T10:51:41Z &middot;
+        period 5y &middot; universe 518 tickers.</p>
+        <div class="table-wrap"><table>
+            <thead><tr><th>System</th>
+            <th>Win rate (as-published)</th><th>Win rate (corrected)</th><th>&Delta;</th>
+            <th>Avg R (as-published)</th><th>Avg R (corrected)</th><th>&Delta;</th>
+            <th>Total $ (as-published)</th><th>Total $ (corrected)</th><th>&Delta;</th>
+            </tr></thead>
+            <tbody><tr>
+            <td>Trend Template</td>
+            <td>27.0%</td>
+            <td>27.3%</td>
+            <td><span class="hl-pos">+0.3pp</span></td>
+            <td>0.34</td>
+            <td>0.38</td>
+            <td><span class="hl-pos">+0.04</span></td>
+            <td>$303,609</td>
+            <td>$318,488</td>
+            <td><span class="hl-pos">+14,879</span></td>
+        </tr><tr>
+            <td>Qullamaggie Momentum</td>
+            <td>39.2%</td>
+            <td>38.9%</td>
+            <td><span class="hl-neg">-0.3pp</span></td>
+            <td>0.65</td>
+            <td>0.6</td>
+            <td><span class="hl-neg">-0.05</span></td>
+            <td>$53,398</td>
+            <td>$53,432</td>
+            <td><span class="hl-pos">+34</span></td>
+        </tr><tr>
+            <td>Pattern Combo</td>
+            <td>23.1%</td>
+            <td>24.2%</td>
+            <td><span class="hl-pos">+1.1pp</span></td>
+            <td>0.26</td>
+            <td>0.32</td>
+            <td><span class="hl-pos">+0.06</span></td>
+            <td>$277,129</td>
+            <td>$335,439</td>
+            <td><span class="hl-pos">+58,310</span></td>
+        </tr><tr>
+            <td>Bull Flag</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>n/a</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td><span class="hl-pos">+0</span></td>
+        </tr></tbody>
+        </table></div>
+        <p class="note">Total $ figures use the same standardized $100/trade risk
+        model as the rest of this report -- not the $10k capital-constrained portfolio simulation,
+        which has not yet been re-run against corrected entries and should not be read off the
+        Executive Summary table above until it has.</p>
+    </div>
+    
+
+<div class="exec-summary">
+<h2>$10,000 Portfolio Simulation: Trailing-Stop Multiple Comparison</h2>
+<p>The flat-$100-per-trade sweep (see the trailing-stop sweep tables in the appendix below) found
+<b>8x ADR OR 7%</b> as the per-trade peak (avg R 0.62 across ~20,600 signals). But once trades are
+run through the same $10k / 1%-compounding / cash-required-is-binding portfolio simulation used
+everywhere else on this page, that edge does not survive -- a wider trail ties up cash in each
+position for much longer, which sharply reduces how many trades the account can actually take
+(capital velocity), and that matters more than the bigger per-trade edge (see the 2x vs 8x
+comparison in each system's card below). This section re-runs the full $10k simulation once per
+trailing multiple (1.5x-12x) to find out which multiple genuinely wins once that constraint is
+applied, instead of assuming the answer.</p>
+<p class="note"><b>Read with caution:</b> once capital is constrained, each system only takes
+roughly 60-350 trades per multiple (vs ~20,600 signals in the flat-$100 sweep), so a handful of
+outsized winners (multi-year holds like RKLB, MSTR, CRWD, or PLTR) can swing the aggregate return
+by tens or even hundreds of percentage points between adjacent multiples. The curve below is
+genuinely noisy and non-monotonic, not smooth -- treat the general neighborhood of multiples that
+cluster near the top as more reliable than the single best-labeled row.</p>
+<ul class="note"><li><b>Trend Template:</b> best at $10k is <b>2.5x ADR OR 7% (wider)</b> ($53,907, +439.1%) vs 2x rule ($29,940, +199.4%)</li><li><b>Qullamaggie Momentum:</b> best at $10k is <b>3x ADR OR 7% (wider)</b> ($60,264, +502.6%) vs 2x rule ($52,377, +423.8%)</li><li><b>Pattern Combo:</b> best at $10k is <b>1.5x ADR OR 7% (wider)</b> ($36,523, +265.2%) vs 2x rule ($21,265, +112.7%)</li></ul>
+
+<h3>Trend Template</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Trailing-stop rule</th><th>$10k &rarr; Ending equity</th><th>Return</th>
+<th>Trades taken</th><th>Trades skipped</th><th>Max drawdown</th></tr></thead>
+<tbody><tr><td>1.5x ADR OR 7% (wider)</td><td>$23,375</td><td>+133.8%</td><td>290</td><td>8,605</td><td>19.6%</td></tr><tr><td style="color:#7ee787;font-weight:600;">2x ADR OR 7% (wider) (current live rule)</td><td>$29,940</td><td>+199.4%</td><td>284</td><td>8,612</td><td>14.3%</td></tr><tr><td style="color:#f0b429;font-weight:600;">2.5x ADR OR 7% (wider) (best at $10k)</td><td>$53,907</td><td>+439.1%</td><td>261</td><td>8,635</td><td>15.3%</td></tr><tr><td>3x ADR OR 7% (wider)</td><td>$21,927</td><td>+119.3%</td><td>218</td><td>8,676</td><td>15.0%</td></tr><tr><td>4x ADR OR 7% (wider)</td><td>$16,337</td><td>+63.4%</td><td>198</td><td>8,697</td><td>19.9%</td></tr><tr><td>5x ADR OR 7% (wider)</td><td>$20,007</td><td>+100.1%</td><td>130</td><td>8,764</td><td>14.7%</td></tr><tr><td>6x ADR OR 7% (wider)</td><td>$25,136</td><td>+151.4%</td><td>116</td><td>8,777</td><td>22.5%</td></tr><tr><td>7x ADR OR 7% (wider)</td><td>$9,721</td><td>-2.8%</td><td>81</td><td>8,813</td><td>15.5%</td></tr><tr><td>8x ADR OR 7% (wider)</td><td>$12,369</td><td>+23.7%</td><td>86</td><td>8,808</td><td>29.2%</td></tr><tr><td>9x ADR OR 7% (wider)</td><td>$14,143</td><td>+41.4%</td><td>78</td><td>8,816</td><td>30.3%</td></tr><tr><td>10x ADR OR 7% (wider)</td><td>$12,488</td><td>+24.9%</td><td>73</td><td>8,821</td><td>30.5%</td></tr><tr><td>11x ADR OR 7% (wider)</td><td>$12,005</td><td>+20.1%</td><td>74</td><td>8,818</td><td>30.5%</td></tr><tr><td>12x ADR OR 7% (wider)</td><td>$11,428</td><td>+14.3%</td><td>72</td><td>8,820</td><td>30.5%</td></tr></tbody>
+</table></div>
+
+<h3>Qullamaggie Momentum</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Trailing-stop rule</th><th>$10k &rarr; Ending equity</th><th>Return</th>
+<th>Trades taken</th><th>Trades skipped</th><th>Max drawdown</th></tr></thead>
+<tbody><tr><td>1.5x ADR OR 7% (wider)</td><td>$44,070</td><td>+340.7%</td><td>333</td><td>489</td><td>22.8%</td></tr><tr><td style="color:#7ee787;font-weight:600;">2x ADR OR 7% (wider) (current live rule)</td><td>$52,377</td><td>+423.8%</td><td>304</td><td>518</td><td>19.8%</td></tr><tr><td>2.5x ADR OR 7% (wider)</td><td>$44,772</td><td>+347.7%</td><td>277</td><td>545</td><td>14.1%</td></tr><tr><td style="color:#f0b429;font-weight:600;">3x ADR OR 7% (wider) (best at $10k)</td><td>$60,264</td><td>+502.6%</td><td>249</td><td>573</td><td>13.7%</td></tr><tr><td>4x ADR OR 7% (wider)</td><td>$54,858</td><td>+448.6%</td><td>194</td><td>628</td><td>19.8%</td></tr><tr><td>5x ADR OR 7% (wider)</td><td>$43,249</td><td>+332.5%</td><td>163</td><td>658</td><td>17.5%</td></tr><tr><td>6x ADR OR 7% (wider)</td><td>$27,829</td><td>+178.3%</td><td>128</td><td>692</td><td>23.9%</td></tr><tr><td>7x ADR OR 7% (wider)</td><td>$31,949</td><td>+219.5%</td><td>109</td><td>712</td><td>25.8%</td></tr><tr><td>8x ADR OR 7% (wider)</td><td>$19,315</td><td>+93.2%</td><td>80</td><td>739</td><td>23.1%</td></tr><tr><td>9x ADR OR 7% (wider)</td><td>$16,611</td><td>+66.1%</td><td>78</td><td>741</td><td>23.1%</td></tr><tr><td>10x ADR OR 7% (wider)</td><td>$17,392</td><td>+73.9%</td><td>68</td><td>750</td><td>23.1%</td></tr><tr><td>11x ADR OR 7% (wider)</td><td>$15,679</td><td>+56.8%</td><td>70</td><td>748</td><td>23.1%</td></tr><tr><td>12x ADR OR 7% (wider)</td><td>$20,059</td><td>+100.6%</td><td>71</td><td>747</td><td>23.1%</td></tr></tbody>
+</table></div>
+
+<h3>Pattern Combo</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Trailing-stop rule</th><th>$10k &rarr; Ending equity</th><th>Return</th>
+<th>Trades taken</th><th>Trades skipped</th><th>Max drawdown</th></tr></thead>
+<tbody><tr><td style="color:#f0b429;font-weight:600;">1.5x ADR OR 7% (wider) (best at $10k)</td><td>$36,523</td><td>+265.2%</td><td>347</td><td>10,586</td><td>31.9%</td></tr><tr><td style="color:#7ee787;font-weight:600;">2x ADR OR 7% (wider) (current live rule)</td><td>$21,265</td><td>+112.7%</td><td>332</td><td>10,599</td><td>38.5%</td></tr><tr><td>2.5x ADR OR 7% (wider)</td><td>$24,677</td><td>+146.8%</td><td>296</td><td>10,634</td><td>31.9%</td></tr><tr><td>3x ADR OR 7% (wider)</td><td>$32,187</td><td>+221.9%</td><td>282</td><td>10,649</td><td>37.0%</td></tr><tr><td>4x ADR OR 7% (wider)</td><td>$19,880</td><td>+98.8%</td><td>195</td><td>10,735</td><td>32.3%</td></tr><tr><td>5x ADR OR 7% (wider)</td><td>$25,912</td><td>+159.1%</td><td>181</td><td>10,749</td><td>28.8%</td></tr><tr><td>6x ADR OR 7% (wider)</td><td>$20,449</td><td>+104.5%</td><td>157</td><td>10,772</td><td>32.6%</td></tr><tr><td>7x ADR OR 7% (wider)</td><td>$9,465</td><td>-5.3%</td><td>119</td><td>10,810</td><td>28.5%</td></tr><tr><td>8x ADR OR 7% (wider)</td><td>$12,803</td><td>+28.0%</td><td>99</td><td>10,829</td><td>28.5%</td></tr><tr><td>9x ADR OR 7% (wider)</td><td>$8,724</td><td>-12.8%</td><td>56</td><td>10,873</td><td>33.4%</td></tr><tr><td>10x ADR OR 7% (wider)</td><td>$7,280</td><td>-27.2%</td><td>73</td><td>10,856</td><td>34.7%</td></tr><tr><td>11x ADR OR 7% (wider)</td><td>$7,854</td><td>-21.5%</td><td>60</td><td>10,869</td><td>34.7%</td></tr><tr><td>12x ADR OR 7% (wider)</td><td>$7,969</td><td>-20.3%</td><td>56</td><td>10,874</td><td>34.7%</td></tr></tbody>
+</table></div>
+
+</div>
+
+
+<div class="exec-summary">
+<h2>A++ Setup Analysis: What Do the Biggest &amp; Fastest Winners Have in Common?</h2>
+<p>Pulled the top 40 closed trades by R-multiple ("grinders" -- the biggest total winners) and,
+separately, the fastest 40 winners among the 1283 closed trades with R-multiple &ge; 5.0
+("rockets" -- big winners that resolved quickest), then compared their setup-time characteristics
+against the 20478-trade baseline of every closed trade in the backtest. Everything
+below is derived from fields already on each trade record plus cached daily OHLC (SMA position,
+% off the 52-week high, a base-tightness ratio comparing the 10-day range to the 50-day range) --
+no new price data downloaded.</p>
+<p class="note"><b>Read with caution:</b> no volume data is available in the cached price panels
+(price_panel_cache.json.gz has no volume field), and true cross-sectional RS rank could not be
+reconstructed either -- that needs the whole scanned universe's returns on each historical date,
+not just the traded tickers. Both Minervini's and Qullamaggie's methodologies weight volume
+heavily (breakout volume surge, VCP volume dry-up), so this analysis is necessarily incomplete on
+that front. Each group is also only 40 trades out of 20478 -- enough to see a
+directional lean, not enough to call any of this a hard rule.</p>
+
+<h3>Grinders: the biggest total winners</h3>
+<p class="callout">Avg 30.01R over an average
+149.6-day hold. Compared to the all-trade baseline, grinders
+sit <b>closer to their 52-week high</b> (6.4% off vs
+7.9% off), with a <b>tighter, more contracted base</b>
+at entry (10d-vs-50d range ratio 0.91 vs
+1.00 baseline -- lower means the 10-day
+range was narrower than the 50-day range, i.e. the stock was tightening up), and are <b>not wildly
+extended</b> above their moving averages (13.7% above the
+200d SMA vs 18.9% baseline). Pattern-tag and system mix
+for grinders essentially mirror the baseline (VCP 17 (81%), Flag 3 (14%), EP 1 (5%) vs baseline's own
+pattern_combo mix) -- the distinguishing signal here is setup structure (tight, near-highs base),
+not which system or pattern flagged it.</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Ticker</th><th>System</th><th>Entry</th><th>Exit</th><th>Result</th><th>Hold</th><th>Pattern</th></tr>
+<tr><td>WMT</td><td>Pattern Combo</td><td>2024-01-08</td><td>2024-12-23</td><td>61.09R</td><td>350d</td><td>VCP</td></tr><tr><td>APP</td><td>Qullamaggie Momentum</td><td>2024-08-14</td><td>2024-12-09</td><td>57.21R</td><td>117d</td><td>-</td></tr><tr><td>EME</td><td>Pattern Combo</td><td>2024-01-04</td><td>2024-04-16</td><td>40.55R</td><td>103d</td><td>VCP</td></tr><tr><td>EME</td><td>Trend Template</td><td>2024-01-08</td><td>2024-04-16</td><td>40.55R</td><td>99d</td><td>-</td></tr><tr><td>FOXA</td><td>Pattern Combo</td><td>2024-07-03</td><td>2025-03-07</td><td>36.27R</td><td>247d</td><td>VCP</td></tr><tr><td>TMUS</td><td>Pattern Combo</td><td>2024-05-21</td><td>2024-12-09</td><td>34.60R</td><td>202d</td><td>VCP</td></tr><tr><td>GDDY</td><td>Trend Template</td><td>2024-01-08</td><td>2024-09-04</td><td>33.67R</td><td>240d</td><td>-</td></tr><tr><td>VST</td><td>Pattern Combo</td><td>2023-10-30</td><td>2024-03-11</td><td>33.24R</td><td>133d</td><td>VCP</td></tr>
+</table>
+</div>
+
+<h3>Rockets: the fastest big winners</h3>
+<p class="callout">Avg 8.30R over an average
+9.2-day hold (the fastest 40 out of 1283 trades that
+hit &ge;5R at all). These setups look almost the opposite of grinders at entry: already <b>well
+extended above every moving average</b> (17.3% above the 50d
+SMA, 45.5% above the 200d SMA -- roughly
+2.4x the baseline distance), with a <b>higher ADR%</b> at setup
+(4.0% vs 2.8%
+baseline -- more volatile, faster-moving names). The <b>Flag pattern is heavily over-represented</b>
+among rockets (63.6% of tagged rocket setups vs 14.0%
+of tagged baseline setups, roughly 4.5x), and
+<b>qullamaggie_momentum trades are disproportionately common</b> (15% of
+rockets vs 4% of the full baseline, roughly 3.8x),
+alongside trend_template (57% vs 43%), at the
+expense of pattern_combo (28% vs 53%).</p>
+
+<div class="table-wrap">
+<table>
+<tr><th>Ticker</th><th>System</th><th>Entry</th><th>Exit</th><th>Result</th><th>Hold</th><th>Pattern</th></tr>
+<tr><td>ORCL</td><td>Trend Template</td><td>2025-09-09</td><td>2025-09-11</td><td>10.47R</td><td>2d</td><td>-</td></tr><tr><td>ALGN</td><td>Pattern Combo</td><td>2023-01-31</td><td>2023-02-03</td><td>7.77R</td><td>3d</td><td>Flag</td></tr><tr><td>NBIS</td><td>Trend Template</td><td>2025-09-08</td><td>2025-09-11</td><td>6.47R</td><td>3d</td><td>-</td></tr><tr><td>RKLB</td><td>Qullamaggie Momentum</td><td>2024-11-11</td><td>2024-11-14</td><td>5.39R</td><td>3d</td><td>-</td></tr><tr><td>AMD</td><td>Pattern Combo</td><td>2025-10-03</td><td>2025-10-07</td><td>8.71R</td><td>4d</td><td>VCP</td></tr><tr><td>IDXX</td><td>Trend Template</td><td>2025-08-01</td><td>2025-08-05</td><td>9.25R</td><td>4d</td><td>-</td></tr><tr><td>SMCI</td><td>Trend Template</td><td>2024-01-18</td><td>2024-01-23</td><td>6.78R</td><td>5d</td><td>-</td></tr><tr><td>WRB</td><td>Trend Template</td><td>2025-03-26</td><td>2025-03-31</td><td>5.03R</td><td>5d</td><td>-</td></tr>
+</table>
+</div>
+
+<div class="table-wrap">
+<table>
+<tr><th>Metric</th><th>Grinders (biggest winners)</th><th>Rockets (fastest big winners)</th><th>All-trade baseline</th></tr>
+
+<tr><td>Sample size</td><td>40 trades</td><td>40 trades</td><td>20478 trades (all closed)</td></tr>
+<tr><td>Avg R-multiple</td><td>30.01R</td><td>8.30R</td><td>0.31R</td></tr>
+<tr><td>Avg hold time</td><td>149.6 days</td><td>9.2 days</td><td>17.2 days</td></tr>
+<tr><td>Avg ADR% at setup</td><td>2.5%</td><td>4.0%</td><td>2.8%</td></tr>
+<tr><td>Avg % above 50d SMA</td><td>4.7%</td><td>17.3%</td><td>6.0%</td></tr>
+<tr><td>Avg % above 150d SMA</td><td>10.2%</td><td>38.2%</td><td>15.0%</td></tr>
+<tr><td>Avg % above 200d SMA</td><td>13.7%</td><td>45.5%</td><td>18.9%</td></tr>
+<tr><td>% of trades above 50 / 150 / 200d SMA</td><td>85% / 88% / 92%</td><td>98% / 98% / 98%</td><td>83% / 90% / 92%</td></tr>
+<tr><td>Avg % off 52-week high</td><td>6.4%</td><td>8.5%</td><td>7.9%</td></tr>
+<tr><td>Avg base-tightness ratio (10d vs 50d range)</td><td>0.91</td><td>1.07</td><td>1.00</td></tr>
+<tr><td>Pattern-tag mix (of tagged / pattern_combo trades)</td><td>VCP 17 (81%), Flag 3 (14%), EP 1 (5%)</td><td>Flag 7 (64%), VCP 3 (27%), EP 1 (9%)</td><td>VCP 8918 (82%), Flag 1522 (14%), EP 403 (4%)</td></tr>
+<tr><td>System mix</td><td>Pattern Combo 21 (52%), Trend Template 17 (42%), Qullamaggie Momentum 2 (5%)</td><td>Trend Template 23 (57%), Pattern Combo 11 (28%), Qullamaggie Momentum 6 (15%)</td><td>Pattern Combo 10843 (53%), Trend Template 8816 (43%), Qullamaggie Momentum 819 (4%)</td></tr>
+
+</table>
+</div>
+
+<h3>Practical checklist</h3>
+<p class="callout">A tight, contracting base sitting within roughly 6-7% of its 52-week high, and
+not badly extended above the 200-day SMA, favors a <b>multi-month grinder</b> -- the kind of trade
+that compounds into a huge total winner if held, regardless of which system or pattern flagged it.
+A name that's already extended well above its moving averages with an elevated ADR%, especially a
+tight Flag setup or a qullamaggie_momentum signal, favors a <b>fast pop</b> -- resolves in days,
+not months, but the total R is smaller. Treat this as a lean to weight setups by, not a filter to
+screen with -- the sample is 40 trades per group, and volume (which both Minervini and Qullamaggie
+treat as a primary signal) isn't part of this analysis at all.</p>
+</div>
+
+
+    <div class="exec-summary">
+        <h2>Backtest Highlights</h2>
+        <p>Annotated charts for the best closed trade per ticker among the top historical
+        performers -- entry, stop, and exit marked directly on real price action, generated
+        as static images from the same backtest data used everywhere else on this page (no
+        live TradingView dependency).</p>
+        <div class="highlight-grid">
+        <div class="highlight-card">
+            <img src="backtest-highlights/WMT.png" alt="WMT annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=WMT" target="_blank" rel="noopener">WMT</a> &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+61.1R</span>
+                    <span>$6,108.50</span>
+                    <span>2024-01-08 &rarr; 2024-12-23</span>
+                </div>
+                <div class="highlight-prices">Entry $51.43 &middot; Stop $50.83 &middot; Exit $88.05</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/APP.png" alt="APP annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=APP" target="_blank" rel="noopener">APP</a> &mdash; Unknown, qullamaggie_momentum</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+57.2R</span>
+                    <span>$5,721.45</span>
+                    <span>2024-08-14 &rarr; 2024-12-09</span>
+                </div>
+                <div class="highlight-prices">Entry $84.64 &middot; Stop $79.68 &middot; Exit $368.65</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/EME.png" alt="EME annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=EME" target="_blank" rel="noopener">EME</a> &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+40.6R</span>
+                    <span>$4,055.38</span>
+                    <span>2024-01-04 &rarr; 2024-04-16</span>
+                </div>
+                <div class="highlight-prices">Entry $209.80 &middot; Stop $206.55 &middot; Exit $341.77</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/FOXA.png" alt="FOXA annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=FOXA" target="_blank" rel="noopener">FOXA</a> &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+36.3R</span>
+                    <span>$3,627.37</span>
+                    <span>2024-07-03 &rarr; 2025-03-07</span>
+                </div>
+                <div class="highlight-prices">Entry $34.06 &middot; Stop $33.52 &middot; Exit $53.85</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/TMUS.png" alt="TMUS annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=TMUS" target="_blank" rel="noopener">TMUS</a> &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+34.6R</span>
+                    <span>$3,460.36</span>
+                    <span>2024-05-21 &rarr; 2024-12-09</span>
+                </div>
+                <div class="highlight-prices">Entry $158.49 &middot; Stop $156.57 &middot; Exit $224.93</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/GDDY.png" alt="GDDY annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=GDDY" target="_blank" rel="noopener">GDDY</a> &mdash; Unknown, trend_template</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.7R</span>
+                    <span>$3,367.25</span>
+                    <span>2024-01-08 &rarr; 2024-09-04</span>
+                </div>
+                <div class="highlight-prices">Entry $101.94 &middot; Stop $100.34 &middot; Exit $155.91</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/VST.png" alt="VST annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=VST" target="_blank" rel="noopener">VST</a> &mdash; VCP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.2R</span>
+                    <span>$3,324.01</span>
+                    <span>2023-10-30 &rarr; 2024-03-11</span>
+                </div>
+                <div class="highlight-prices">Entry $31.81 &middot; Stop $31.06 &middot; Exit $56.73</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/VRT.png" alt="VRT annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=VRT" target="_blank" rel="noopener">VRT</a> &mdash; EP, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+33.0R</span>
+                    <span>$3,299.63</span>
+                    <span>2023-04-26 &rarr; 2023-08-10</span>
+                </div>
+                <div class="highlight-prices">Entry $13.54 &middot; Stop $12.94 &middot; Exit $33.32</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/GLW.png" alt="GLW annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=GLW" target="_blank" rel="noopener">GLW</a> &mdash; Unknown, trend_template</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+31.7R</span>
+                    <span>$3,172.94</span>
+                    <span>2025-07-17 &rarr; 2025-10-28</span>
+                </div>
+                <div class="highlight-prices">Entry $53.61 &middot; Stop $52.69 &middot; Exit $82.92</div>
+            </div>
+        </div>
+        <div class="highlight-card">
+            <img src="backtest-highlights/WDC.png" alt="WDC annotated trade chart" loading="lazy">
+            <div class="highlight-meta">
+                <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=WDC" target="_blank" rel="noopener">WDC</a> &mdash; Flag, pattern_combo</div>
+                <div class="highlight-stats">
+                    <span class="hl-pos">+30.6R</span>
+                    <span>$3,060.39</span>
+                    <span>2025-05-02 &rarr; 2025-10-07</span>
+                </div>
+                <div class="highlight-prices">Entry $44.49 &middot; Stop $41.96 &middot; Exit $121.64</div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+</details>
+<details class="appendix">
+<summary>Appendix: Full Detail (per-system breakdowns, trailing-stop sweep tables, $10k portfolio simulations, Pareto concentration, top tickers, hold-time stats)</summary>
+<div class="caveat" style="margin-top:12px;"><b>Note:</b> Bull Flag produced 0 trades across the full 5-year walk -- flagged as an open question, not shown in the Top Tickers/Pareto sections below since there's nothing to aggregate.</div>
+<div class="grid">
+
+>>>>>>> f7c0848 (Next-open entry-timing backtest run 2026-08-27T10:51:42Z)
         <div class="card">
           <h3>Trend Template</h3>
           <p>8970 trades total &middot; 8888 closed &middot; 82 still open</p>
