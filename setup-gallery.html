@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup Gallery -- Best Trades by Category</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0; padding: 20px;
+    background-color: rgb(15, 17, 21);
+    color: rgb(230, 232, 236);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+h1 { font-size: 1.4rem; margin-bottom: 4px; }
+.meta { color: rgb(150,154,162); font-size: 0.85rem; margin-bottom: 20px; }
+.caveat {
+    background: rgba(210, 153, 34, 0.12); border: 1px solid rgba(210, 153, 34, 0.4);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5;
+}
+.caveat b { color: rgb(230, 195, 100); }
+.regime-banner {
+    background: rgba(46, 160, 67, 0.12); border: 1px solid rgba(46, 160, 67, 0.4);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.95rem;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 16px; }
+.card {
+    background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; padding: 16px 18px;
+}
+.card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.card p { margin: 4px 0; font-size: 0.88rem; color: rgb(190, 194, 200); }
+.headline { color: rgb(230,232,236) !important; }
+.note { color: rgb(150,154,162) !important; font-size: 0.8rem !important; }
+.subcard { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgb(40,44,52); }
+.subcard h4 { margin: 0 0 8px; font-size: 0.92rem; color: rgb(210,214,220); }
+.callout {
+    background: rgba(88, 166, 255, 0.08); border: 1px solid rgba(88, 166, 255, 0.3);
+    border-radius: 6px; padding: 8px 10px; font-size: 0.83rem !important; line-height: 1.5; margin: 6px 0 !important;
+}
+.callout b { color: rgb(120, 190, 255); }
+.exec-summary {
+    background: linear-gradient(135deg, rgba(46,160,67,0.10), rgba(35,42,54,0.6));
+    border: 1px solid rgb(60,110,80);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+.exec-summary h2 { margin: 0 0 12px; font-size: 1.3rem; color: #7ee787; }
+.exec-summary p { margin: 8px 0; font-size: 0.92rem; color: rgb(200,204,210); line-height: 1.5; }
+.exec-summary table { margin-top: 14px; }
+details.appendix { margin-top: 8px; }
+details.appendix > summary {
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgb(170,174,182);
+    padding: 12px 0;
+    border-top: 1px solid rgb(40,44,52);
+    list-style: none;
+}
+details.appendix > summary::-webkit-details-marker { display: none; }
+details.appendix > summary::before { content: "▸ "; color: #7ee787; }
+details.appendix[open] > summary::before { content: "▾ "; }
+details.appendix[open] > summary { border-bottom: 1px solid rgb(40,44,52); margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgb(40,44,52); }
+th { color: rgb(150,154,162); font-weight: 500; }
+.pareto-chart { margin-top: 8px; }
+.pareto-chart svg { max-width: 100%; height: auto; display: block; }
+.table-wrap { overflow: auto; max-height: 70vh; border: 1px solid rgb(40,44,52); border-radius: 10px; }
+
+.highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 16px; margin-top: 8px; }
+.highlight-card { background: rgb(22, 25, 30); border: 1px solid rgb(40, 44, 52); border-radius: 8px; overflow: hidden; }
+.highlight-card img { width: 100%; display: block; background: rgb(15,17,21); }
+.highlight-meta { padding: 12px 14px; }
+.highlight-title { font-size: 0.95rem; font-weight: 600; color: rgb(230,232,236); margin-bottom: 6px; }
+.highlight-title a { color: inherit; text-decoration: none; border-bottom: 1px dotted rgb(150,154,162); }
+.highlight-title a:hover { border-bottom-color: rgb(230,232,236); }
+.highlight-stats { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: rgb(190,194,200); margin-bottom: 4px; }
+.hl-pos { color: #3fb950; font-weight: 700; }
+.hl-neg { color: #f85149; font-weight: 700; }
+.highlight-prices { font-size: 0.8rem; color: rgb(150,154,162); }
+
+</style>
+</head>
+<body>
+<h1>Setup Gallery -- Best Trades by Category</h1>
+<div class="meta">Generated 2026-08-28T08:53:42Z &middot; Source: 5-year backtest (backtest_results.json)</div>
+<div class="caveat"><b>What this is:</b> real historical trades from the backtest, grouped by the three
+factors validated (2026-08-27 bucket analysis) as genuine, non-noisy differentiators of trade outcome --
+not a filter or a guarantee, just a visual reference for what these characteristics tend to look like on
+an actual chart. See the Strategy tab's ranking table for how these factors are weighted into today's live
+picks. Base tightness and %-off-52wk-high are deliberately not shown here -- both were noisy/non-monotonic
+in the same analysis.</div>
+
+<div class="exec-summary">
+<h2>High ADR% (Minervini, 5%+)</h2>
+<p>Widest daily-ranging Trend Template setups -- ADR% showed the cleanest, most monotonic edge of any factor tested (20.6% win / 0.48R avg under 2% ADR vs 37.6% win / 0.65R avg at 5%+, n=583).</p>
+<div class="highlight-grid">
+<div class="highlight-card">
+<img src="setup-gallery/adr_INTC.png" alt="INTC annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=INTC" target="_blank" rel="noopener">INTC</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+27.0R</span>
+<span>$2,696</span>
+<span>2026-04-01 &rarr; 2026-05-12</span>
+<span>ADR 5.4%</span><span>RS 95</span>
+</div>
+<div class="highlight-prices">Entry $48.03 &middot; Stop $45.42 &middot; Exit $118.34</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/adr_MRNA.png" alt="MRNA annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=MRNA" target="_blank" rel="noopener">MRNA</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+24.7R</span>
+<span>$2,474</span>
+<span>2026-08-12 &rarr; 2026-08-20</span>
+<span>ADR 5.9%</span><span>RS 96</span>
+</div>
+<div class="highlight-prices">Entry $63.67 &middot; Stop $59.94 &middot; Exit $155.96</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/adr_SMCI.png" alt="SMCI annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=SMCI" target="_blank" rel="noopener">SMCI</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+20.8R</span>
+<span>$2,078</span>
+<span>2023-04-28 &rarr; 2023-05-31</span>
+<span>ADR 5.1%</span><span>RS 99</span>
+</div>
+<div class="highlight-prices">Entry $10.54 &middot; Stop $10.00 &middot; Exit $21.80</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/adr_SNDK.png" alt="SNDK annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=SNDK" target="_blank" rel="noopener">SNDK</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+17.9R</span>
+<span>$1,794</span>
+<span>2025-12-29 &rarr; 2026-02-04</span>
+<span>ADR 8.2%</span><span>RS 99</span>
+</div>
+<div class="highlight-prices">Entry $244.25 &middot; Stop $224.12 &middot; Exit $605.48</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/adr_COIN.png" alt="COIN annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=COIN" target="_blank" rel="noopener">COIN</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+15.0R</span>
+<span>$1,499</span>
+<span>2023-11-02 &rarr; 2024-01-02</span>
+<span>ADR 6.3%</span><span>RS 90</span>
+</div>
+<div class="highlight-prices">Entry $84.60 &middot; Stop $79.30 &middot; Exit $163.94</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/adr_DELL.png" alt="DELL annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=DELL" target="_blank" rel="noopener">DELL</a> &mdash; Flag, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+14.8R</span>
+<span>$1,479</span>
+<span>2026-05-20 &rarr; 2026-06-03</span>
+<span>ADR 5.0%</span><span>RS 96</span>
+</div>
+<div class="highlight-prices">Entry $242.53 &middot; Stop $230.40 &middot; Exit $421.84</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="exec-summary">
+<h2>Flag / EP Pattern</h2>
+<p>Trades where the backtest's pattern classifier flagged a Flag or Episodic Pivot pattern alongside the system's own signal -- these clearly outperformed plain/VCP setups (Flag 38.8% win / 0.68R avg, EP 40.2% win / 0.91R avg, vs VCP 23.1% win / 0.29R avg).</p>
+<div class="highlight-grid">
+<div class="highlight-card">
+<img src="setup-gallery/pattern_VRT.png" alt="VRT annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=VRT" target="_blank" rel="noopener">VRT</a> &mdash; EP, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+33.0R</span>
+<span>$3,300</span>
+<span>2023-04-26 &rarr; 2023-08-10</span>
+<span>ADR 4.4%</span><span>RS 68</span>
+</div>
+<div class="highlight-prices">Entry $13.54 &middot; Stop $12.94 &middot; Exit $33.32</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_WDC.png" alt="WDC annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=WDC" target="_blank" rel="noopener">WDC</a> &mdash; Flag, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+30.6R</span>
+<span>$3,060</span>
+<span>2025-05-02 &rarr; 2025-10-07</span>
+<span>ADR 5.7%</span><span>RS 23</span>
+</div>
+<div class="highlight-prices">Entry $44.49 &middot; Stop $41.96 &middot; Exit $121.64</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_HPE.png" alt="HPE annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=HPE" target="_blank" rel="noopener">HPE</a> &mdash; Flag, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+27.0R</span>
+<span>$2,699</span>
+<span>2026-04-23 &rarr; 2026-06-03</span>
+<span>ADR 4.1%</span><span>RS 88</span>
+</div>
+<div class="highlight-prices">Entry $27.85 &middot; Stop $26.70 &middot; Exit $58.79</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_ORCL.png" alt="ORCL annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=ORCL" target="_blank" rel="noopener">ORCL</a> &mdash; Flag, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+26.1R</span>
+<span>$2,610</span>
+<span>2025-05-22 &rarr; 2025-08-01</span>
+<span>ADR 2.1%</span><span>RS 54</span>
+</div>
+<div class="highlight-prices">Entry $155.21 &middot; Stop $151.96 &middot; Exit $239.88</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_RKLB.png" alt="RKLB annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=RKLB" target="_blank" rel="noopener">RKLB</a> &mdash; Flag, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+25.9R</span>
+<span>$2,591</span>
+<span>2024-08-28 &rarr; 2024-11-14</span>
+<span>ADR 8.1%</span><span>RS 89</span>
+</div>
+<div class="highlight-prices">Entry $6.09 &middot; Stop $5.60 &middot; Exit $18.89</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_UAL.png" alt="UAL annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=UAL" target="_blank" rel="noopener">UAL</a> &mdash; Flag, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+21.4R</span>
+<span>$2,137</span>
+<span>2024-10-02 &rarr; 2024-12-09</span>
+<span>ADR 3.5%</span><span>RS 71</span>
+</div>
+<div class="highlight-prices">Entry $55.74 &middot; Stop $53.78 &middot; Exit $97.69</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="exec-summary">
+<h2>High RS Score (Minervini, 95-99)</h2>
+<p>Trend Template setups with a Relative Strength score of 95+ at signal time -- RS score was a clean, monotonic differentiator for this system (23.4% win / 0.29R avg at RS 70-79 vs 33.6% win / 0.48R avg at RS 95-99, n=1,620).</p>
+<div class="highlight-grid">
+<div class="highlight-card">
+<img src="setup-gallery/rs_AXON.png" alt="AXON annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=AXON" target="_blank" rel="noopener">AXON</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+27.6R</span>
+<span>$2,765</span>
+<span>2024-11-01 &rarr; 2024-12-09</span>
+<span>ADR 1.9%</span><span>RS 95</span>
+</div>
+<div class="highlight-prices">Entry $425.84 &middot; Stop $417.75 &middot; Exit $649.76</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/rs_INTC.png" alt="INTC annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=INTC" target="_blank" rel="noopener">INTC</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+27.0R</span>
+<span>$2,696</span>
+<span>2026-04-01 &rarr; 2026-05-12</span>
+<span>ADR 5.4%</span><span>RS 95</span>
+</div>
+<div class="highlight-prices">Entry $48.03 &middot; Stop $45.42 &middot; Exit $118.34</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/rs_META.png" alt="META annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=META" target="_blank" rel="noopener">META</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+26.1R</span>
+<span>$2,611</span>
+<span>2023-12-05 &rarr; 2024-03-11</span>
+<span>ADR 2.0%</span><span>RS 97</span>
+</div>
+<div class="highlight-prices">Entry $315.52 &middot; Stop $309.08 &middot; Exit $483.19</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/rs_MRNA.png" alt="MRNA annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=MRNA" target="_blank" rel="noopener">MRNA</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+24.7R</span>
+<span>$2,474</span>
+<span>2026-08-12 &rarr; 2026-08-20</span>
+<span>ADR 5.9%</span><span>RS 96</span>
+</div>
+<div class="highlight-prices">Entry $63.67 &middot; Stop $59.94 &middot; Exit $155.96</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/rs_SMCI.png" alt="SMCI annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=SMCI" target="_blank" rel="noopener">SMCI</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+20.8R</span>
+<span>$2,078</span>
+<span>2023-04-28 &rarr; 2023-05-31</span>
+<span>ADR 5.1%</span><span>RS 99</span>
+</div>
+<div class="highlight-prices">Entry $10.54 &middot; Stop $10.00 &middot; Exit $21.80</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/rs_NVDA.png" alt="NVDA annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=NVDA" target="_blank" rel="noopener">NVDA</a> &mdash; Unknown, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+19.4R</span>
+<span>$1,936</span>
+<span>2023-12-05 &rarr; 2024-02-20</span>
+<span>ADR 2.5%</span><span>RS 97</span>
+</div>
+<div class="highlight-prices">Entry $46.48 &middot; Stop $45.31 &middot; Exit $69.27</div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
