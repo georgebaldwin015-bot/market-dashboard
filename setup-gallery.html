@@ -85,13 +85,20 @@ th { color: rgb(150,154,162); font-weight: 500; }
 </head>
 <body>
 <h1>Setup Gallery -- Best Trades by Category</h1>
-<div class="meta">Generated 2026-08-28T08:53:42Z &middot; Source: 5-year backtest (backtest_results.json)</div>
+<div class="meta">Generated 2026-08-28T11:02:41Z &middot; Source: 5-year backtest (backtest_results.json), limit-fill screened</div>
 <div class="caveat"><b>What this is:</b> real historical trades from the backtest, grouped by the three
 factors validated (2026-08-27 bucket analysis) as genuine, non-noisy differentiators of trade outcome --
 not a filter or a guarantee, just a visual reference for what these characteristics tend to look like on
 an actual chart. See the Strategy tab's ranking table for how these factors are weighted into today's live
 picks. Base tightness and %-off-52wk-high are deliberately not shown here -- both were noisy/non-monotonic
-in the same analysis.</div>
+in the same analysis. Every entry shown here is screened for realistic fillability: it's the signal day's
+close (the price you'd have called out and rested a buy-limit order at), and only kept if the very next
+session actually traded down to that price. Candidates that gapped up and never came back down to the
+limit are dropped, not force-filled at a worse price. Note that the ADR% and RS Score categories are
+trend_template (Minervini trend template) signals -- that screen fires once a stock already meets
+trend-continuation criteria, which can be mid-trend rather than exactly at a fresh consolidation breakout
+(it has no pivot/breakout concept at all -- see the Strategy tab for detail). For examples that look like
+classic breakouts, see the Flag / EP Pattern category below.</div>
 
 <div class="exec-summary">
 <h2>High ADR% (Minervini, 5%+)</h2>
@@ -183,19 +190,6 @@ in the same analysis.</div>
 <p>Trades where the backtest's pattern classifier flagged a Flag or Episodic Pivot pattern alongside the system's own signal -- these clearly outperformed plain/VCP setups (Flag 38.8% win / 0.68R avg, EP 40.2% win / 0.91R avg, vs VCP 23.1% win / 0.29R avg).</p>
 <div class="highlight-grid">
 <div class="highlight-card">
-<img src="setup-gallery/pattern_VRT.png" alt="VRT annotated trade chart" loading="lazy">
-<div class="highlight-meta">
-<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=VRT" target="_blank" rel="noopener">VRT</a> &mdash; EP, pattern_combo</div>
-<div class="highlight-stats">
-<span class="hl-pos">+33.0R</span>
-<span>$3,300</span>
-<span>2023-04-26 &rarr; 2023-08-10</span>
-<span>ADR 4.4%</span><span>RS 68</span>
-</div>
-<div class="highlight-prices">Entry $13.54 &middot; Stop $12.94 &middot; Exit $33.32</div>
-</div>
-</div>
-<div class="highlight-card">
 <img src="setup-gallery/pattern_WDC.png" alt="WDC annotated trade chart" loading="lazy">
 <div class="highlight-meta">
 <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=WDC" target="_blank" rel="noopener">WDC</a> &mdash; Flag, pattern_combo</div>
@@ -235,19 +229,6 @@ in the same analysis.</div>
 </div>
 </div>
 <div class="highlight-card">
-<img src="setup-gallery/pattern_RKLB.png" alt="RKLB annotated trade chart" loading="lazy">
-<div class="highlight-meta">
-<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=RKLB" target="_blank" rel="noopener">RKLB</a> &mdash; Flag, pattern_combo</div>
-<div class="highlight-stats">
-<span class="hl-pos">+25.9R</span>
-<span>$2,591</span>
-<span>2024-08-28 &rarr; 2024-11-14</span>
-<span>ADR 8.1%</span><span>RS 89</span>
-</div>
-<div class="highlight-prices">Entry $6.09 &middot; Stop $5.60 &middot; Exit $18.89</div>
-</div>
-</div>
-<div class="highlight-card">
 <img src="setup-gallery/pattern_UAL.png" alt="UAL annotated trade chart" loading="lazy">
 <div class="highlight-meta">
 <div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=UAL" target="_blank" rel="noopener">UAL</a> &mdash; Flag, pattern_combo</div>
@@ -258,6 +239,32 @@ in the same analysis.</div>
 <span>ADR 3.5%</span><span>RS 71</span>
 </div>
 <div class="highlight-prices">Entry $55.74 &middot; Stop $53.78 &middot; Exit $97.69</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_IVZ.png" alt="IVZ annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=IVZ" target="_blank" rel="noopener">IVZ</a> &mdash; Flag, pattern_combo</div>
+<div class="highlight-stats">
+<span class="hl-pos">+20.4R</span>
+<span>$2,038</span>
+<span>2025-06-02 &rarr; 2025-08-01</span>
+<span>ADR 2.0%</span><span>RS 20</span>
+</div>
+<div class="highlight-prices">Entry $13.80 &middot; Stop $13.52 &middot; Exit $19.50</div>
+</div>
+</div>
+<div class="highlight-card">
+<img src="setup-gallery/pattern_APP.png" alt="APP annotated trade chart" loading="lazy">
+<div class="highlight-meta">
+<div class="highlight-title"><a href="https://www.tradingview.com/chart/?symbol=APP" target="_blank" rel="noopener">APP</a> &mdash; Flag, trend_template</div>
+<div class="highlight-stats">
+<span class="hl-pos">+19.1R</span>
+<span>$1,914</span>
+<span>2024-09-09 &rarr; 2024-11-04</span>
+<span>ADR 4.4%</span><span>RS 98</span>
+</div>
+<div class="highlight-prices">Entry $86.31 &middot; Stop $82.50 &middot; Exit $159.09</div>
 </div>
 </div>
 </div>
