@@ -150,17 +150,53 @@ th { color: rgb(150,154,162); font-weight: 500; }
     <div class="exec-summary track-record">
     <h2>Live Recommendations Track Record</h2>
     <p>What actually happened to the real tickers flagged by the live Bull Flag / Qullamaggie Momentum
-    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-08-29T03:54:55Z;
+    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-09-01T01:25:33Z;
     one row per ticker+system, at its earliest flag. Scored in R-multiples using the project's one
     mechanical stop rule (1x ADR initial stop, breakeven at 2R, trail at max(2x ADR, 7%)) walked forward
     against real daily prices -- not raw %-change, so a spike that later gave it all back is scored at
-    what the stop would have actually banked, not its peak. 9 additional flagged setup(s) were excluded (9 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 36 flagged too recently to have a post-entry bar yet. Of the graded trades, the 20 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.08R/trade vs +0.28R/trade for the 251 that hadn't.</p>
-    <p class="callout"><b>+72.98R</b> total if every one of these 271 setups had been taken exactly as flagged, sized to the project's standard risk (avg +0.27R/trade) -- 123 still open and marked to market, 148 closed (-54.44R realized, avg -0.37R/trade, 22% win rate).</p>
+    what the stop would have actually banked, not its peak. 9 additional flagged setup(s) were excluded (9 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 29 flagged too recently to have a post-entry bar yet. Of the graded trades, the 20 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged -0.07R/trade vs +0.17R/trade for the 262 that hadn't.</p>
+    <p class="callout"><b>+44.07R</b> total if every one of these 282 setups had been taken exactly as flagged, sized to the project's standard risk (avg +0.16R/trade) -- 104 still open and marked to market, 178 closed (-82.40R realized, avg -0.46R/trade, 18% win rate).</p>
     <div class="table-wrap">
     <table>
     <thead><tr><th>Ticker</th><th>System</th><th>Flagged</th><th>Entry</th><th>Status</th><th>R</th><th>Worth Watching</th><th>Note</th></tr></thead>
     <tbody>
     <tr>
+            <td><b>EBAY</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-09-01</td>
+            <td>$103.56</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>KDP</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-09-01</td>
+            <td>$31.86</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>PPL</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-09-01</td>
+            <td>$34.13</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
+            <td><b>REG</b></td>
+            <td title="Pattern Combo">Minervini</td>
+            <td>2026-09-01</td>
+            <td>$74.77</td>
+            <td style="color:rgb(140,144,152);">Ungraded</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Not enough price history yet to score against the rule</td>
+        </tr><tr>
             <td><b>ADM</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-29</td>
@@ -300,100 +336,100 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$46.52</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#f0883e;">-0.62R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Still open, underwater -- -0.62R unrealized</td>
         </tr><tr>
             <td><b>CL</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$90.96</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#f0883e;">-0.63R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Still open, underwater -- -0.63R unrealized</td>
         </tr><tr>
             <td><b>CLX</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$103.63</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DD</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$138.80</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EMR</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$157.71</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>FAST</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$51.14</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>HOOD</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-28</td>
             <td>$109.76</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MO</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$67.67</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+0.57R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Still open -- +0.57R unrealized</td>
         </tr><tr>
             <td><b>PG</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$143.14</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#7ee787;">+0.92R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Still open -- +0.92R unrealized</td>
         </tr><tr>
             <td><b>SYY</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$82.45</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>UNH</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-28</td>
             <td>$395.05</td>
-            <td style="color:rgb(140,144,152);">Ungraded</td>
-            <td style="color:rgb(140,144,152);">--</td>
+            <td style="color:rgb(88,166,255);">Open</td>
+            <td style="color:#f0883e;">-0.68R</td>
             <td title="">—</td>
-            <td class="note">Not enough price history yet to score against the rule</td>
+            <td class="note">Still open, underwater -- -0.68R unrealized</td>
         </tr><tr>
             <td><b>ACGL</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -418,36 +454,36 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-27</td>
             <td>$137.49</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.26R</td>
+            <td style="color:rgb(190,194,200);">+0.23R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.26R unrealized</td>
+            <td class="note">Still open -- +0.23R unrealized</td>
         </tr><tr>
             <td><b>BALL</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$64.05</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.22R</td>
+            <td style="color:#f0883e;">-0.84R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.22R unrealized</td>
+            <td class="note">Still open, underwater -- -0.84R unrealized</td>
         </tr><tr>
             <td><b>CAT</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$821.93</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.82R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.82R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CCEP</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$108.99</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.06R</td>
+            <td style="color:#f0883e;">-0.52R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.06R unrealized</td>
+            <td class="note">Still open, underwater -- -0.52R unrealized</td>
         </tr><tr>
             <td><b>DUK</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -462,10 +498,10 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$402.54</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.88R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.88R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EVRG</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -481,9 +517,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-27</td>
             <td>$175.55</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.75R</td>
+            <td style="color:#f0883e;">-0.78R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.75R unrealized</td>
+            <td class="note">Still open, underwater -- -0.78R unrealized</td>
         </tr><tr>
             <td><b>GWW</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -517,36 +553,36 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-27</td>
             <td>$490.33</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.10R</td>
+            <td style="color:rgb(190,194,200);">-0.09R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.10R unrealized</td>
+            <td class="note">Still open, underwater -- -0.09R unrealized</td>
         </tr><tr>
             <td><b>LNT</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$68.92</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.72R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.72R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MAR</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$358.67</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.96R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.96R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MAS</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$73.60</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.19R</td>
+            <td style="color:#f0883e;">-0.78R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.19R unrealized</td>
+            <td class="note">Still open, underwater -- -0.78R unrealized</td>
         </tr><tr>
             <td><b>MGM</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -562,9 +598,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-27</td>
             <td>$123.19</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+0.62R</td>
+            <td style="color:#7ee787;">+1.47R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.62R unrealized</td>
+            <td class="note">Still open -- +1.47R unrealized</td>
         </tr><tr>
             <td><b>NEE</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -579,55 +615,55 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$62.26</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.30R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.30R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>OKE</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-27</td>
             <td>$94.90</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.06R</td>
+            <td style="color:rgb(190,194,200);">+0.49R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.06R unrealized</td>
+            <td class="note">Still open -- +0.49R unrealized</td>
         </tr><tr>
             <td><b>OMC</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$87.89</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.16R</td>
+            <td style="color:rgb(190,194,200);">-0.15R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.16R unrealized</td>
+            <td class="note">Still open, underwater -- -0.15R unrealized</td>
         </tr><tr>
             <td><b>ROK</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$431.75</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.09R</td>
+            <td style="color:#f0883e;">-0.71R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.09R unrealized</td>
+            <td class="note">Still open, underwater -- -0.71R unrealized</td>
         </tr><tr>
             <td><b>TECH</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$72.38</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.14R</td>
+            <td style="color:rgb(190,194,200);">-0.32R</td>
             <td title="2026-08-07, 2026-08-18, 2026-08-19, 2026-08-24, 2026-08-25">★ (5x)</td>
-            <td class="note">Still open, underwater -- -0.14R unrealized</td>
+            <td class="note">Still open, underwater -- -0.32R unrealized</td>
         </tr><tr>
             <td><b>TXN</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-27</td>
             <td>$261.77</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.39R</td>
+            <td style="color:rgb(190,194,200);">-0.11R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.39R unrealized</td>
+            <td class="note">Still open, underwater -- -0.11R unrealized</td>
         </tr><tr>
             <td><b>WAT</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -661,45 +697,45 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$106.83</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.37R</td>
+            <td style="color:rgb(190,194,200);">-0.43R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.37R unrealized</td>
+            <td class="note">Still open, underwater -- -0.43R unrealized</td>
         </tr><tr>
             <td><b>AIZ</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$285.15</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.08R</td>
+            <td style="color:#f0883e;">-0.50R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.08R unrealized</td>
+            <td class="note">Still open, underwater -- -0.50R unrealized</td>
         </tr><tr>
             <td><b>ALB</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$133.18</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+0.90R</td>
+            <td style="color:rgb(190,194,200);">+0.38R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.90R unrealized</td>
+            <td class="note">Still open -- +0.38R unrealized</td>
         </tr><tr>
             <td><b>AMD</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$479.18</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.60R</td>
+            <td style="color:rgb(190,194,200);">-0.38R</td>
             <td title="2026-08-24, 2026-08-25">★ (2x)</td>
-            <td class="note">Still open, underwater -- -0.60R unrealized</td>
+            <td class="note">Still open, underwater -- -0.38R unrealized</td>
         </tr><tr>
             <td><b>AMGN</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$442.24</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.82R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.82R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>AMT</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -723,10 +759,10 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$613.26</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.32R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.32R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BAC</b></td>
             <td title="Trend Template">Minervini</td>
@@ -742,99 +778,99 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$189.78</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.06R</td>
+            <td style="color:rgb(190,194,200);">-0.38R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.06R unrealized</td>
+            <td class="note">Still open, underwater -- -0.38R unrealized</td>
         </tr><tr>
             <td><b>BEN</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$35.03</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.45R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.45R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BIIB</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$220.77</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.37R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.37R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>BNY</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$163.65</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.39R</td>
+            <td style="color:#f0883e;">-0.80R</td>
             <td title="2026-08-07, 2026-08-18, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
-            <td class="note">Still open, underwater -- -0.39R unrealized</td>
+            <td class="note">Still open, underwater -- -0.80R unrealized</td>
         </tr><tr>
             <td><b>CAH</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$237.92</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.52R</td>
+            <td style="color:#f0883e;">-0.51R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.52R unrealized</td>
+            <td class="note">Still open, underwater -- -0.51R unrealized</td>
         </tr><tr>
             <td><b>CINF</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$171.42</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.17R</td>
+            <td style="color:rgb(190,194,200);">-0.47R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.17R unrealized</td>
+            <td class="note">Still open, underwater -- -0.47R unrealized</td>
         </tr><tr>
             <td><b>CMS</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$68.74</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.43R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.43R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>CNC</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$65.00</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.11R</td>
+            <td style="color:rgb(190,194,200);">-0.29R</td>
             <td title="2026-08-25">★ (1x)</td>
-            <td class="note">Still open, underwater -- -0.11R unrealized</td>
+            <td class="note">Still open, underwater -- -0.29R unrealized</td>
         </tr><tr>
             <td><b>CRWV</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$88.04</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.55R</td>
+            <td style="color:rgb(190,194,200);">-0.46R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.55R unrealized</td>
+            <td class="note">Still open, underwater -- -0.46R unrealized</td>
         </tr><tr>
             <td><b>CSX</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$51.51</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.25R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.25R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DE</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$630.66</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.02R</td>
+            <td style="color:#7ee787;">+1.24R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.02R unrealized</td>
+            <td class="note">Still open -- +1.24R unrealized</td>
         </tr><tr>
             <td><b>DOC</b></td>
             <td title="Trend Template">Minervini</td>
@@ -859,27 +895,27 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$136.14</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.11R</td>
+            <td style="color:rgb(190,194,200);">-0.21R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.11R unrealized</td>
+            <td class="note">Still open, underwater -- -0.21R unrealized</td>
         </tr><tr>
             <td><b>ED</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$107.09</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.21R</td>
+            <td style="color:rgb(190,194,200);">-0.04R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.21R unrealized</td>
+            <td class="note">Still open, underwater -- -0.04R unrealized</td>
         </tr><tr>
             <td><b>EG</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$375.39</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.30R</td>
+            <td style="color:rgb(190,194,200);">-0.10R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.30R unrealized</td>
+            <td class="note">Still open, underwater -- -0.10R unrealized</td>
         </tr><tr>
             <td><b>EQIX</b></td>
             <td title="Trend Template">Minervini</td>
@@ -894,100 +930,100 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$71.03</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.14R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.14R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ETN</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$409.20</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.45R</td>
+            <td style="color:#f0883e;">-0.51R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.45R unrealized</td>
+            <td class="note">Still open, underwater -- -0.51R unrealized</td>
         </tr><tr>
             <td><b>ETR</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$106.24</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.21R</td>
+            <td style="color:rgb(190,194,200);">+0.03R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.21R unrealized</td>
+            <td class="note">Still open -- +0.03R unrealized</td>
         </tr><tr>
             <td><b>EW</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$90.87</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.33R</td>
+            <td style="color:rgb(190,194,200);">-0.06R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.33R unrealized</td>
+            <td class="note">Still open, underwater -- -0.06R unrealized</td>
         </tr><tr>
             <td><b>EXC</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$44.31</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.43R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.43R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>EXPD</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$189.05</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.39R</td>
+            <td style="color:rgb(190,194,200);">+0.12R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.39R unrealized</td>
+            <td class="note">Still open -- +0.12R unrealized</td>
         </tr><tr>
             <td><b>EXR</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$144.87</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.71R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.71R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>FANG</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$199.89</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.43R</td>
+            <td style="color:rgb(190,194,200);">+0.11R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.43R unrealized</td>
+            <td class="note">Still open -- +0.11R unrealized</td>
         </tr><tr>
             <td><b>FDX</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$333.71</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.37R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="2026-08-07, 2026-08-18">★ (2x)</td>
-            <td class="note">Still open, underwater -- -0.37R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>FFIV</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$382.75</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.00R</td>
+            <td style="color:#7ee787;">+2.12R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.00R unrealized</td>
+            <td class="note">Still open, working -- +2.12R unrealized</td>
         </tr><tr>
             <td><b>FTNT</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$153.66</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.96R</td>
+            <td style="color:#7ee787;">+2.74R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.96R unrealized</td>
+            <td class="note">Still open, working -- +2.74R unrealized</td>
         </tr><tr>
             <td><b>GS</b></td>
             <td title="Trend Template">Minervini</td>
@@ -1012,18 +1048,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$53.44</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.40R</td>
+            <td style="color:rgb(190,194,200);">-0.42R</td>
             <td title="2026-08-19">★ (1x)</td>
-            <td class="note">Still open, underwater -- -0.40R unrealized</td>
+            <td class="note">Still open, underwater -- -0.42R unrealized</td>
         </tr><tr>
             <td><b>HSIC</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$89.65</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.06R</td>
+            <td style="color:rgb(190,194,200);">+0.07R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.06R unrealized</td>
+            <td class="note">Still open -- +0.07R unrealized</td>
         </tr><tr>
             <td><b>HST</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1039,27 +1075,27 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$389.71</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.28R</td>
+            <td style="color:rgb(190,194,200);">-0.44R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.28R unrealized</td>
+            <td class="note">Still open, underwater -- -0.44R unrealized</td>
         </tr><tr>
             <td><b>IBKR</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$98.19</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.73R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.73R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>IEX</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$230.27</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.00R</td>
+            <td style="color:rgb(190,194,200);">-0.28R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.00R unrealized</td>
+            <td class="note">Still open, underwater -- -0.28R unrealized</td>
         </tr><tr>
             <td><b>INVH</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1083,19 +1119,19 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$281.65</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.28R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.28R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>JCI</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$141.82</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.54R</td>
+            <td style="color:#f0883e;">-0.87R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.54R unrealized</td>
+            <td class="note">Still open, underwater -- -0.87R unrealized</td>
         </tr><tr>
             <td><b>JNJ</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1156,27 +1192,27 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$216.77</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.42R</td>
+            <td style="color:#f0883e;">-0.72R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.42R unrealized</td>
+            <td class="note">Still open, underwater -- -0.72R unrealized</td>
         </tr><tr>
             <td><b>MSFT</b></td>
-            <td title="Pattern Combo">Minervini</td>
+            <td title="Pattern Combo">Both</td>
             <td>2026-08-26</td>
             <td>$491.71</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.85R</td>
+            <td style="color:#7ee787;">+1.32R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.85R unrealized</td>
+            <td class="note">Still open -- +1.32R unrealized</td>
         </tr><tr>
             <td><b>MU</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$932.97</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.00R</td>
+            <td style="color:rgb(190,194,200);">+0.43R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.00R unrealized</td>
+            <td class="note">Still open -- +0.43R unrealized</td>
         </tr><tr>
             <td><b>NDSN</b></td>
             <td title="Trend Template">Minervini</td>
@@ -1201,36 +1237,36 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$187.43</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.06R</td>
+            <td style="color:rgb(190,194,200);">-0.31R</td>
             <td title="2026-08-18, 2026-08-19, 2026-08-20">★ (3x)</td>
-            <td class="note">Still open, underwater -- -0.06R unrealized</td>
+            <td class="note">Still open, underwater -- -0.31R unrealized</td>
         </tr><tr>
             <td><b>NTRS</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$186.82</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.01R</td>
+            <td style="color:rgb(190,194,200);">-0.35R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.01R unrealized</td>
+            <td class="note">Still open, underwater -- -0.35R unrealized</td>
         </tr><tr>
             <td><b>ODFL</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$198.34</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.04R</td>
+            <td style="color:rgb(190,194,200);">+0.25R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.04R unrealized</td>
+            <td class="note">Still open -- +0.25R unrealized</td>
         </tr><tr>
             <td><b>PFG</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$111.59</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.09R</td>
+            <td style="color:#f0883e;">-0.71R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.09R unrealized</td>
+            <td class="note">Still open, underwater -- -0.71R unrealized</td>
         </tr><tr>
             <td><b>PH</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1273,9 +1309,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$113.65</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.22R</td>
+            <td style="color:#f0883e;">-0.57R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.22R unrealized</td>
+            <td class="note">Still open, underwater -- -0.57R unrealized</td>
         </tr><tr>
             <td><b>PSA</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1291,18 +1327,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$10.67</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.46R</td>
+            <td style="color:#7ee787;">+0.52R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.46R unrealized</td>
+            <td class="note">Still open -- +0.52R unrealized</td>
         </tr><tr>
             <td><b>PTC</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$151.14</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.10R</td>
+            <td style="color:#7ee787;">+0.85R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.10R unrealized</td>
+            <td class="note">Still open -- +0.85R unrealized</td>
         </tr><tr>
             <td><b>REGN</b></td>
             <td title="Pattern Combo">Minervini</td>
@@ -1318,144 +1354,144 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-26</td>
             <td>$220.96</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.29R</td>
+            <td style="color:rgb(190,194,200);">-0.01R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.29R unrealized</td>
+            <td class="note">Still open, underwater -- -0.01R unrealized</td>
         </tr><tr>
             <td><b>SHOP</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$153.88</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.16R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.16R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SNA</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$394.56</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.40R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.40R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SNDK</b></td>
             <td title="Pattern Combo">QM</td>
             <td>2026-08-26</td>
             <td>$1,481</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.03R</td>
+            <td style="color:#7ee787;">+0.64R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.03R unrealized</td>
+            <td class="note">Still open -- +0.64R unrealized</td>
         </tr><tr>
             <td><b>STT</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$192.95</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.09R</td>
+            <td style="color:rgb(190,194,200);">-0.39R</td>
             <td title="2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-24, 2026-08-25">★ (6x)</td>
-            <td class="note">Still open -- +0.09R unrealized</td>
+            <td class="note">Still open, underwater -- -0.39R unrealized</td>
         </tr><tr>
             <td><b>STX</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$821.67</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.14R</td>
+            <td style="color:rgb(190,194,200);">+0.12R</td>
             <td title="2026-08-25">★ (1x)</td>
-            <td class="note">Still open -- +0.14R unrealized</td>
+            <td class="note">Still open -- +0.12R unrealized</td>
         </tr><tr>
             <td><b>TRGP</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$286.91</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.12R</td>
+            <td style="color:#7ee787;">+0.87R</td>
             <td title="2026-08-18">★ (1x)</td>
-            <td class="note">Still open -- +0.12R unrealized</td>
+            <td class="note">Still open -- +0.87R unrealized</td>
         </tr><tr>
             <td><b>TROW</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$112.87</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.69R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.69R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>UPS</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$105.14</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.09R</td>
+            <td style="color:rgb(190,194,200);">-0.43R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.09R unrealized</td>
+            <td class="note">Still open, underwater -- -0.43R unrealized</td>
         </tr><tr>
             <td><b>USB</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$62.41</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.06R</td>
+            <td style="color:#f0883e;">-0.83R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.06R unrealized</td>
+            <td class="note">Still open, underwater -- -0.83R unrealized</td>
         </tr><tr>
             <td><b>V</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$384.14</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.35R</td>
+            <td style="color:#f0883e;">-0.65R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.35R unrealized</td>
+            <td class="note">Still open, underwater -- -0.65R unrealized</td>
         </tr><tr>
             <td><b>VRTX</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$552.85</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.72R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.72R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>VTRS</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$16.72</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.81R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.81R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>WEC</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$106.67</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">-0.23R</td>
+            <td style="color:rgb(190,194,200);">-0.26R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.23R unrealized</td>
+            <td class="note">Still open, underwater -- -0.26R unrealized</td>
         </tr><tr>
             <td><b>WELL</b></td>
             <td title="Pattern Combo">Minervini</td>
             <td>2026-08-26</td>
             <td>$241.15</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#f0883e;">-0.64R</td>
+            <td style="color:#f0883e;">Closed</td>
+            <td style="color:#f0883e;">-1.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, underwater -- -0.64R unrealized</td>
+            <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>XYZ</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-08-26</td>
             <td>$82.72</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.33R</td>
+            <td style="color:rgb(190,194,200);">-0.27R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.33R unrealized</td>
+            <td class="note">Still open, underwater -- -0.27R unrealized</td>
         </tr><tr>
             <td><b>FCX</b></td>
             <td title="Qullamaggie Momentum">Both</td>
@@ -1489,27 +1525,27 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-12</td>
             <td>$63.61</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.66R</td>
+            <td style="color:#7ee787;">+1.79R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.66R unrealized</td>
+            <td class="note">Still open -- +1.79R unrealized</td>
         </tr><tr>
             <td><b>FOX</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-08-12</td>
             <td>$55.34</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.87R</td>
+            <td style="color:#7ee787;">+3.16R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.87R unrealized</td>
+            <td class="note">Still open, working -- +3.16R unrealized</td>
         </tr><tr>
             <td><b>FOXA</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-08-12</td>
             <td>$62.14</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.61R</td>
+            <td style="color:#7ee787;">+3.00R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.61R unrealized</td>
+            <td class="note">Still open, working -- +3.00R unrealized</td>
         </tr><tr>
             <td><b>IFF</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -1561,18 +1597,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-12</td>
             <td>$334.60</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.11R</td>
+            <td style="color:#7ee787;">+1.23R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.11R unrealized</td>
+            <td class="note">Still open -- +1.23R unrealized</td>
         </tr><tr>
             <td><b>LITE</b></td>
             <td title="Qullamaggie Momentum">Both</td>
             <td>2026-08-12</td>
             <td>$932.47</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+0.72R</td>
+            <td style="color:#7ee787;">+0.97R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.72R unrealized</td>
+            <td class="note">Still open -- +0.97R unrealized</td>
         </tr><tr>
             <td><b>NBIS</b></td>
             <td title="Qullamaggie Momentum">Both</td>
@@ -1629,13 +1665,13 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td class="note">Stopped out at +0.41R -- win</td>
         </tr><tr>
             <td><b>MSI</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-08-11</td>
             <td>$461.98</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.04R</td>
+            <td style="color:#7ee787;">+1.98R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.04R unrealized</td>
+            <td class="note">Still open -- +1.98R unrealized</td>
         </tr><tr>
             <td><b>WY</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -1687,18 +1723,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-10</td>
             <td>$31.58</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.36R</td>
+            <td style="color:#7ee787;">+1.27R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.36R unrealized</td>
+            <td class="note">Still open -- +1.27R unrealized</td>
         </tr><tr>
             <td><b>RMD</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-08-10</td>
             <td>$211.94</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+4.45R</td>
+            <td style="color:#7ee787;">+4.42R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +4.45R unrealized</td>
+            <td class="note">Still open, working -- +4.42R unrealized</td>
         </tr><tr>
             <td><b>SYF</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -1777,9 +1813,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-07</td>
             <td>$16.30</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.07R</td>
+            <td style="color:#7ee787;">+0.89R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.07R unrealized</td>
+            <td class="note">Still open -- +0.89R unrealized</td>
         </tr><tr>
             <td><b>ORCL</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -1858,9 +1894,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-07</td>
             <td>$29.17</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.16R</td>
+            <td style="color:#7ee787;">+3.13R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.16R unrealized</td>
+            <td class="note">Still open, working -- +3.13R unrealized</td>
         </tr><tr>
             <td><b>SWK</b></td>
             <td title="Qullamaggie Momentum">Both</td>
@@ -1912,9 +1948,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-08-04</td>
             <td>$190.51</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+0.91R</td>
+            <td style="color:#7ee787;">+0.94R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +0.91R unrealized</td>
+            <td class="note">Still open -- +0.94R unrealized</td>
         </tr><tr>
             <td><b>ZBRA</b></td>
             <td title="Qullamaggie Momentum">Both</td>
@@ -1984,36 +2020,36 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$102.91</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.74R</td>
+            <td style="color:#7ee787;">+2.92R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.74R unrealized</td>
+            <td class="note">Still open, working -- +2.92R unrealized</td>
         </tr><tr>
             <td><b>ACN</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-31</td>
             <td>$160.50</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+4.15R</td>
+            <td style="color:#7ee787;">+4.17R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +4.15R unrealized</td>
+            <td class="note">Still open, working -- +4.17R unrealized</td>
         </tr><tr>
             <td><b>ADBE</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-31</td>
             <td>$241.98</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+4.92R</td>
+            <td style="color:#7ee787;">+5.05R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +4.92R unrealized</td>
+            <td class="note">Still open, working -- +5.05R unrealized</td>
         </tr><tr>
             <td><b>ADP</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-31</td>
             <td>$259.51</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.95R</td>
+            <td style="color:#7ee787;">+3.77R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.95R unrealized</td>
+            <td class="note">Still open, working -- +3.77R unrealized</td>
         </tr><tr>
             <td><b>ADSK</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2074,9 +2110,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$70.16</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.42R</td>
+            <td style="color:#7ee787;">+0.91R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.42R unrealized</td>
+            <td class="note">Still open -- +0.91R unrealized</td>
         </tr><tr>
             <td><b>CDW</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2092,18 +2128,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$385.76</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.17R</td>
+            <td style="color:#7ee787;">+1.82R</td>
             <td title="2026-08-07">★ (1x)</td>
-            <td class="note">Still open, working -- +2.17R unrealized</td>
+            <td class="note">Still open -- +1.82R unrealized</td>
         </tr><tr>
             <td><b>CRM</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-31</td>
             <td>$179.41</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+10.95R</td>
+            <td style="color:#7ee787;">+11.17R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +10.95R unrealized</td>
+            <td class="note">Still open, working -- +11.17R unrealized</td>
         </tr><tr>
             <td><b>CTAS</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2119,9 +2155,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$53.09</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+4.84R</td>
+            <td style="color:#7ee787;">+5.08R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +4.84R unrealized</td>
+            <td class="note">Still open, working -- +5.08R unrealized</td>
         </tr><tr>
             <td><b>DOCU</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2146,9 +2182,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$174.64</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.80R</td>
+            <td style="color:#7ee787;">+2.06R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.80R unrealized</td>
+            <td class="note">Still open, working -- +2.06R unrealized</td>
         </tr><tr>
             <td><b>FIS</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2163,22 +2199,22 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-31</td>
             <td>$68.05</td>
-            <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.66R</td>
+            <td style="color:#7ee787;">Closed</td>
+            <td style="color:#7ee787;">+1.04R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.66R unrealized</td>
+            <td class="note">Stopped out at +1.04R -- win</td>
         </tr><tr>
             <td><b>GPN</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-31</td>
             <td>$85.64</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.20R</td>
+            <td style="color:#7ee787;">+1.92R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.20R unrealized</td>
+            <td class="note">Still open -- +1.92R unrealized</td>
         </tr><tr>
             <td><b>HPQ</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-31</td>
             <td>$26.74</td>
             <td style="color:#7ee787;">Closed</td>
@@ -2200,9 +2236,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$234.34</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.75R</td>
+            <td style="color:#7ee787;">+3.67R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.75R unrealized</td>
+            <td class="note">Still open, working -- +3.67R unrealized</td>
         </tr><tr>
             <td><b>IT</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2218,9 +2254,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$152.24</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.95R</td>
+            <td style="color:#7ee787;">+3.54R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.95R unrealized</td>
+            <td class="note">Still open, working -- +3.54R unrealized</td>
         </tr><tr>
             <td><b>KHC</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2254,9 +2290,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$110.20</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+5.68R</td>
+            <td style="color:#7ee787;">+6.22R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +5.68R unrealized</td>
+            <td class="note">Still open, working -- +6.22R unrealized</td>
         </tr><tr>
             <td><b>NWS</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2281,9 +2317,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$114.69</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.89R</td>
+            <td style="color:#7ee787;">+3.99R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.89R unrealized</td>
+            <td class="note">Still open, working -- +3.99R unrealized</td>
         </tr><tr>
             <td><b>PDD</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2317,9 +2353,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$388.36</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.04R</td>
+            <td style="color:#7ee787;">+2.91R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.04R unrealized</td>
+            <td class="note">Still open, working -- +2.91R unrealized</td>
         </tr><tr>
             <td><b>SJM</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2331,7 +2367,7 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>SOLV</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-31</td>
             <td>$85.58</td>
             <td style="color:#f0883e;">Closed</td>
@@ -2344,9 +2380,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-31</td>
             <td>$142.39</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+5.37R</td>
+            <td style="color:#7ee787;">+4.77R</td>
             <td title="2026-08-07, 2026-08-18, 2026-08-19">★ (3x)</td>
-            <td class="note">Still open, working -- +5.37R unrealized</td>
+            <td class="note">Still open, working -- +4.77R unrealized</td>
         </tr><tr>
             <td><b>TYL</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2443,9 +2479,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$294.27</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.92R</td>
+            <td style="color:#7ee787;">+2.11R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.92R unrealized</td>
+            <td class="note">Still open, working -- +2.11R unrealized</td>
         </tr><tr>
             <td><b>CEG</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2560,9 +2596,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$123.00</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+10.45R</td>
+            <td style="color:#7ee787;">+10.46R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +10.45R unrealized</td>
+            <td class="note">Still open, working -- +10.46R unrealized</td>
         </tr><tr>
             <td><b>PSX</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2587,9 +2623,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$48.96</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+6.29R</td>
+            <td style="color:#7ee787;">+8.37R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +6.29R unrealized</td>
+            <td class="note">Still open, working -- +8.37R unrealized</td>
         </tr><tr>
             <td><b>SPGI</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2605,18 +2641,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$292.19</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.51R</td>
+            <td style="color:#7ee787;">+1.40R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.51R unrealized</td>
+            <td class="note">Still open -- +1.40R unrealized</td>
         </tr><tr>
             <td><b>VLO</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-30</td>
             <td>$301.32</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+5.08R</td>
+            <td style="color:#7ee787;">+5.73R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +5.08R unrealized</td>
+            <td class="note">Still open, working -- +5.73R unrealized</td>
         </tr><tr>
             <td><b>VTR</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2668,9 +2704,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$536.28</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.62R</td>
+            <td style="color:#7ee787;">+1.18R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.62R unrealized</td>
+            <td class="note">Still open -- +1.18R unrealized</td>
         </tr><tr>
             <td><b>AON</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2704,21 +2740,21 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$232.59</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+1.58R</td>
+            <td style="color:#7ee787;">+1.20R</td>
             <td title="">—</td>
-            <td class="note">Still open -- +1.58R unrealized</td>
+            <td class="note">Still open -- +1.20R unrealized</td>
         </tr><tr>
             <td><b>FDS</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
             <td>2026-07-30</td>
             <td>$264.44</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.94R</td>
+            <td style="color:#7ee787;">+4.35R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.94R unrealized</td>
+            <td class="note">Still open, working -- +4.35R unrealized</td>
         </tr><tr>
             <td><b>GM</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-30</td>
             <td>$86.95</td>
             <td style="color:#f0883e;">Closed</td>
@@ -2776,9 +2812,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$93.88</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+2.13R</td>
+            <td style="color:#7ee787;">+1.86R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +2.13R unrealized</td>
+            <td class="note">Still open -- +1.86R unrealized</td>
         </tr><tr>
             <td><b>NUE</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
@@ -2875,9 +2911,9 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$23.25</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.92R</td>
+            <td style="color:#7ee787;">+3.75R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.92R unrealized</td>
+            <td class="note">Still open, working -- +3.75R unrealized</td>
         </tr><tr>
             <td><b>TRMB</b></td>
             <td title="Bull Flag (retired 2026-08-12)">QM</td>
@@ -2902,18 +2938,18 @@ th { color: rgb(150,154,162); font-weight: 500; }
             <td>2026-07-30</td>
             <td>$46.01</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:#7ee787;">+3.08R</td>
+            <td style="color:#7ee787;">+3.02R</td>
             <td title="">—</td>
-            <td class="note">Still open, working -- +3.08R unrealized</td>
+            <td class="note">Still open, working -- +3.02R unrealized</td>
         </tr><tr>
             <td><b>WAB</b></td>
             <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-07-30</td>
             <td>$288.57</td>
             <td style="color:rgb(88,166,255);">Open</td>
-            <td style="color:rgb(190,194,200);">+0.45R</td>
+            <td style="color:rgb(190,194,200);">-0.33R</td>
             <td title="2026-08-21, 2026-08-25">★ (2x)</td>
-            <td class="note">Still open -- +0.45R unrealized</td>
+            <td class="note">Still open, underwater -- -0.33R unrealized</td>
         </tr><tr>
             <td><b>BAX</b></td>
             <td title="Qullamaggie Momentum">Both</td>
