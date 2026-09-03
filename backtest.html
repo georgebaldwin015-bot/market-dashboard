@@ -149,9 +149,12 @@ th { color: rgb(150,154,162); font-weight: 500; }
 
     <div class="exec-summary track-record">
     <h2>Live Recommendations Track Record</h2>
-    <p>What actually happened to the real tickers flagged by the live Bull Flag / Qullamaggie Momentum
-    screener (data/setup_history.jsonl) -- not backtest data. Auto-generated as of 2026-09-03T17:16:38Z;
-    one row per ticker+system, at its earliest flag. Scored in R-multiples using the project's one
+    <p>What actually happened to the real tickers flagged by the Qullamaggie Momentum / Minervini
+    screener (data/setup_history.jsonl) -- not backtest data. Includes legacy Bull Flag setups
+    flagged before that screener was retired on 2026-08-12 (see market_report.py); no new Bull Flag
+    setups fire going forward. Auto-generated as of 2026-09-03T17:16:38Z; one row per ticker (its earliest
+    flag date, merged across systems if flagged by more than one -- see dedupe_earliest()). Scored
+    in R-multiples using the project's one
     mechanical stop rule (1x ADR initial stop, breakeven at 2R, trail at max(2x ADR, 7%)) walked forward
     against real daily prices -- not raw %-change, so a spike that later gave it all back is scored at
     what the stop would have actually banked, not its peak. 9 additional flagged setup(s) were excluded (9 no flag price logged) -- checked against the >20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 17 flagged too recently to have a post-entry bar yet. Of the graded trades, the 1 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.20R/trade vs +0.19R/trade for the 312 that hadn't.</p>
