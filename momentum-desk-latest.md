@@ -5,17 +5,17 @@ setup on an actual chart before acting.*
 *Data source: Yahoo Finance (via yfinance), end-of-day bars. Universe defined in `universe.csv` — edit that file to expand coverage. Sector/industry groupings are derived live from Yahoo Finance and shared with the Daily Market Report tab via `industry_map.py`.*
 ## What's Going On
 
-The market is in a defensive posture, with breadth reading 35% of the scanned universe above its 50-day moving average and 9 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-20.0 pt change in % above the 50-day MA) and deteriorating over the last two weeks (-11.8 pt), while SPY is climbing (+1.7% over 60 sessions, -0.6% over the last two weeks). Momentum under the surface is leaning short -- 17 name(s) hit a fresh 52-week high today against 24 breaking down to a fresh 52-week low. Energy is leading, with 71% of its 21 scanned names carrying an RS score of 70+ and 14 clearing a screen outright today, with Health Care also showing real strength. It's being driven by names like VLO, MPC and APA. With 73 name(s) clearing a screen across 11 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
+The market is in a defensive posture, with breadth reading 32% of the scanned universe above its 50-day moving average and 10 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-27.1 pt change in % above the 50-day MA) and deteriorating over the last two weeks (-16.5 pt), while SPY is climbing (+2.8% over 60 sessions, -1.5% over the last two weeks). That trend is broadly consistent with today's snapshot, not diverging from it. Momentum under the surface is leaning short -- 6 name(s) hit a fresh 52-week high today against 22 breaking down to a fresh 52-week low. Energy is leading, with 71% of its 21 scanned names carrying an RS score of 70+ and 13 clearing a screen outright today, with Health Care also showing real strength. It's being driven by names like VLO, MPC and PSX. With 72 name(s) clearing a screen across 11 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
 
 ## 1. Market Pulse
 
-SPY close: 757.39 | 10-day MA: 763.91 | 20-day MA: 765.34
+SPY close: 754.05 | 10-day MA: 763.13 | 20-day MA: 764.67
 
 **Defensive** — 10-day MA below the 20-day. Per Qullamaggie's market filter, long breakouts/EPs are lower-probability here; Minervini would favor raising cash. Parabolic-short context becomes more relevant, not breakout longs.
 
-- Breadth: 35% of the scanned universe above its 50-day MA, 56% above its 200-day MA.
-- 52-week breakouts vs breakdowns today: 17 breakouts / 24 breakdowns (out of 518 names evaluated).
-- Distribution days (SPY, trailing 25 sessions): 9. Elevated -- a headwind even if price is holding up.
+- Breadth: 32% of the scanned universe above its 50-day MA, 53% above its 200-day MA.
+- 52-week breakouts vs breakdowns today: 6 breakouts / 22 breakdowns (out of 517 names evaluated).
+- Distribution days (SPY, trailing 25 sessions): 10. Elevated -- a headwind even if price is holding up.
 - Follow-through day: none in the recent window.
 
 ## 2. Leading Themes
@@ -24,69 +24,38 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 | Sector | Names Scanned | Median RS | % RS >= 70 | Clearing a Screen |
 |---|---|---|---|---|
-| Energy | 21 | 87 | 71% | 14 |
-| Health Care | 60 | 76 | 57% | 23 |
-| Information Technology | 90 | 67 | 47% | 25 |
-| Financials | 70 | 60 | 36% | 7 |
-| Materials | 26 | 50 | 27% | 5 |
-| Communication Services | 22 | 48 | 23% | 5 |
-| Industrials | 77 | 47 | 17% | 5 |
-| Consumer Staples | 31 | 41 | 16% | 6 |
-| Consumer Discretionary | 53 | 22 | 13% | 4 |
+| Energy | 21 | 81 | 71% | 13 |
+| Health Care | 60 | 77 | 57% | 22 |
+| Information Technology | 90 | 70 | 50% | 24 |
+| Communication Services | 21 | 51 | 29% | 3 |
+| Materials | 26 | 56 | 27% | 5 |
+| Financials | 70 | 54 | 23% | 6 |
+| Industrials | 77 | 47 | 21% | 4 |
+| Consumer Staples | 31 | 41 | 19% | 6 |
+| Consumer Discretionary | 53 | 23 | 15% | 5 |
 | Real Estate | 29 | 41 | 7% | 1 |
-| Utilities | 31 | 28 | 0% | 8 |
+| Utilities | 31 | 30 | 0% | 2 |
 | Unknown | 3 | 4 | 0% | 0 |
 
-**Leading theme: Energy** — 71% of its 21 scanned names carry an RS score of 70+, and 14 name(s) are clearing a screen outright today.
+**Leading theme: Energy** — 71% of its 21 scanned names carry an RS score of 70+, and 13 name(s) are clearing a screen outright today.
 
 ## 3. Leading Stocks
 
 **Leader spotlight** — the strongest names driving today's leading themes:
 
-- **DELL** (Information Technology) — RS 99.0, Cleared pivot on light volume (unconfirmed — 1.3x avg, needs 1.5x), Stage: Stage 2 (Uptrend). [chart](https://www.tradingview.com/chart/?symbol=DELL)
+- **DELL** (Information Technology) — RS 99.0, Continuation breakout (confirmed), Stage: Stage 2 (Uptrend). [chart](https://www.tradingview.com/chart/?symbol=DELL)
 - **MRNA** (Health Care) — RS 99.0, VCP contraction (watch for trigger) [VCP-Watch], Stage: Stage 2 (Uptrend). [chart](https://www.tradingview.com/chart/?symbol=MRNA)
-- **VLO** (Energy) — RS 98.0, Cleared pivot on light volume (unconfirmed — 1.33x avg, needs 1.5x), Stage: Stage 2 (Uptrend). [chart](https://www.tradingview.com/chart/?symbol=VLO)
+- **LITE** (Information Technology) — RS 98.0, VCP contraction (watch for trigger), Stage: Stage 2 (Uptrend). [chart](https://www.tradingview.com/chart/?symbol=LITE)
 
-**Energy** (14)
+**Energy** (13)
 
 ### VLO — Energy [chart](https://www.tradingview.com/chart/?symbol=VLO)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.33x avg, needs 1.5x)
-- Pivot (breakout trigger level): 390.42
-- Entry: next session's open, only if volume confirms (price is already above pivot 390.42 on light volume)
-- Volume vs 50-day avg: 1.33x
-- ADR%: 3.0% | RS score: 98.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 98.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
-  - RS score: 98.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### MPC — Energy [chart](https://www.tradingview.com/chart/?symbol=MPC)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.23x avg, needs 1.5x)
-- Pattern tag: Flag-Pivot
-- Pivot (breakout trigger level): 399.44
-- Entry: next session's open, only if volume confirms (price is already above pivot 399.44 on light volume)
-- Volume vs 50-day avg: 1.23x
-- ADR%: 2.9% | RS score: 97.0
+- Setup: Cleared pivot on light volume (unconfirmed — 1.28x avg, needs 1.5x)
+- Pivot (breakout trigger level): 397.04
+- Entry: next session's open, only if volume confirms (price is already above pivot 397.04 on light volume)
+- Volume vs 50-day avg: 1.28x
+- ADR%: 3.2% | RS score: 97.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -104,21 +73,20 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 97.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.9% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.2% (needs >= 3.0% volatility to qualify)
   - RS score: 97.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-**Pattern tag: Flag-Pivot** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-### APA — Energy [chart](https://www.tradingview.com/chart/?symbol=APA)
+### MPC — Energy [chart](https://www.tradingview.com/chart/?symbol=MPC)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.19x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 1.22x avg, needs 1.5x)
 - Pattern tag: Flag-Pivot
-- Pivot (breakout trigger level): 45.03
-- Entry: next session's open, only if volume confirms (price is already above pivot 45.03 on light volume)
-- Volume vs 50-day avg: 1.19x
-- ADR%: 3.2% | RS score: 96.0
+- Pivot (breakout trigger level): 410.84
+- Entry: next session's open, only if volume confirms (price is already above pivot 410.84 on light volume)
+- Volume vs 50-day avg: 1.22x
+- ADR%: 3.0% | RS score: 97.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -134,23 +102,22 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 96.0 (needs >= 70 for criterion 8)
+  - RS score used: 97.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.2% (needs >= 3.0% volatility to qualify)
-  - RS score: 96.0 (needs >= 80 for this screen)
+  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
+  - RS score: 97.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 **Pattern tag: Flag-Pivot** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
 ### PSX — Energy [chart](https://www.tradingview.com/chart/?symbol=PSX)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.06x avg, needs 1.5x)
-- Pattern tag: Flag-Pivot
-- Pivot (breakout trigger level): 260.78
-- Entry: next session's open, only if volume confirms (price is already above pivot 260.78 on light volume)
-- Volume vs 50-day avg: 1.06x
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: Flag-Watch
+- Pivot (breakout trigger level): 264.93
+- Entry: pivot 264.93 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.98x
 - ADR%: 2.7% | RS score: 96.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -172,17 +139,18 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ADR%: 2.7% (needs >= 3.0% volatility to qualify)
   - RS score: 96.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-**Pattern tag: Flag-Pivot** (VCP/Flag/EP classification, additive to the screens above)
+**Pattern tag: Flag-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-### COP — Energy [chart](https://www.tradingview.com/chart/?symbol=COP)
+### APA — Energy [chart](https://www.tradingview.com/chart/?symbol=APA)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.01x avg, needs 1.5x)
-- Pivot (breakout trigger level): 137.35
-- Entry: next session's open, only if volume confirms (price is already above pivot 137.35 on light volume)
-- Volume vs 50-day avg: 1.01x
-- ADR%: 2.1% | RS score: 92.0
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: Flag-Watch
+- Pivot (breakout trigger level): 47.41
+- Entry: pivot 47.41 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.68x
+- ADR%: 3.3% | RS score: 95.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -198,21 +166,24 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 92.0 (needs >= 70 for criterion 8)
+  - RS score used: 95.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 92.0 (needs >= 80 for this screen)
+  - ADR%: 3.3% (needs >= 3.0% volatility to qualify)
+  - RS score: 95.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+**Pattern tag: Flag-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
 ### TRGP — Energy [chart](https://www.tradingview.com/chart/?symbol=TRGP)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 302.25
 - Entry: pivot 302.25 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.68x
-- ADR%: 2.6% | RS score: 92.0
+- Volume vs 50-day avg: 0.96x
+- ADR%: 2.5% | RS score: 92.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -230,108 +201,20 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 92.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.6% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.5% (needs >= 3.0% volatility to qualify)
   - RS score: 92.0 (needs >= 80 for this screen)
   - Riding the trend: no
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-### XOM — Energy [chart](https://www.tradingview.com/chart/?symbol=XOM)
+### COP — Energy [chart](https://www.tradingview.com/chart/?symbol=COP)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.87x avg, needs 1.5x)
-- Pivot (breakout trigger level): 166.15
-- Entry: next session's open, only if volume confirms (price is already above pivot 166.15 on light volume)
-- Volume vs 50-day avg: 0.87x
-- ADR%: 1.9% | RS score: 90.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 90.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.9% (needs >= 3.0% volatility to qualify)
-  - RS score: 90.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### CVX — Energy [chart](https://www.tradingview.com/chart/?symbol=CVX)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.22x avg, needs 1.5x)
-- Pivot (breakout trigger level): 214.06
-- Entry: next session's open, only if volume confirms (price is already above pivot 214.06 on light volume)
-- Volume vs 50-day avg: 1.22x
-- ADR%: 1.7% | RS score: 89.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 89.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.7% (needs >= 3.0% volatility to qualify)
-  - RS score: 89.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### OXY — Energy [chart](https://www.tradingview.com/chart/?symbol=OXY)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.24x avg, needs 1.5x)
-- Pivot (breakout trigger level): 61.78
-- Entry: next session's open, only if volume confirms (price is already above pivot 61.78 on light volume)
-- Volume vs 50-day avg: 1.24x
-- ADR%: 2.1% | RS score: 88.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 88.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 88.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### DVN — Energy [chart](https://www.tradingview.com/chart/?symbol=DVN)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.09x avg, needs 1.5x)
-- Pivot (breakout trigger level): 49.91
-- Entry: next session's open, only if volume confirms (price is already above pivot 49.91 on light volume)
-- Volume vs 50-day avg: 1.09x
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 141.22
+- Entry: pivot 141.22 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.39x
 - ADR%: 2.2% | RS score: 88.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -352,17 +235,47 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
   - RS score: 88.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### CVX — Energy [chart](https://www.tradingview.com/chart/?symbol=CVX)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 217.77
+- Entry: pivot 217.77 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.03x
+- ADR%: 1.8% | RS score: 88.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 88.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
+  - RS score: 88.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
-### FANG — Energy [chart](https://www.tradingview.com/chart/?symbol=FANG)
+### XOM — Energy [chart](https://www.tradingview.com/chart/?symbol=XOM)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.13x avg, needs 1.5x)
-- Pivot (breakout trigger level): 211.02
-- Entry: next session's open, only if volume confirms (price is already above pivot 211.02 on light volume)
-- Volume vs 50-day avg: 1.13x
-- ADR%: 2.6% | RS score: 87.0
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 169.32
+- Entry: pivot 169.32 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.95x
+- ADR%: 2.0% | RS score: 87.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -380,19 +293,19 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 87.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.6% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
   - RS score: 87.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
-### EOG — Energy [chart](https://www.tradingview.com/chart/?symbol=EOG)
+### DVN — Energy [chart](https://www.tradingview.com/chart/?symbol=DVN)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.2x avg, needs 1.5x)
-- Pivot (breakout trigger level): 153.05
-- Entry: next session's open, only if volume confirms (price is already above pivot 153.05 on light volume)
-- Volume vs 50-day avg: 1.2x
-- ADR%: 2.1% | RS score: 85.0
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 51.33
+- Entry: pivot 51.33 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.42x
+- ADR%: 2.4% | RS score: 83.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -408,11 +321,41 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 85.0 (needs >= 70 for criterion 8)
+  - RS score used: 83.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 85.0 (needs >= 80 for this screen)
+  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - RS score: 83.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### OXY — Energy [chart](https://www.tradingview.com/chart/?symbol=OXY)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 63.52
+- Entry: pivot 63.52 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.38x
+- ADR%: 2.2% | RS score: 82.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 82.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
+  - RS score: 82.0 (needs >= 80 for this screen)
+  - Riding the trend: no
 
 </details>
 
@@ -421,8 +364,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 59.79
 - Entry: pivot 59.79 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.06x
-- ADR%: 3.4% | RS score: 84.0
+- Volume vs 50-day avg: 1.72x
+- ADR%: 3.5% | RS score: 81.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -438,10 +381,40 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 84.0 (needs >= 70 for criterion 8)
+  - RS score used: 81.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.4% (needs >= 3.0% volatility to qualify)
-  - RS score: 84.0 (needs >= 80 for this screen)
+  - ADR%: 3.5% (needs >= 3.0% volatility to qualify)
+  - RS score: 81.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### EOG — Energy [chart](https://www.tradingview.com/chart/?symbol=EOG)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 153.74
+- Entry: pivot 153.74 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.45x
+- ADR%: 2.3% | RS score: 79.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 79.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
+  - RS score: 79.0 (needs >= 80 for this screen)
   - Riding the trend: no
 
 </details>
@@ -451,8 +424,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 97.51
 - Entry: pivot 97.51 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.18x
-- ADR%: 2.6% | RS score: 80.0
+- Volume vs 50-day avg: 0.84x
+- ADR%: 2.7% | RS score: 79.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -468,10 +441,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 80.0 (needs >= 70 for criterion 8)
+  - RS score used: 79.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.6% (needs >= 3.0% volatility to qualify)
-  - RS score: 80.0 (needs >= 80 for this screen)
+  - ADR%: 2.7% (needs >= 3.0% volatility to qualify)
+  - RS score: 79.0 (needs >= 80 for this screen)
   - Riding the trend: no
 
 </details>
@@ -484,8 +457,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 174.38
 - Entry: pivot 174.38 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.49x
-- ADR%: 9.8% | RS score: 99.0
+- Volume vs 50-day avg: 0.51x
+- ADR%: 9.9% | RS score: 99.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -503,7 +476,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 99.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 9.8% (needs >= 3.0% volatility to qualify)
+  - ADR%: 9.9% (needs >= 3.0% volatility to qualify)
   - RS score: 99.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
@@ -515,8 +488,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 298.58
 - Entry: pivot 298.58 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.1x
-- ADR%: 2.9% | RS score: 96.0
+- Volume vs 50-day avg: 1.13x
+- ADR%: 3.0% | RS score: 96.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -534,7 +507,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 96.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.9% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
   - RS score: 96.0 (needs >= 80 for this screen)
   - Riding the trend: no
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
@@ -544,10 +517,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 ### RVTY — Health Care [chart](https://www.tradingview.com/chart/?symbol=RVTY)
 - Screens passed: B (Momentum)
 - Setup: Continuation breakout (confirmed)
-- Pivot (breakout trigger level): 130.94
-- Entry: next session's open (pivot 130.94 already cleared at today's close -- don't chase that level)
-- Volume vs 50-day avg: 2.38x
-- ADR%: 3.3% | RS score: 95.0
+- Pivot (breakout trigger level): 140.19
+- Entry: next session's open (pivot 140.19 already cleared at today's close -- don't chase that level)
+- Volume vs 50-day avg: 2.13x
+- ADR%: 3.5% | RS score: 95.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -565,10 +538,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 95.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.3% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.5% (needs >= 3.0% volatility to qualify)
   - RS score: 95.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-  - Setup: continuation breakout, volume 2.38x the 50-day average (needs >= 1.5x)
+  - Setup: continuation breakout, volume 2.13x the 50-day average (needs >= 1.5x)
 
 </details>
 
@@ -577,8 +550,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 69.41
 - Entry: pivot 69.41 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.81x
-- ADR%: 2.9% | RS score: 95.0
+- Volume vs 50-day avg: 0.97x
+- ADR%: 3.0% | RS score: 95.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -596,50 +569,20 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 95.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.9% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
   - RS score: 95.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### HUM — Health Care [chart](https://www.tradingview.com/chart/?symbol=HUM)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 409.8
-- Entry: pivot 409.8 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.7x
-- ADR%: 3.3% | RS score: 95.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 95.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.3% (needs >= 3.0% volatility to qualify)
-  - RS score: 95.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
+  - Riding the trend: no
 
 </details>
 
 ### MRK — Health Care [chart](https://www.tradingview.com/chart/?symbol=MRK)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.87x avg, needs 1.5x)
+- Setup: Cleared pivot on light volume (unconfirmed — 0.76x avg, needs 1.5x)
 - Pattern tag: VCP-Pivot
-- Pivot (breakout trigger level): 135.17
-- Entry: next session's open, only if volume confirms (price is already above pivot 135.17 on light volume)
-- Volume vs 50-day avg: 0.87x
-- ADR%: 2.4% | RS score: 94.0
+- Pivot (breakout trigger level): 134.38
+- Entry: next session's open, only if volume confirms (price is already above pivot 134.38 on light volume)
+- Volume vs 50-day avg: 0.76x
+- ADR%: 2.3% | RS score: 94.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -657,20 +600,20 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 94.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
   - RS score: 94.0 (needs >= 80 for this screen)
-  - Riding the trend: no
+  - Riding the trend: yes, above 10/20-EMA
 **Pattern tag: VCP-Pivot** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-### WST — Health Care [chart](https://www.tradingview.com/chart/?symbol=WST)
+### VTRS — Health Care [chart](https://www.tradingview.com/chart/?symbol=VTRS)
 - Screens passed: A (Trend Template)
-- Setup: Continuation breakout (confirmed)
-- Pivot (breakout trigger level): 355.2
-- Entry: next session's open (pivot 355.2 already cleared at today's close -- don't chase that level)
-- Volume vs 50-day avg: 1.55x
-- ADR%: 2.3% | RS score: 90.0
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 17.09
+- Entry: pivot 17.09 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.95x
+- ADR%: 2.4% | RS score: 92.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -686,21 +629,51 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 90.0 (needs >= 70 for criterion 8)
+  - RS score used: 92.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
-  - RS score: 90.0 (needs >= 80 for this screen)
+  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - RS score: 92.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-  - Setup: continuation breakout, volume 1.55x the 50-day average (needs >= 1.5x)
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+
+</details>
+
+### INCY — Health Care [chart](https://www.tradingview.com/chart/?symbol=INCY)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 129.72
+- Entry: pivot 129.72 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.86x
+- ADR%: 2.5% | RS score: 91.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 91.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.5% (needs >= 3.0% volatility to qualify)
+  - RS score: 91.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
 ### DGX — Health Care [chart](https://www.tradingview.com/chart/?symbol=DGX)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.42x avg, needs 1.5x)
-- Pivot (breakout trigger level): 245.0
-- Entry: next session's open, only if volume confirms (price is already above pivot 245.0 on light volume)
-- Volume vs 50-day avg: 1.42x
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 247.08
+- Entry: pivot 247.08 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.98x
 - ADR%: 2.2% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -725,13 +698,13 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 </details>
 
-### BDX — Health Care [chart](https://www.tradingview.com/chart/?symbol=BDX)
+### WST — Health Care [chart](https://www.tradingview.com/chart/?symbol=WST)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 190.87
-- Entry: pivot 190.87 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.19x
-- ADR%: 2.2% | RS score: 85.0
+- Pivot (breakout trigger level): 365.0
+- Entry: pivot 365.0 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.98x
+- ADR%: 2.3% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -747,10 +720,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 85.0 (needs >= 70 for criterion 8)
+  - RS score used: 89.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
-  - RS score: 85.0 (needs >= 80 for this screen)
+  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
+  - RS score: 89.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
@@ -760,8 +733,38 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 278.43
 - Entry: pivot 278.43 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.75x
-- ADR%: 1.8% | RS score: 84.0
+- Volume vs 50-day avg: 0.71x
+- ADR%: 1.8% | RS score: 86.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 86.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
+  - RS score: 86.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### DXCM — Health Care [chart](https://www.tradingview.com/chart/?symbol=DXCM)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 92.34
+- Entry: pivot 92.34 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.79x
+- ADR%: 2.7% | RS score: 84.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -779,40 +782,9 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 84.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.7% (needs >= 3.0% volatility to qualify)
   - RS score: 84.0 (needs >= 80 for this screen)
-  - Riding the trend: no
-
-</details>
-
-### BMY — Health Care [chart](https://www.tradingview.com/chart/?symbol=BMY)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 68.09
-- Entry: pivot 68.09 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.99x
-- ADR%: 2.0% | RS score: 82.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 82.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
-  - RS score: 82.0 (needs >= 80 for this screen)
-  - Riding the trend: no
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+  - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
@@ -821,8 +793,68 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 224.51
 - Entry: pivot 224.51 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.73x
-- ADR%: 2.5% | RS score: 82.0
+- Volume vs 50-day avg: 0.59x
+- ADR%: 2.4% | RS score: 84.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 84.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - RS score: 84.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### BDX — Health Care [chart](https://www.tradingview.com/chart/?symbol=BDX)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 190.87
+- Entry: pivot 190.87 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.99x
+- ADR%: 2.2% | RS score: 83.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 83.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
+  - RS score: 83.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### LH — Health Care [chart](https://www.tradingview.com/chart/?symbol=LH)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 338.61
+- Entry: pivot 338.61 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.8x
+- ADR%: 2.4% | RS score: 82.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -840,38 +872,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 82.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.5% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
   - RS score: 82.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### LH — Health Care [chart](https://www.tradingview.com/chart/?symbol=LH)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 338.61
-- Entry: pivot 338.61 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.25x
-- ADR%: 2.5% | RS score: 81.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 81.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.5% (needs >= 3.0% volatility to qualify)
-  - RS score: 81.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
@@ -881,7 +883,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 424.24
 - Entry: pivot 424.24 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.23x
+- Volume vs 50-day avg: 0.93x
 - ADR%: 2.3% | RS score: 81.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -906,43 +908,13 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 </details>
 
-### DXCM — Health Care [chart](https://www.tradingview.com/chart/?symbol=DXCM)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 92.34
-- Entry: pivot 92.34 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.29x
-- ADR%: 2.7% | RS score: 80.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 80.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.7% (needs >= 3.0% volatility to qualify)
-  - RS score: 80.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
 ### ABBV — Health Care [chart](https://www.tradingview.com/chart/?symbol=ABBV)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 265.97
 - Entry: pivot 265.97 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.01x
-- ADR%: 2.1% | RS score: 80.0
+- Volume vs 50-day avg: 0.63x
+- ADR%: 2.0% | RS score: 81.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -958,10 +930,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 80.0 (needs >= 70 for criterion 8)
+  - RS score used: 81.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 80.0 (needs >= 80 for this screen)
+  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
+  - RS score: 81.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
@@ -972,8 +944,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 150.37
 - Entry: pivot 150.37 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.74x
-- ADR%: 2.2% | RS score: 77.0
+- Volume vs 50-day avg: 0.86x
+- ADR%: 2.2% | RS score: 80.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -989,10 +961,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 77.0 (needs >= 70 for criterion 8)
+  - RS score used: 80.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
-  - RS score: 77.0 (needs >= 80 for this screen)
+  - RS score: 80.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
@@ -1004,8 +976,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 557.96
 - Entry: pivot 557.96 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.66x
-- ADR%: 2.1% | RS score: 75.0
+- Volume vs 50-day avg: 0.53x
+- ADR%: 2.0% | RS score: 75.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1023,7 +995,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 75.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
   - RS score: 75.0 (needs >= 80 for this screen)
   - Riding the trend: no
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
@@ -1033,12 +1005,12 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 **Information Technology** (18)
 
 ### DELL — Information Technology [chart](https://www.tradingview.com/chart/?symbol=DELL)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.3x avg, needs 1.5x)
+- Screens passed: A (Trend Template) + B (Momentum)
+- Setup: Continuation breakout (confirmed)
 - Pivot (breakout trigger level): 535.25
-- Entry: next session's open, only if volume confirms (price is already above pivot 535.25 on light volume)
-- Volume vs 50-day avg: 1.3x
-- ADR%: 6.0% | RS score: 99.0
+- Entry: next session's open (pivot 535.25 already cleared at today's close -- don't chase that level)
+- Volume vs 50-day avg: 1.7x
+- ADR%: 5.9% | RS score: 99.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1056,18 +1028,19 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 99.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 6.0% (needs >= 3.0% volatility to qualify)
+  - ADR%: 5.9% (needs >= 3.0% volatility to qualify)
   - RS score: 99.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+  - Setup: continuation breakout, volume 1.7x the 50-day average (needs >= 1.5x)
 
 </details>
 
 ### LITE — Information Technology [chart](https://www.tradingview.com/chart/?symbol=LITE)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 968.9
-- Entry: pivot 968.9 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.64x
+- Pivot (breakout trigger level): 956.14
+- Entry: pivot 956.14 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.41x
 - ADR%: 6.4% | RS score: 98.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1088,19 +1061,18 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 6.4% (needs >= 3.0% volatility to qualify)
   - RS score: 98.0 (needs >= 80 for this screen)
-  - Riding the trend: no
+  - Riding the trend: yes, above 10/20-EMA
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 
 </details>
 
-### MU — Information Technology [chart](https://www.tradingview.com/chart/?symbol=MU)
+### AMD — Information Technology [chart](https://www.tradingview.com/chart/?symbol=AMD)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pattern tag: VCP-Watch
-- Pivot (breakout trigger level): 1027.77
-- Entry: pivot 1027.77 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.57x
-- ADR%: 4.0% | RS score: 98.0
+- Pivot (breakout trigger level): 521.1
+- Entry: pivot 521.1 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.95x
+- ADR%: 3.5% | RS score: 98.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1118,7 +1090,38 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 98.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 4.0% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.5% (needs >= 3.0% volatility to qualify)
+  - RS score: 98.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### MU — Information Technology [chart](https://www.tradingview.com/chart/?symbol=MU)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
+- Pivot (breakout trigger level): 1027.77
+- Entry: pivot 1027.77 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.57x
+- ADR%: 3.9% | RS score: 98.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 98.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 3.9% (needs >= 3.0% volatility to qualify)
   - RS score: 98.0 (needs >= 80 for this screen)
   - Riding the trend: no
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
@@ -1127,11 +1130,11 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 </details>
 
 ### CRWD — Information Technology [chart](https://www.tradingview.com/chart/?symbol=CRWD)
-- Screens passed: A (Trend Template) + B (Momentum)
-- Setup: Continuation breakout (confirmed)
+- Screens passed: A (Trend Template)
+- Setup: Cleared pivot on light volume (unconfirmed — 1.23x avg, needs 1.5x)
 - Pivot (breakout trigger level): 231.0
-- Entry: next session's open (pivot 231.0 already cleared at today's close -- don't chase that level)
-- Volume vs 50-day avg: 1.81x
+- Entry: next session's open, only if volume confirms (price is already above pivot 231.0 on light volume)
+- Volume vs 50-day avg: 1.23x
 - ADR%: 5.7% | RS score: 97.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1153,7 +1156,6 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ADR%: 5.7% (needs >= 3.0% volatility to qualify)
   - RS score: 97.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-  - Setup: continuation breakout, volume 1.81x the 50-day average (needs >= 1.5x)
 
 </details>
 
@@ -1162,7 +1164,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 58.9
 - Entry: pivot 58.9 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.15x
+- Volume vs 50-day avg: 1.17x
 - ADR%: 5.5% | RS score: 97.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1187,43 +1189,13 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 </details>
 
-### AMD — Information Technology [chart](https://www.tradingview.com/chart/?symbol=AMD)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 521.1
-- Entry: pivot 521.1 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.73x
-- ADR%: 3.4% | RS score: 97.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 97.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.4% (needs >= 3.0% volatility to qualify)
-  - RS score: 97.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
 ### PANW — Information Technology [chart](https://www.tradingview.com/chart/?symbol=PANW)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 382.85
 - Entry: pivot 382.85 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.02x
-- ADR%: 4.9% | RS score: 96.0
+- Volume vs 50-day avg: 0.84x
+- ADR%: 5.0% | RS score: 96.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1241,7 +1213,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 96.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 4.9% (needs >= 3.0% volatility to qualify)
+  - ADR%: 5.0% (needs >= 3.0% volatility to qualify)
   - RS score: 96.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
@@ -1252,7 +1224,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 172.78
 - Entry: pivot 172.78 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.91x
+- Volume vs 50-day avg: 0.82x
 - ADR%: 4.2% | RS score: 96.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1282,8 +1254,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 204.71
 - Entry: pivot 204.71 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.95x
-- ADR%: 4.3% | RS score: 95.0
+- Volume vs 50-day avg: 0.76x
+- ADR%: 4.4% | RS score: 95.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1301,7 +1273,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 95.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 4.3% (needs >= 3.0% volatility to qualify)
+  - ADR%: 4.4% (needs >= 3.0% volatility to qualify)
   - RS score: 95.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
@@ -1312,8 +1284,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 35.48
 - Entry: pivot 35.48 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.91x
-- ADR%: 4.7% | RS score: 94.0
+- Volume vs 50-day avg: 0.84x
+- ADR%: 4.8% | RS score: 94.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1331,7 +1303,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 94.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 4.7% (needs >= 3.0% volatility to qualify)
+  - ADR%: 4.8% (needs >= 3.0% volatility to qualify)
   - RS score: 94.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
@@ -1340,9 +1312,9 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 ### ZBRA — Information Technology [chart](https://www.tradingview.com/chart/?symbol=ZBRA)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 371.26
-- Entry: pivot 371.26 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.71x
+- Pivot (breakout trigger level): 368.51
+- Entry: pivot 368.51 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.74x
 - ADR%: 3.1% | RS score: 93.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1367,13 +1339,14 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 </details>
 
-### FFIV — Information Technology [chart](https://www.tradingview.com/chart/?symbol=FFIV)
+### ANET — Information Technology [chart](https://www.tradingview.com/chart/?symbol=ANET)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 1.1x avg, needs 1.5x)
-- Pivot (breakout trigger level): 411.71
-- Entry: next session's open, only if volume confirms (price is already above pivot 411.71 on light volume)
-- Volume vs 50-day avg: 1.1x
-- ADR%: 3.1% | RS score: 92.0
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
+- Pivot (breakout trigger level): 202.25
+- Entry: pivot 202.25 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.67x
+- ADR%: 3.4% | RS score: 92.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1391,51 +1364,21 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 92.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.1% (needs >= 3.0% volatility to qualify)
+  - ADR%: 3.4% (needs >= 3.0% volatility to qualify)
   - RS score: 92.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
 ### SWKS — Information Technology [chart](https://www.tradingview.com/chart/?symbol=SWKS)
-- Screens passed: A (Trend Template) + B (Momentum)
-- Setup: Continuation breakout (confirmed)
-- Pivot (breakout trigger level): 88.35
-- Entry: next session's open (pivot 88.35 already cleared at today's close -- don't chase that level)
-- Volume vs 50-day avg: 2.11x
-- ADR%: 5.7% | RS score: 91.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 91.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 5.7% (needs >= 3.0% volatility to qualify)
-  - RS score: 91.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-  - Setup: continuation breakout, volume 2.11x the 50-day average (needs >= 1.5x)
-
-</details>
-
-### ANET — Information Technology [chart](https://www.tradingview.com/chart/?symbol=ANET)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pattern tag: VCP-Watch
-- Pivot (breakout trigger level): 202.25
-- Entry: pivot 202.25 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.72x
-- ADR%: 3.5% | RS score: 90.0
+- Pivot (breakout trigger level): 88.35
+- Entry: pivot 88.35 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.32x
+- ADR%: 5.7% | RS score: 90.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1453,21 +1396,19 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 90.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.5% (needs >= 3.0% volatility to qualify)
+  - ADR%: 5.7% (needs >= 3.0% volatility to qualify)
   - RS score: 90.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-### CPAY — Information Technology [chart](https://www.tradingview.com/chart/?symbol=CPAY)
+### FFIV — Information Technology [chart](https://www.tradingview.com/chart/?symbol=FFIV)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 419.68
-- Entry: pivot 419.68 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.77x
-- ADR%: 1.9% | RS score: 84.0
+- Pivot (breakout trigger level): 430.88
+- Entry: pivot 430.88 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.23x
+- ADR%: 3.2% | RS score: 90.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1483,12 +1424,43 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 84.0 (needs >= 70 for criterion 8)
+  - RS score used: 90.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 3.2% (needs >= 3.0% volatility to qualify)
+  - RS score: 90.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### CPAY — Information Technology [chart](https://www.tradingview.com/chart/?symbol=CPAY)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
+- Pivot (breakout trigger level): 419.68
+- Entry: pivot 419.68 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.79x
+- ADR%: 1.9% | RS score: 85.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 85.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 1.9% (needs >= 3.0% volatility to qualify)
-  - RS score: 84.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+  - RS score: 85.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
@@ -1497,7 +1469,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 333.08
 - Entry: pivot 333.08 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.67x
+- Volume vs 50-day avg: 0.76x
 - ADR%: 2.3% | RS score: 84.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1526,10 +1498,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
 - Pattern tag: VCP-Watch
-- Pivot (breakout trigger level): 306.31
-- Entry: pivot 306.31 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.56x
-- ADR%: 2.3% | RS score: 81.0
+- Pivot (breakout trigger level): 296.29
+- Entry: pivot 296.29 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.89x
+- ADR%: 2.2% | RS score: 83.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1545,11 +1517,11 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 81.0 (needs >= 70 for criterion 8)
+  - RS score used: 83.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
-  - RS score: 81.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
+  - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
+  - RS score: 83.0 (needs >= 80 for this screen)
+  - Riding the trend: no
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
@@ -1560,8 +1532,72 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 298.6
 - Entry: pivot 298.6 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.65x
-- ADR%: 2.4% | RS score: 70.0
+- Volume vs 50-day avg: 0.85x
+- ADR%: 2.4% | RS score: 73.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 73.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - RS score: 73.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
+
+</details>
+
+**Communication Services** (3)
+
+### NWSA — Communication Services [chart](https://www.tradingview.com/chart/?symbol=NWSA)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 31.09
+- Entry: pivot 31.09 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.89x
+- ADR%: 2.1% | RS score: 74.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 74.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
+  - RS score: 74.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### VZ — Communication Services [chart](https://www.tradingview.com/chart/?symbol=VZ)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 51.45
+- Entry: pivot 51.45 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.12x
+- ADR%: 1.6% | RS score: 70.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1579,22 +1615,206 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 70.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
+  - ADR%: 1.6% (needs >= 3.0% volatility to qualify)
   - RS score: 70.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
+  - Riding the trend: no
+
+</details>
+
+### NWS — Communication Services [chart](https://www.tradingview.com/chart/?symbol=NWS)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 35.21
+- Entry: pivot 35.21 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.94x
+- ADR%: 2.1% | RS score: 70.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 70.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
+  - RS score: 70.0 (needs >= 80 for this screen)
+  - Riding the trend: no
 **VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+
+</details>
+
+**Materials** (5)
+
+### NUE — Materials [chart](https://www.tradingview.com/chart/?symbol=NUE)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
+- Pivot (breakout trigger level): 264.19
+- Entry: pivot 264.19 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.82x
+- ADR%: 3.4% | RS score: 93.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 93.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 3.4% (needs >= 3.0% volatility to qualify)
+  - RS score: 93.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
-**Financials** (5)
+### CF — Materials [chart](https://www.tradingview.com/chart/?symbol=CF)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 139.27
+- Entry: pivot 139.27 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.67x
+- ADR%: 4.0% | RS score: 93.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 93.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 4.0% (needs >= 3.0% volatility to qualify)
+  - RS score: 93.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### FCX — Materials [chart](https://www.tradingview.com/chart/?symbol=FCX)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 79.91
+- Entry: pivot 79.91 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.78x
+- ADR%: 3.6% | RS score: 85.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 85.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 3.6% (needs >= 3.0% volatility to qualify)
+  - RS score: 85.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### NEM — Materials [chart](https://www.tradingview.com/chart/?symbol=NEM)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 134.86
+- Entry: pivot 134.86 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.84x
+- ADR%: 2.9% | RS score: 84.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 84.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.9% (needs >= 3.0% volatility to qualify)
+  - RS score: 84.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+
+</details>
+
+### IFF — Materials [chart](https://www.tradingview.com/chart/?symbol=IFF)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 87.95
+- Entry: pivot 87.95 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.99x
+- ADR%: 2.0% | RS score: 82.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 82.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
+  - RS score: 82.0 (needs >= 80 for this screen)
+  - Riding the trend: no
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+
+</details>
+
+**Financials** (4)
 
 ### TRV — Financials [chart](https://www.tradingview.com/chart/?symbol=TRV)
 - Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
+- Setup: Cleared pivot on light volume (unconfirmed — 0.9x avg, needs 1.5x)
 - Pivot (breakout trigger level): 378.05
-- Entry: pivot 378.05 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.62x
+- Entry: next session's open, only if volume confirms (price is already above pivot 378.05 on light volume)
+- Volume vs 50-day avg: 0.9x
 - ADR%: 1.6% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1624,8 +1844,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 118.51
 - Entry: pivot 118.51 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.02x
-- ADR%: 1.9% | RS score: 86.0
+- Volume vs 50-day avg: 1.34x
+- ADR%: 2.0% | RS score: 86.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1643,19 +1863,19 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 86.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.9% (needs >= 3.0% volatility to qualify)
+  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
   - RS score: 86.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
-### MET — Financials [chart](https://www.tradingview.com/chart/?symbol=MET)
+### AIZ — Financials [chart](https://www.tradingview.com/chart/?symbol=AIZ)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 99.23
-- Entry: pivot 99.23 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.62x
-- ADR%: 1.7% | RS score: 84.0
+- Pivot (breakout trigger level): 287.71
+- Entry: pivot 287.71 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.2x
+- ADR%: 1.6% | RS score: 84.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1673,19 +1893,20 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 84.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.7% (needs >= 3.0% volatility to qualify)
+  - ADR%: 1.6% (needs >= 3.0% volatility to qualify)
   - RS score: 84.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
 
 </details>
 
-### AIZ — Financials [chart](https://www.tradingview.com/chart/?symbol=AIZ)
+### MET — Financials [chart](https://www.tradingview.com/chart/?symbol=MET)
 - Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 287.71
-- Entry: pivot 287.71 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.3x
-- ADR%: 1.7% | RS score: 83.0
+- Pivot (breakout trigger level): 99.23
+- Entry: pivot 99.23 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 1.04x
+- ADR%: 1.8% | RS score: 83.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1703,293 +1924,9 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 83.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.7% (needs >= 3.0% volatility to qualify)
+  - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
   - RS score: 83.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-
-</details>
-
-### C — Financials [chart](https://www.tradingview.com/chart/?symbol=C)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 138.82
-- Entry: pivot 138.82 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.01x
-- ADR%: 2.3% | RS score: 76.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 76.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.3% (needs >= 3.0% volatility to qualify)
-  - RS score: 76.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-**Materials** (5)
-
-### CF — Materials [chart](https://www.tradingview.com/chart/?symbol=CF)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 139.27
-- Entry: pivot 139.27 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.26x
-- ADR%: 4.0% | RS score: 93.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 93.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 4.0% (needs >= 3.0% volatility to qualify)
-  - RS score: 93.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### NUE — Materials [chart](https://www.tradingview.com/chart/?symbol=NUE)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pattern tag: VCP-Watch
-- Pivot (breakout trigger level): 272.68
-- Entry: pivot 272.68 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.65x
-- ADR%: 3.4% | RS score: 93.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 93.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.4% (needs >= 3.0% volatility to qualify)
-  - RS score: 93.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
-
-</details>
-
-### NEM — Materials [chart](https://www.tradingview.com/chart/?symbol=NEM)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pattern tag: Flag-Watch
-- Pivot (breakout trigger level): 134.86
-- Entry: pivot 134.86 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.76x
-- ADR%: 2.8% | RS score: 86.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 86.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.8% (needs >= 3.0% volatility to qualify)
-  - RS score: 86.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**Pattern tag: Flag-Watch** (VCP/Flag/EP classification, additive to the screens above)
-
-</details>
-
-### FCX — Materials [chart](https://www.tradingview.com/chart/?symbol=FCX)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 79.91
-- Entry: pivot 79.91 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.53x
-- ADR%: 3.6% | RS score: 84.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 84.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.6% (needs >= 3.0% volatility to qualify)
-  - RS score: 84.0 (needs >= 80 for this screen)
-  - Riding the trend: no
-
-</details>
-
-### IFF — Materials [chart](https://www.tradingview.com/chart/?symbol=IFF)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 87.95
-- Entry: pivot 87.95 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.96x
-- ADR%: 2.0% | RS score: 80.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 80.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.0% (needs >= 3.0% volatility to qualify)
-  - RS score: 80.0 (needs >= 80 for this screen)
-  - Riding the trend: no
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-
-</details>
-
-**Communication Services** (3)
-
-### VZ — Communication Services [chart](https://www.tradingview.com/chart/?symbol=VZ)
-- Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.85x avg, needs 1.5x)
-- Pivot (breakout trigger level): 51.29
-- Entry: next session's open, only if volume confirms (price is already above pivot 51.29 on light volume)
-- Volume vs 50-day avg: 0.85x
-- ADR%: 1.5% | RS score: 76.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 76.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.5% (needs >= 3.0% volatility to qualify)
-  - RS score: 76.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-
-</details>
-
-### NWSA — Communication Services [chart](https://www.tradingview.com/chart/?symbol=NWSA)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 31.09
-- Entry: pivot 31.09 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.82x
-- ADR%: 2.1% | RS score: 76.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 76.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 76.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-
-</details>
-
-### NWS — Communication Services [chart](https://www.tradingview.com/chart/?symbol=NWS)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pattern tag: VCP-Watch
-- Pivot (breakout trigger level): 35.21
-- Entry: pivot 35.21 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.93x
-- ADR%: 2.1% | RS score: 72.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 72.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 72.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
@@ -1997,42 +1934,11 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 
 ### EXPD — Industrials [chart](https://www.tradingview.com/chart/?symbol=EXPD)
 - Screens passed: A (Trend Template)
-- Setup: Cleared pivot on light volume (unconfirmed — 0.89x avg, needs 1.5x)
-- Pivot (breakout trigger level): 193.61
-- Entry: next session's open, only if volume confirms (price is already above pivot 193.61 on light volume)
-- Volume vs 50-day avg: 0.89x
-- ADR%: 1.7% | RS score: 91.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 91.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 1.7% (needs >= 3.0% volatility to qualify)
-  - RS score: 91.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
-
-</details>
-
-### DE — Industrials [chart](https://www.tradingview.com/chart/?symbol=DE)
-- Screens passed: A (Trend Template)
 - Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 698.37
-- Entry: pivot 698.37 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.29x
-- ADR%: 3.0% | RS score: 89.0
+- Pivot (breakout trigger level): 193.9
+- Entry: pivot 193.9 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.92x
+- ADR%: 1.8% | RS score: 89.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -2050,9 +1956,41 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ RS score >= 70
   - RS score used: 89.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
-  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
+  - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
   - RS score: 89.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+### DE — Industrials [chart](https://www.tradingview.com/chart/?symbol=DE)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pattern tag: VCP-Watch
+- Pivot (breakout trigger level): 698.37
+- Entry: pivot 698.37 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.74x
+- ADR%: 3.0% | RS score: 87.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 87.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 3.0% (needs >= 3.0% volatility to qualify)
+  - RS score: 87.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+**Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
 </details>
 
@@ -2061,7 +1999,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 333.7
 - Entry: pivot 333.7 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.71x
+- Volume vs 50-day avg: 0.99x
 - ADR%: 2.2% | RS score: 80.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2093,7 +2031,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 86.91
 - Entry: pivot 86.91 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.84x
+- Volume vs 50-day avg: 1.13x
 - ADR%: 3.3% | RS score: 87.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2124,7 +2062,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 91.44
 - Entry: pivot 91.44 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.85x
+- Volume vs 50-day avg: 1.1x
 - ADR%: 1.4% | RS score: 80.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2145,38 +2083,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 1.4% (needs >= 3.0% volatility to qualify)
   - RS score: 80.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
+  - Riding the trend: no
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
-
-</details>
-
-### PM — Consumer Staples [chart](https://www.tradingview.com/chart/?symbol=PM)
-- Screens passed: A (Trend Template)
-- Setup: VCP contraction (watch for trigger)
-- Pivot (breakout trigger level): 194.86
-- Entry: pivot 194.86 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.9x
-- ADR%: 2.1% | RS score: 74.0
-- Stage: Stage 2 (Uptrend)
-- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
-
-<details>
-<summary>Why it passed</summary>
-
-**Trend Template: 8/8 criteria met**
-  - ✅ Price above both the 150-day and 200-day MA
-  - ✅ 150-day MA above the 200-day MA
-  - ✅ 200-day MA has been trending up for >= 1 month
-  - ✅ 50-day MA above both the 150-day and 200-day MA
-  - ✅ Price above the 50-day MA
-  - ✅ Price >= 30% above its 52-week low
-  - ✅ Price within 25% of its 52-week high
-  - ✅ RS score >= 70
-  - RS score used: 74.0 (needs >= 70 for criterion 8)
-**Momentum screen (Qullamaggie-style):**
-  - ADR%: 2.1% (needs >= 3.0% volatility to qualify)
-  - RS score: 74.0 (needs >= 80 for this screen)
-  - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
@@ -2185,8 +2093,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 132.34
 - Entry: pivot 132.34 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.02x
-- ADR%: 2.4% | RS score: 70.0
+- Volume vs 50-day avg: 0.94x
+- ADR%: 2.4% | RS score: 78.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -2202,15 +2110,45 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 70.0 (needs >= 70 for criterion 8)
+  - RS score used: 78.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 2.4% (needs >= 3.0% volatility to qualify)
-  - RS score: 70.0 (needs >= 80 for this screen)
+  - RS score: 78.0 (needs >= 80 for this screen)
   - Riding the trend: no
 
 </details>
 
-**Consumer Discretionary** (3)
+### PM — Consumer Staples [chart](https://www.tradingview.com/chart/?symbol=PM)
+- Screens passed: A (Trend Template)
+- Setup: VCP contraction (watch for trigger)
+- Pivot (breakout trigger level): 194.86
+- Entry: pivot 194.86 (not yet cleared -- still a live trigger level to watch for)
+- Volume vs 50-day avg: 0.64x
+- ADR%: 2.2% | RS score: 73.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 73.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.2% (needs >= 3.0% volatility to qualify)
+  - RS score: 73.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
+
+</details>
+
+**Consumer Discretionary** (4)
 
 ### TGT — Consumer Discretionary [chart](https://www.tradingview.com/chart/?symbol=TGT)
 - Screens passed: A (Trend Template)
@@ -2218,7 +2156,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 169.89
 - Entry: pivot 169.89 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.89x
+- Volume vs 50-day avg: 0.67x
 - ADR%: 2.9% | RS score: 94.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2249,7 +2187,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 94.83
 - Entry: pivot 94.83 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.98x
+- Volume vs 50-day avg: 1.08x
 - ADR%: 3.8% | RS score: 91.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2279,7 +2217,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 190.5
 - Entry: pivot 190.5 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.54x
+- Volume vs 50-day avg: 0.7x
 - ADR%: 2.6% | RS score: 88.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -2301,23 +2239,52 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ADR%: 2.6% (needs >= 3.0% volatility to qualify)
   - RS score: 88.0 (needs >= 80 for this screen)
   - Riding the trend: no
-**VCP heuristic:** volatility (ATR%) and volume have been contracting across the last three 10-day blocks — the pattern Minervini describes as a base tightening ahead of a breakout. Confirm this shape visually on the chart; the heuristic can't see the actual price structure, only the numbers.
+
+</details>
+
+### EBAY — Consumer Discretionary [chart](https://www.tradingview.com/chart/?symbol=EBAY)
+- Screens passed: A (Trend Template)
+- Setup: Cleared pivot on light volume (unconfirmed — 1.09x avg, needs 1.5x)
+- Pivot (breakout trigger level): 108.99
+- Entry: next session's open, only if volume confirms (price is already above pivot 108.99 on light volume)
+- Volume vs 50-day avg: 1.09x
+- ADR%: 2.9% | RS score: 71.0
+- Stage: Stage 2 (Uptrend)
+- Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
+
+<details>
+<summary>Why it passed</summary>
+
+**Trend Template: 8/8 criteria met**
+  - ✅ Price above both the 150-day and 200-day MA
+  - ✅ 150-day MA above the 200-day MA
+  - ✅ 200-day MA has been trending up for >= 1 month
+  - ✅ 50-day MA above both the 150-day and 200-day MA
+  - ✅ Price above the 50-day MA
+  - ✅ Price >= 30% above its 52-week low
+  - ✅ Price within 25% of its 52-week high
+  - ✅ RS score >= 70
+  - RS score used: 71.0 (needs >= 70 for criterion 8)
+**Momentum screen (Qullamaggie-style):**
+  - ADR%: 2.9% (needs >= 3.0% volatility to qualify)
+  - RS score: 71.0 (needs >= 80 for this screen)
+  - Riding the trend: yes, above 10/20-EMA
 
 </details>
 
 
 ## 4. Worth Watching
 
-Market regime reads **defensive**, and **Energy** is leading with 71% of its names carrying RS 70+ and 14 clearing a screen outright today. On that basis, these 8 name(s) are worth watching:
+Market regime reads **defensive**, and **Energy** is leading with 71% of its names carrying RS 70+ and 13 clearing a screen outright today. On that basis, these 8 name(s) are worth watching:
 
+- **DELL** (Information Technology) — Continuation breakout (confirmed), RS 99.0, pivot 535.25. Entry: next session's open (pivot 535.25 already cleared at today's close -- don't chase that level). [chart](https://www.tradingview.com/chart/?symbol=DELL)
 - **MRNA** (Health Care) — VCP contraction (watch for trigger) [VCP-Watch], RS 99.0, pivot 174.38. Entry: pivot 174.38 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=MRNA)
-- **LITE** (Information Technology) — VCP contraction (watch for trigger), RS 98.0, pivot 968.9. Entry: pivot 968.9 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=LITE)
+- **LITE** (Information Technology) — VCP contraction (watch for trigger), RS 98.0, pivot 956.14. Entry: pivot 956.14 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=LITE)
+- **AMD** (Information Technology) — VCP contraction (watch for trigger), RS 98.0, pivot 521.1. Entry: pivot 521.1 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=AMD)
 - **MU** (Information Technology) — VCP contraction (watch for trigger) [VCP-Watch], RS 98.0, pivot 1027.77. Entry: pivot 1027.77 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=MU)
-- **CRWD** (Information Technology) — Continuation breakout (confirmed), RS 97.0, pivot 231.0. Entry: next session's open (pivot 231.0 already cleared at today's close -- don't chase that level). [chart](https://www.tradingview.com/chart/?symbol=CRWD)
 - **HPE** (Information Technology) — VCP contraction (watch for trigger), RS 97.0, pivot 58.9. Entry: pivot 58.9 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=HPE)
-- **AMD** (Information Technology) — VCP contraction (watch for trigger), RS 97.0, pivot 521.1. Entry: pivot 521.1 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=AMD)
 - **CRL** (Health Care) — VCP contraction (watch for trigger), RS 96.0, pivot 298.58. Entry: pivot 298.58 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=CRL)
-- **PANW** (Information Technology) — VCP contraction (watch for trigger), RS 96.0, pivot 382.85. Entry: pivot 382.85 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=PANW)
+- **PSX** (Energy) — VCP contraction (watch for trigger) [Flag-Watch], RS 96.0, pivot 264.93. Entry: pivot 264.93 (not yet cleared -- still a live trigger level to watch for). [chart](https://www.tradingview.com/chart/?symbol=PSX)
 
 ## 5. Other Setups (context)
 
