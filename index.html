@@ -664,6 +664,8 @@
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
       <div class="mk-cards" style="grid-template-columns:repeat(4,1fr)">${cards}</div>
+      <div class="panel"><h3>Growth <span class="sub">your exits vs the rules' exits · ${fmt(settings.risk, 1)}% risk a trade, compounded</span></h3>
+        <div id="growth-cv" style="height:200px"></div><div class="legend" id="growth-leg"></div></div>
       <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · the highest is outlined</span></h2>
       ${pos}
       <div class="panel"><h3>Recent activity</h3><table class="st"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
@@ -672,6 +674,46 @@
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
+    drawGrowth();
+  }
+
+  // Same closed trades, two outcomes: what you did vs what the rule would
+  // have done (rule R, closed on the rule's exit date -- or marked today if
+  // the rule would still hold it). Compounded at the settings' risk %.
+  let growthChart = null;
+  function growthSeries(events, since, as_of) {
+    const byDay = {};
+    events.forEach(([d, r]) => { if (r == null || !d || (since && d < since)) return; (byDay[d] = byDay[d] || []).push(r); });
+    const days = Object.keys(byDay).sort();
+    let eq = 1; const pts = [];
+    days.forEach((d) => { byDay[d].forEach((r) => { eq *= 1 + settings.risk * r / 100; }); pts.push({ time: d, value: (eq - 1) * 100 }); });
+    return pts;
+  }
+  function drawGrowth() {
+    const box = $("#growth-cv"), leg = $("#growth-leg"); if (!box || !acct) return;
+    const days = { "30d": 30, "90d": 90, "365d": 365 }[acctWin];
+    const since = days ? new Date(new Date(acct.as_of).getTime() - days * 864e5).toISOString().slice(0, 10) : null;
+    const actual = growthSeries(acct.closed.map((t) => [t.exit_date, t.r]), since);
+    const rule = growthSeries(acct.closed.filter((t) => !since || t.exit_date >= since)
+      .map((t) => [t.rule_exit || acct.as_of, t.rule_r]), null);
+    if (!actual.length && !rule.length) { box.innerHTML = '<div class="msg">No closed trades in this window.</div>'; leg.innerHTML = ""; return; }
+    const first = [actual[0], rule[0]].filter(Boolean).map((p) => p.time).sort()[0];
+    const start = new Date(new Date(first).getTime() - 864e5).toISOString().slice(0, 10);
+    [actual, rule].forEach((s) => s.unshift({ time: start, value: 0 }));
+    const last = (s) => s.length ? s[s.length - 1].value : 0;
+    const pctS = (v) => (v > 0 ? "+" : "") + fmt(v, 1) + "%";
+    leg.innerHTML = `<span><i class="pv"></i>Actual ${pctS(last(actual))}</span><span><i class="pv" style="border-color:var(--amber)"></i>Rule-based ${pctS(last(rule))}</span>`;
+    loadLib().then((L) => {
+      if (growthChart) { try { growthChart.remove(); } catch (e) {} }
+      box.innerHTML = "";
+      growthChart = L.createChart(box, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false,
+        localization: { priceFormatter: (v) => fmt(v, 1) + "%" } });
+      const line = (data, color) => growthChart.addLineSeries({ color, lineWidth: 2, priceLineVisible: false, lastValueVisible: true }).setData(data);
+      line(rule, "#d29922"); line(actual, "#58a6ff");
+      growthChart.timeScale().fitContent();
+    }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
   }
 
   // ---------- settings sheet ----------
