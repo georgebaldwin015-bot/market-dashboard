@@ -113,6 +113,46 @@
   .foot { font-size: 0.75rem; color: var(--faint); line-height: 1.5; margin-top: 16px; }
   .foot summary { cursor: pointer; display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; list-style: none; margin-bottom: 6px; }
   .empty { color: var(--muted); padding: 30px 0; text-align: center; }
+  /* Market */
+  .mk-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; align-items: start; }
+  .mk { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid #3c4048; border-radius: 12px; padding: 10px 12px; cursor: pointer; }
+  .mk.good { border-top-color: var(--green); } .mk.warn { border-top-color: var(--amber); } .mk.bad { border-top-color: var(--red); }
+  .mk .l { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .mk .l i { font-style: normal; opacity: .6; }
+  .mk .v { font-size: 1.2rem; font-weight: 700; margin-top: 3px; }
+  .mk .s { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .mk .info { display: none; font-size: 0.74rem; color: var(--text); opacity: .85; margin-top: 7px; padding-top: 6px; border-top: 1px solid var(--line); line-height: 1.4; }
+  .mk.open .info { display: block; }
+  .mk-flag { font-size: 0.78rem; color: var(--amber); margin: 0 0 8px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 10px 6px; margin-bottom: 12px; }
+  .panel h3 { font-size: 0.9rem; margin: 2px 2px 8px; display: flex; align-items: baseline; gap: 8px; }
+  .panel h3 .sub { font-weight: 400; }
+  #breadth-cv { height: 170px; }
+  table.st td.pos { color: var(--green); } table.st td.neg { color: var(--red); }
+  table.st tr.lead td { background: var(--panel2); font-size: 0.72rem; }
+  table.st tr.lead .tk { font-size: 0.8rem; }
+  table.st tr.sec { cursor: pointer; }
+  table.st tr.sec td:first-child::before { content: "▸ "; color: var(--faint); }
+  table.st tr.sec.open td:first-child::before { content: "▾ "; }
+  .toolbar { display: flex; align-items: center; gap: 8px; margin: -2px 0 12px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+  .seg button { background: var(--panel); color: var(--muted); border: 0; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; }
+  .seg button.on { background: rgba(88,166,255,.16); color: var(--text); }
+  .tbtn { background: var(--panel); border: 1px solid var(--line); color: var(--blue); border-radius: 9px; padding: 6px 10px; font-size: 0.8rem; cursor: pointer; }
+  .tbtn[disabled] { opacity: .4; }
+  .stw { border: 1px solid var(--line); border-radius: 10px; }  /* no own scroll box: the header sticks to the page as it scrolls */
+  table.st { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+  table.st th { position: sticky; top: 0; background: var(--panel2); color: var(--muted); font-weight: 600; text-align: left;
+    padding: 7px 4px; cursor: pointer; white-space: nowrap; z-index: 1; }
+  table.st th.sorted { color: var(--text); }
+  table.st td { padding: 6px 4px; border-top: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+  table.st td .sub { font-size: 0.68rem; }
+  table.st tr.out { opacity: .55; }
+  .grade.sm { width: 26px; height: 22px; font-size: 0.72rem; border-radius: 6px; }
+  #toast { position: fixed; left: 50%; bottom: calc(80px + var(--safe-b)); transform: translateX(-50%); background: var(--panel2);
+    border: 1px solid var(--line); color: var(--text); padding: 8px 14px; border-radius: 999px; font-size: 0.8rem; opacity: 0;
+    transition: opacity .2s; pointer-events: none; z-index: 60; }
+  #toast.on { opacity: 1; }
   .more { width: 100%; background: var(--panel); border: 1px dashed var(--line); color: var(--muted);
     border-radius: 12px; padding: 10px; cursor: pointer; }
 
@@ -155,13 +195,13 @@
 
 <main>
   <section class="view" id="view-today"><div class="pad" id="today"></div></section>
-  <section class="view" id="view-markets"><iframe data-src="industry.html" title="Industry Analysis"></iframe></section>
-  <section class="view" id="view-desk"><iframe data-src="strategy.html" title="Momentum Desk Strategy"></iframe></section>
+  <section class="view" id="view-market"><div class="pad" id="market-view"></div></section>
   <section class="view" id="view-research">
     <div class="pad list" id="research-list">
       <h2>Research</h2>
       <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A+ to F setups look like, with your ADR bands and why each qualifies</div></div></a>
       <a href="#research/backtest.html"><div><div class="t">Backtest &amp; live track record</div><div class="d">5-year results and how the live recommendations have done</div></div></a>
+      <a href="#research/industry.html"><div><div class="t">Full market report</div><div class="d">Heatmap, sector and industry trend charts, top momentum names</div></div></a>
       <a href="#research/setup-gallery.html"><div><div class="t">Setup Gallery</div><div class="d">Best historical trades by category</div></div></a>
     </div>
     <div id="research-frame"><button class="back" onclick="location.hash='#research'">‹ Research</button><iframe title="Research"></iframe></div>
@@ -171,8 +211,7 @@
 
 <nav>
   <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Today</button>
-  <button data-view="markets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Markets</button>
-  <button data-view="desk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg>Desk</button>
+  <button data-view="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg>Market</button>
   <button data-view="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Research</button>
   <button data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/></svg>Journal</button>
 </nav>
@@ -197,7 +236,7 @@
   const GRADES = ["A+", "A", "B", "C", "D", "F"];
   const GROUPS = { top: ["A+", "A", "B"], All: GRADES };
   GRADES.forEach((g) => GROUPS[g] = [g]);
-  let filters = Object.assign({ grade: "top", strategy: "All", q: "" }, load("md.filters", {}));
+  let filters = Object.assign({ grade: "top", strategy: "All", q: "", view: "cards", sort: "" }, load("md.filters", {}));
   if (!GROUPS[filters.grade]) filters.grade = "top";   // e.g. the old "AB" setting
   const gcls = (g) => "g" + String(g).replace("+", "p");
 
@@ -206,8 +245,8 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   // ---------- routing ----------
-  const VIEWS = ["today", "markets", "desk", "research", "journal"];
-  const LEGACY = { industry: "markets", strategy: "desk", backtest: "research/backtest.html",
+  const VIEWS = ["today", "market", "research", "journal"];
+  const LEGACY = { industry: "market", strategy: "market", markets: "market", desk: "market", backtest: "research/backtest.html",
                    gallery: "research/setup-gallery.html", grades: "research/setup-grades.html" };
   function route() {
     let h = location.hash.replace(/^#/, "");
@@ -220,6 +259,7 @@
     document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
     const frame = document.querySelector("#view-" + v + " > iframe");
     if (frame && !frame.getAttribute("src")) frame.src = frame.dataset.src;
+    if (v === "market") renderMarket2();
     if (v === "research") {
       $("#research-list").style.display = sub ? "none" : "";
       $("#research-frame").style.display = sub ? "block" : "none";
@@ -308,15 +348,21 @@
       GROUPS[filters.grade].includes(s.grade) &&
       (filters.strategy === "All" || s.strategies.includes(filters.strategy)) &&
       (!filters.q || (s.ticker + " " + s.sector).toLowerCase().includes(filters.q.toLowerCase())));
-    const LIMIT = 40, total = rows.length;
-    if (!showAll) rows = rows.slice(0, LIMIT);
+    const all = rows, LIMIT = 40, total = rows.length, tableView = filters.view === "table";
+    if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
       <div class="chips">${gradeChip("top", "A+ – B")}${GRADES.map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
-      ${rows.length ? rows.map(card).join("") : '<div class="empty">Nothing matches.</div>'}
-      ${!showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
+      <div class="toolbar">
+        <div class="seg"><button data-v="cards" class="${tableView ? "" : "on"}">Cards</button><button data-v="table" class="${tableView ? "on" : ""}">Table</button></div>
+        <span class="grow"></span>
+        <button class="tbtn" id="copy-wl" ${total ? "" : "disabled"}>Copy</button>
+        <button class="tbtn" id="export-wl" ${total ? "" : "disabled"}>⬇ .txt (${total})</button>
+      </div>
+      ${!rows.length ? '<div class="empty">Nothing matches.</div>' : tableView ? setupTable(rows) : rows.map(card).join("")}
+      ${!tableView && !showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
       <details class="foot"><summary>ⓘ Rules</summary>
         <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
         <b>Exit:</b> ${esc(data.rules.exit)}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
@@ -331,7 +377,60 @@
       const nq = $("#q"); nq.focus(); nq.setSelectionRange(pos, pos);
     };
     const more = $("#more"); if (more) more.onclick = () => { showAll = true; renderToday(); };
+    el.querySelectorAll("[data-v]").forEach((b) => b.onclick = () => { filters.view = b.dataset.v; save("md.filters", filters); renderToday(); });
+    el.querySelectorAll("th[data-k]").forEach((th) => th.onclick = () => {
+      filters.sort = filters.sort === th.dataset.k ? "-" + th.dataset.k : th.dataset.k; save("md.filters", filters); renderToday();
+    });
+    $("#export-wl").onclick = () => exportWatchlist(all, "download");
+    $("#copy-wl").onclick = () => exportWatchlist(all, "copy");
     el.querySelectorAll(".card.open").forEach(drawChart);
+  }
+
+  // ---------- table view (sortable; good for building watchlists) ----------
+  const COLS = [
+    ["grade", "Gr", (s) => GRADES.indexOf(s.grade)], ["ticker", "Ticker", (s) => s.ticker],
+    ["pivot", "Buy", (s) => s.pivot], ["stop", "Stop", (s) => s.stop],
+    ["pct", "Dist", (s) => s.pct_to_pivot], ["adr", "ADR", (s) => s.adr_pct], ["rs", "RS", (s) => s.rs || 0],
+  ];
+  function setupTable(rows) {
+    const k = filters.sort.replace("-", ""), col = COLS.find((c) => c[0] === k);
+    if (col) {
+      const dir = filters.sort.startsWith("-") ? -1 : 1;
+      rows = rows.slice().sort((a, b) => { const x = col[2](a), y = col[2](b); return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+    }
+    const head = COLS.map(([key, label]) => `<th data-k="${key}" class="${key === k ? "sorted" : ""}">${label}${key === k ? (filters.sort.startsWith("-") ? " ▾" : " ▴") : ""}</th>`).join("");
+    const body = rows.map((s) => `<tr class="${s.in_play === false ? "out" : ""}">
+      <td><span class="grade sm ${gcls(s.grade)}">${esc(s.grade)}</span></td>
+      <td><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
+        <div class="sub">${esc(s.strategies.join("+"))}</div></td>
+      <td>${fmt(s.pivot)}</td><td>${fmt(s.stop)}</td>
+      <td>${s.pct_to_pivot <= 0.001 ? "at" : fmt(s.pct_to_pivot, 1) + "%"}</td>
+      <td>${fmt(s.adr_pct, 1)}%</td><td>${s.rs == null ? "–" : Math.round(s.rs)}</td></tr>`).join("");
+    return `<div class="stw"><table class="st"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  // ---------- watchlist export (TradingView .txt: one ###section per grade) ----------
+  function exportWatchlist(rows, how) {
+    const order = GRADES.filter((g) => rows.some((s) => s.grade === g));
+    const txt = order.map((g) => ["###" + g + " setups"].concat(rows.filter((s) => s.grade === g).map((s) => s.ticker)).join(",")).join(",");
+    const label = filters.grade === "top" ? "A+-B" : filters.grade;
+    const name = `watchlist-${data.date}-${label}${filters.strategy !== "All" ? "-" + filters.strategy : ""}.txt`;
+    if (how === "copy") {
+      const done = () => toast(`Copied ${rows.length} tickers`);
+      (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(done, () => prompt("Copy:", txt));
+      return;
+    }
+    const file = new File([txt], name, { type: "text/plain" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: name }).catch(() => {});   // iPhone: share sheet -> Save to Files / TradingView
+      return;
+    }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function toast(msg) {
+    let t = $("#toast"); if (!t) { t = document.createElement("div"); t.id = "toast"; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add("on"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 1600);
   }
 
   // ---------- tap a card: its chart opens inside it ----------
@@ -423,6 +522,91 @@
       openCharts.add(t); cardEl.classList.add("open"); drawChart(cardEl);
     }
   });
+
+  // ---------- Market (merged Desk + Markets; data from market.json) ----------
+  let mkt = null, mktLoading = false, mktSort = load("md.mktsort", { sec: "-m3", ind: "-m3" }), openSec = new Set(), showAllInd = false;
+  const SHORT = { "Information Technology": "Tech", "Communication Services": "Comms", "Consumer Discretionary": "Cons. Disc.",
+                  "Consumer Staples": "Cons. Staples" };
+  const pct = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "%";
+  const pc = (v) => v == null ? "" : v > 0 ? "pos" : v < 0 ? "neg" : "";
+  function sortRows(rows, key) {
+    const k = key.replace("-", ""), dir = key.startsWith("-") ? -1 : 1;
+    return rows.slice().sort((a, b) => {
+      const x = a[k], y = b[k];
+      if (x == null) return 1; if (y == null) return -1;
+      return (x > y ? 1 : x < y ? -1 : 0) * dir;
+    });
+  }
+  function th(tbl, key, label) {
+    const cur = mktSort[tbl], on = cur.replace("-", "") === key;
+    return `<th data-t="${tbl}" data-k="${key}" class="${on ? "sorted" : ""}">${label}${on ? (cur.startsWith("-") ? " ▾" : " ▴") : ""}</th>`;
+  }
+  function renderMarket2() {
+    const el = $("#market-view");
+    if (!mkt) {
+      if (!mktLoading) {
+        mktLoading = true;
+        el.innerHTML = '<div class="empty">Loading…</div>';
+        fetch("market.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
+          .then((d) => { mkt = d; renderMarket2(); })
+          .catch(() => { el.innerHTML = '<div class="empty">Market data appears after the next nightly run.</div>'; })
+          .finally(() => { mktLoading = false; });
+      }
+      return;
+    }
+    const cards = mkt.cards.map((c) => `<div class="mk ${esc(c.tone)}"><div class="l">${esc(c.label)} <i>ⓘ</i></div>
+      <div class="v">${esc(c.value)}</div><div class="s">${esc(c.sub)}</div><div class="info">${esc(c.info)}</div></div>`).join("");
+    const flags = (mkt.flags || []).map((f) => `<div class="mk-flag">⚠ ${esc(f)}</div>`).join("");
+    const secRows = sortRows(mkt.sectors, mktSort.sec).map((s, i) => {
+      const open = openSec.has(s.name);
+      const leaders = open ? s.leaders.map((l) => `<tr class="lead"><td><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(l.ticker)}" target="_blank" rel="noopener">${esc(l.ticker)}</a> <span class="sub">RS ${l.rs ?? "–"}</span></td>
+        <td class="${pc(l.m1)}">${pct(l.m1)}</td><td class="${pc(l.m3)}">${pct(l.m3)}</td><td colspan="2" class="sub">${l.off_high == null ? "" : fmt(l.off_high, 0) + "% off high"}</td></tr>`).join("") : "";
+      return `<tr class="sec ${open ? "open" : ""}" data-sec="${esc(s.name)}"><td>${esc(SHORT[s.name] || s.name)} <span class="sub">${s.n}</span></td>
+        <td class="${pc(s.m1)}">${pct(s.m1)}</td><td class="${pc(s.m3)}">${pct(s.m3)}</td><td class="${pc(s.y1)}">${pct(s.y1)}</td>
+        <td>${s.pct_rs70 ?? "–"}%${s.clearing ? ` <span class="sub">· ${s.clearing}</span>` : ""}</td></tr>${leaders}`;
+    }).join("");
+    let inds = sortRows(mkt.industries, mktSort.ind);
+    const indTotal = inds.length;
+    if (!showAllInd) inds = inds.slice(0, 15);
+    const indRows = inds.map((s) => `<tr><td>${esc(s.name)}<div class="sub">${esc(s.sector)} · ${s.n}</div></td>
+      <td class="${pc(s.m1)}">${pct(s.m1)}</td><td class="${pc(s.m3)}">${pct(s.m3)}</td><td class="${pc(s.y1)}">${pct(s.y1)}</td></tr>`).join("");
+    el.innerHTML = `
+      <h2>Market <span class="sub" style="font-weight:400">${esc(mkt.date)}</span></h2>
+      <div class="mk-cards">${cards}</div>${flags}
+      <div class="panel"><h3>Breadth <span class="sub">% of stocks above their <b style="color:var(--blue)">50-day</b> and <b style="color:var(--amber)">200-day</b> average, 60 sessions</span></h3><div id="breadth-cv"></div></div>
+      <div class="panel"><h3>Sectors <span class="sub">tap a sector for its RS leaders</span></h3>
+        <table class="st"><thead><tr>${th("sec", "name", "Sector")}${th("sec", "m1", "1M")}${th("sec", "m3", "3M")}${th("sec", "y1", "1Y")}${th("sec", "pct_rs70", "RS70")}</tr></thead><tbody>${secRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px">RS70 = share of the sector's names beating 70% of the market; the small number after it is how many clear a Minervini/QM screen.</div></div>
+      <div class="panel"><h3>Industries <span class="sub">${indTotal} with 3+ names</span></h3>
+        <table class="st"><thead><tr>${th("ind", "name", "Industry")}${th("ind", "m1", "1M")}${th("ind", "m3", "3M")}${th("ind", "y1", "1Y")}</tr></thead><tbody>${indRows}</tbody></table>
+        ${!showAllInd && indTotal > 15 ? `<button class="more" id="ind-more" style="margin-top:8px">Show all ${indTotal}</button>` : ""}</div>
+      <a class="tbtn" style="display:block;text-align:center;text-decoration:none;margin-bottom:16px" href="#research/industry.html">Heatmap &amp; trend charts ›</a>`;
+    el.querySelectorAll(".mk").forEach((c) => c.onclick = () => c.classList.toggle("open"));
+    el.querySelectorAll("th[data-t]").forEach((h) => h.onclick = () => {
+      const t = h.dataset.t, k = h.dataset.k;
+      mktSort[t] = mktSort[t] === "-" + k ? k : "-" + k; save("md.mktsort", mktSort); renderMarket2();
+    });
+    el.querySelectorAll("tr.sec").forEach((r) => r.onclick = (e) => {
+      if (e.target.closest("a")) return;
+      const n = r.dataset.sec; openSec.has(n) ? openSec.delete(n) : openSec.add(n); renderMarket2();
+    });
+    const im = $("#ind-more"); if (im) im.onclick = () => { showAllInd = true; renderMarket2(); };
+    drawBreadth();
+  }
+  let breadthChart = null;
+  function drawBreadth() {
+    const box = $("#breadth-cv"); if (!box || !mkt.breadth || !mkt.breadth.length) return;
+    loadLib().then((L) => {
+      if (breadthChart) { try { breadthChart.remove(); } catch (e) {} }
+      breadthChart = L.createChart(box, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
+      const add = (key, color) => breadthChart.addLineSeries({ color, lineWidth: 2, priceLineVisible: false, lastValueVisible: true })
+        .setData(mkt.breadth.filter((p) => p[key] != null).map((p) => ({ time: p.date, value: p[key] })));
+      add("p50", "#58a6ff"); add("p200", "#d29922");
+      breadthChart.timeScale().fitContent();
+    }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
+  }
 
   // ---------- settings sheet ----------
   $("#settings-btn").onclick = () => { $("#acct").value = settings.acct; $("#risk").value = settings.risk; $("#sheet").classList.add("open"); };
