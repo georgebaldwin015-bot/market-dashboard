@@ -141,6 +141,7 @@
   .mk .l i { font-style: normal; opacity: .6; }
   .mk-cards.even { align-items: stretch; margin-bottom: 4px; }        /* Account stats: one row, equal boxes */
   .mk-cards.even { gap: 5px; }
+  .mk.na { opacity: .4; }
   .mk-cards.even .mk { padding: 7px 7px; border-radius: 10px; }
   .mk-cards.even .l { white-space: nowrap; letter-spacing: 0; font-size: 0.58rem; }
   .mk-cards.even .v { font-size: 0.95rem; white-space: nowrap; }
@@ -259,7 +260,7 @@
 <div id="sheet" role="dialog" aria-label="Settings">
   <div class="box">
     <h2>Position sizing</h2>
-    <div class="sub">Stored on this device only. Used to work out share counts on Today.</div>
+    <div class="sub">Stored on this device only. Used to work out share counts on ‘Today’.</div>
     <label for="acct">Account size ($)</label><input id="acct" type="number" inputmode="decimal" min="0">
     <label for="risk">Risk per trade (% of account)</label><input id="risk" type="number" inputmode="decimal" step="0.1" min="0">
     <div class="row"><button class="ghost" id="sheet-cancel">Cancel</button><button class="primary" id="sheet-save">Save</button></div>
@@ -705,7 +706,9 @@
     const gCut = months ? (() => { const d = new Date(acct.as_of); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0, 10); })() : null;
     const growthPct = (col) => { if (!g || !g.days || col < 1) return null;
       const pts = navSeries(g.days, col, gCut, gCut ? 0 : g.pre_history_pct || 0); return pts.length ? pts[pts.length - 1].value : null; };
-    const gstat = (v) => stat(acctGrade === "All" ? "Growth" : "Acct %", v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "%", v == null ? "" : v > 0 ? "good" : "bad");
+    // Growth is whole-account: greyed out (neutral, dimmed) when a grade filter is on.
+    const gstat = (v) => stat("Growth", v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "%",
+      acctGrade !== "All" ? "na" : v == null ? "" : v > 0 ? "good" : "bad");
     // Your trades by the grade Today would have given them: your R vs the chosen band's.
     const gRows = GRADES.map((gr) => {
       const ts = inWin.filter((t) => t.grade && t.grade.grade === gr);
@@ -734,7 +737,7 @@
     const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${band}× exit on the same trades</span></h3>
       <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${band}× total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
-    const byGrade = gRows ? `<div class="panel"><h3>By grade <span class="sub">what Today would have graded each entry · dashed = wasn't on the screen that day</span></h3>
+    const byGrade = gRows ? `<div class="panel"><h3>By grade <span class="sub">what ‘Today’ would have graded each entry · dashed = wasn't on the screen that day</span></h3>
       <table class="st fit"><thead><tr><th>Grade</th><th>Trades</th><th>Win</th><th>Avg R</th><th>${band}× avg R</th></tr></thead><tbody>${gRows}</tbody></table>
       ${ungraded ? `<div class="sub" style="margin-top:6px">${ungraded} trade${ungraded > 1 ? "s" : ""} not graded (not enough price history).</div>` : ""}</div>` : "";
     const bandCards = statRow(bst) + (bst.n ? gstat(growthPct(gi < 0 ? -1 : 2 + gi)) : "");
@@ -766,7 +769,7 @@
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
       <div class="chips">${gchipF("top", "A+ – B")}${GRADES.map((gr) => gchipF(gr, gr)).join("")}${gchipF("All", "All")}</div>
-      ${acctGrade === "All" ? "" : '<div class="openr">Filtered by the grade Today would have given each entry. Growth is the whole account (it can\'t be split by grade).</div>'}
+      ${acctGrade === "All" ? "" : '<div class="openr">Filtered by the grade ‘Today’ would have given each entry. Growth is the whole account (it can\'t be split by grade).</div>'}
       <div class="rowlab">Your exits</div>
       <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${cards}</div>
       ${openR != null ? `<div class="openr">R boxes are closed trades only (open positions add ${rfmt(openR)}); Growth includes open positions.</div>` : ""}
