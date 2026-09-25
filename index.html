@@ -184,6 +184,8 @@
   table.st td .sub { font-size: 0.68rem; }
   table.st tr.out { opacity: .55; }
   .grade.sm { width: 26px; height: 22px; font-size: 0.72rem; border-radius: 6px; }
+  .wl { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--panel2); margin: 4px 0 2px; }
+  .wl i { background: var(--green); } .wl b { background: var(--red); }
   .grade.inl { display: inline-flex; vertical-align: middle; margin-right: 5px; }
   .grade.off { opacity: .55; outline: 1px dashed var(--muted); }   /* not armed on the screen that day */
   #toast { position: fixed; left: 50%; bottom: calc(80px + var(--safe-b)); transform: translateX(-50%); background: var(--panel2);
@@ -715,6 +717,22 @@
       return `<tr style="${gOk({ grade: { grade: gr } }) ? "" : "opacity:.4"}"><td><span class="grade sm ${gcls(gr)}">${gr}</span></td><td>${ts.length}</td><td>${Math.round(100 * wins / ts.length)}%</td>
         <td class="${pc(mine)}">${rfmt(mine == null ? null : Math.round(mine * 100) / 100)}</td><td class="${pc(bnd)}">${rfmt(bnd == null ? null : Math.round(bnd * 100) / 100)}</td></tr>`;
     }).join("");
+    // Success / failure per grade: wins vs losses (bar), win %, total R -- yours and the chosen band's.
+    const wlRows = GRADES.map((gr) => {
+      const ts = inWin.filter((t) => t.grade && t.grade.grade === gr);
+      if (!ts.length) return "";
+      const rs = ts.map((t) => t.r).filter((r) => r != null);
+      const w = rs.filter((r) => r > 0).length, l = rs.length - w;
+      const tot = rs.reduce((a, b) => a + b, 0);
+      const brs = ts.map((t) => ((t.bands || {})[band] || {}).r).filter((r) => r != null);
+      const bw = brs.filter((r) => r > 0).length, btot = brs.reduce((a, b) => a + b, 0);
+      const bar = rs.length ? `<div class="wl"><i style="width:${100 * w / rs.length}%"></i><b style="width:${100 * l / rs.length}%"></b></div><div class="sub">${w} won · ${l} lost</div>` : "–";
+      return `<tr style="${gOk({ grade: { grade: gr } }) ? "" : "opacity:.4"}"><td><span class="grade sm ${gcls(gr)}">${gr}</span></td><td>${bar}</td>
+        <td>${rs.length ? Math.round(100 * w / rs.length) + "%" : "–"}<div class="sub">${band}× ${brs.length ? Math.round(100 * bw / brs.length) + "%" : "–"}</div></td>
+        <td class="${pc(tot)}">${rfmt(Math.round(tot * 10) / 10)}</td><td class="${pc(btot)}">${rfmt(Math.round(btot * 10) / 10)}</td></tr>`;
+    }).join("");
+    const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${band}× exit on the same trades</span></h3>
+      <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${band}× total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
     const byGrade = gRows ? `<div class="panel"><h3>By grade <span class="sub">what Today would have graded each entry · dashed = wasn't on the screen that day</span></h3>
       <table class="st fit"><thead><tr><th>Grade</th><th>Trades</th><th>Win</th><th>Avg R</th><th>${band}× avg R</th></tr></thead><tbody>${gRows}</tbody></table>
@@ -759,6 +777,7 @@
       <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · your ${band}× exit is outlined</span></h2>
       ${pos}
       ${byGrade}
+      ${wlTable}
       <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
       <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${band}× ADR exit would have made</span></h3>
         <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${cl}</tbody></table>
