@@ -33,6 +33,14 @@
   .pill.bear { background: rgba(248,81,73,.18); color: var(--red); }
   .pill.unknown { background: var(--panel2); color: var(--muted); }
   #advice { font-size: 0.85rem; color: var(--text); flex: 1; min-width: 0; }
+  #conf { display: none; margin-top: 7px; font-size: 0.8rem; color: var(--muted); align-items: baseline; gap: 8px; }
+  #conf b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  #conf.high b { background: rgba(63,185,80,.18); color: var(--green); }
+  #conf.normal b { background: rgba(88,166,255,.16); color: var(--blue); }
+  #conf.selective b { background: rgba(210,153,34,.18); color: var(--amber); }
+  #conf.low b { background: rgba(248,81,73,.18); color: var(--red); }
+  .card.out { opacity: .55; }
+  .outtag { font-size: 0.68rem; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
   #mstats { display: flex; gap: 14px; margin-top: 6px; font-size: 0.75rem; color: var(--muted); overflow-x: auto; white-space: nowrap; }
   #mstats b { color: var(--text); font-weight: 600; }
   #stale { display: none; margin-top: 6px; font-size: 0.75rem; color: var(--amber); }
@@ -140,6 +148,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
     </button>
   </div>
+  <div id="conf"></div>
   <div id="mstats"></div>
   <div id="stale"></div>
 </header>
@@ -240,6 +249,11 @@
       stat("Regime", m.regime),
       stat("As of", d.date),
     ].join("");
+    const c = d.confidence, conf = $("#conf");
+    if (c) {
+      conf.className = c.level; conf.style.display = "flex";
+      conf.innerHTML = `<b>${esc(c.label)}</b><span>${esc(c.advice)}</span>`;
+    }
     const age = (Date.now() - new Date(d.date + "T21:00:00Z").getTime()) / 864e5;
     if (age > 4) { $("#stale").style.display = "block"; $("#stale").textContent = `⚠ Data is from ${d.date} -- the nightly run may have failed.`; }
     sizeTop();
@@ -250,8 +264,9 @@
   function shares(s) {
     const riskPerShare = s.pivot - s.stop;
     if (!(riskPerShare > 0)) return null;
-    const n = Math.floor(settings.acct * settings.risk / 100 / riskPerShare);
-    return { n, cost: n * s.pivot };
+    const size = (data && data.confidence && data.confidence.size) || 1;   // half size in a bear market
+    const n = Math.floor(settings.acct * settings.risk * size / 100 / riskPerShare);
+    return { n, cost: n * s.pivot, size };
   }
   function card(s) {
     const sh = shares(s);
@@ -261,7 +276,8 @@
       return `<li class="${pts > 0 ? "p" : pts < 0 ? "n" : ""}">${esc(l)}</li>`;
     }).join("");
     const at = s.pct_to_pivot <= 0.001;
-    return `<div class="card ${openCharts.has(s.ticker) ? "open" : ""}" data-t="${esc(s.ticker)}">
+    const out = s.in_play === false;
+    return `<div class="card ${openCharts.has(s.ticker) ? "open" : ""} ${out ? "out" : ""}" data-t="${esc(s.ticker)}">
       <div class="chead">
         <div class="grade ${gcls(s.grade)}">${esc(s.grade)}</div>
         <div class="grow">
@@ -274,9 +290,9 @@
       <div class="levels">
         <div class="lv"><div class="k">Buy-stop</div><div class="v">$${fmt(s.pivot)}</div><div class="x">close $${fmt(s.close)}</div></div>
         <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">1x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
-        <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
+        <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
-      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}</div>
+      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
     </div>`;
