@@ -187,7 +187,8 @@
   .grade.sm { width: 26px; height: 22px; font-size: 0.72rem; border-radius: 6px; }
   .wl { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--panel2); margin: 4px 0 2px; }
   .wl i { background: var(--green); } .wl b { background: var(--red); }
-  .gtip { font-size: 0.74rem; color: var(--text); opacity: .85; background: var(--panel2); border-radius: 8px; padding: 6px 8px; margin: 6px 0 2px; line-height: 1.35; }
+  .tiprow td { padding-top: 0 !important; }
+  .gtip { white-space: normal; overflow-wrap: break-word; font-size: 0.74rem; color: var(--text); opacity: .85; background: var(--panel2); border-radius: 8px; padding: 6px 8px; margin: 6px 0 2px; line-height: 1.35; }
   .grade[data-gtip] { cursor: pointer; }
   .grade.inl { display: inline-flex; vertical-align: middle; margin-right: 5px; }
   .grade.off { opacity: .55; outline: 1px dashed var(--muted); }   /* not armed on the screen that day */
@@ -794,11 +795,19 @@
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
     el.querySelectorAll("[data-gtip]").forEach((c) => c.onclick = (e) => {
       e.stopPropagation();
-      const card = c.closest(".posn"), host = card || c.closest("td");
-      const old = host.querySelector(".gtip");
-      if (old) { old.remove(); return; }
       const d = document.createElement("div"); d.className = "gtip"; d.textContent = c.dataset.gtip;
-      if (card) card.querySelector(".top").after(d); else host.appendChild(d);
+      const card = c.closest(".posn");
+      if (card) {                                   // position card: under its title line
+        const old = card.querySelector(".gtip");
+        if (old) { old.remove(); return; }
+        card.querySelector(".top").after(d);
+        return;
+      }
+      const tr = c.closest("tr");                   // table: a full-width row under the trade
+      if (tr.nextElementSibling && tr.nextElementSibling.classList.contains("tiprow")) { tr.nextElementSibling.remove(); return; }
+      const row = document.createElement("tr"); row.className = "tiprow";
+      const td = document.createElement("td"); td.colSpan = tr.children.length; td.appendChild(d);
+      row.appendChild(td); tr.after(row);
     });
     // Numbers never spill out of the stat boxes: shrink any that don't fit (narrow phones).
     el.querySelectorAll(".mk-cards.even .v").forEach((v) => {
