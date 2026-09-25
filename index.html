@@ -340,7 +340,8 @@
   // bars/<TICKER>.json exactly as the Pine script does.
   const openCharts = new Set(), charts = new Map();
   const LWC = "https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js";
-  const BANDS = [[2, "#f2d600"], [4, "#ff9800"], [6, "#f44336"], [8, "#880e4f"]];
+  // Faint on purpose: visible for reference, but the candles stay the focus.
+  const BANDS = [[2, "rgba(242,214,0,.45)"], [4, "rgba(255,152,0,.45)"], [6, "rgba(244,67,54,.45)"], [8, "rgba(194,24,91,.5)"]];
   let lib = null;
   function loadLib() {
     if (!lib) lib = new Promise((ok, no) => {
