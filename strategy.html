@@ -106,23 +106,16 @@ details.fold > summary::-webkit-details-marker { display: none; }
 details.fold[open] { display: block; }
 details.fold[open] > summary { margin-bottom: 6px; }
 details.fold > :not(summary) { font-size: 0.85rem; color: #aab0b8; }
-td, th { overflow-wrap: anywhere; }
+td, th { overflow-wrap: break-word; }
 @media (max-width: 700px) {
   table { min-width: 0 !important; }
   .chart-wrap { overflow-x: hidden !important; } .chart-wrap canvas { max-width: 100% !important; }
 }
 table.compact { font-size: 0.74rem !important; }
 table.compact th, table.compact td { padding: 4px 5px !important; white-space: normal !important; }
-table.stack, table.stack tbody, table.stack tr, table.stack td, table.stack th { display: block; width: 100% !important;
-  min-width: 0 !important; max-width: 100% !important; box-sizing: border-box; }
-table.stack thead, table.stack tr.hdr { display: none; }
-.tw:has(table.stack) { max-height: none; overflow: visible; }
-table.stack tr { background: #161b22; border: 1px solid #2a313c; border-radius: 10px; margin: 0 0 8px; padding: 6px 12px; }
-table.stack td, table.stack tbody th { border: 0 !important; padding: 3px 0 !important; display: flex; justify-content: space-between;
-  align-items: baseline; gap: 12px; text-align: right; }
-table.stack td[data-label]::before { content: attr(data-label); color: #8b949e; text-align: left; flex: none; max-width: 48%; font-size: 0.78rem; }
-table.stack tr > :first-child { font-weight: 700; font-size: 1rem; justify-content: flex-start; text-align: left; padding-bottom: 5px !important; }
-table.stack td:not([data-label]):not(:first-child) { justify-content: flex-start; text-align: left; color: #8b949e; font-size: 0.8rem; }
+table.compact td * { white-space: normal !important; }
+table.compact.tight { font-size: 0.68rem !important; }
+table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
 .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 8px; margin: 8px 0 12px; }
 .kpi { background: #161b22; border: 1px solid #2a313c; border-radius: 12px; padding: 12px 14px; border-top: 3px solid #3c4048; }
 .kpi-good { border-top-color: #3fb950; } .kpi-warn { border-top-color: #d29922; } .kpi-bad { border-top-color: #f85149; }
@@ -140,8 +133,8 @@ table.stack td:not([data-label]):not(:first-child) { justify-content: flex-start
 <p style="font-size:11px;color:#8b949e;">Top A/B setups armed for the next session (same rules as the Today tab,
 the backtest and the forward test). Tap a ticker for its chart.</p>
 <div class="table-wrap tw">
-<table class="ranked-table" style="width:100%;border-collapse:collapse;font-size:12px;" data-stackable="1">
-<thead><tr style="text-align:left;border-bottom:1px solid #30363d;" class="hdr">
+<table class="ranked-table" style="width:100%;border-collapse:collapse;font-size:12px;" data-fit="1">
+<thead><tr style="text-align:left;border-bottom:1px solid #30363d;">
 <th style="padding:4px;">#</th><th style="padding:4px;">Ticker</th><th style="padding:4px;">Grade</th>
 <th style="padding:4px;">Strategy</th><th style="padding:4px;">Buy-stop</th><th style="padding:4px;">Stop</th>
 <th style="padding:4px;">Why</th>
@@ -149,183 +142,183 @@ the backtest and the forward test). Tap a ticker for its chart.</p>
 <tbody>
 <tr>
 <td>1</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/NBIS.png" data-ticker="NBIS" data-tv="https://www.tradingview.com/chart/?symbol=NBIS">NBIS</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">243.88</td>
-<td data-label="Stop">229.10</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 6.1% (sweet spot 5-7%), +1 RS 96, +1 15% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/NBIS.png" data-ticker="NBIS" data-tv="https://www.tradingview.com/chart/?symbol=NBIS">NBIS</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>243.88</td>
+<td>229.10</td>
+<td style="color:#8b949e;">+2 ADR 6.1% (sweet spot 5-7%), +1 RS 96, +1 15% off 52w high</td>
 </tr>
 <tr>
 <td>2</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/STX.png" data-ticker="STX" data-tv="https://www.tradingview.com/chart/?symbol=STX">STX</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">923.12</td>
-<td data-label="Stop">876.83</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.0% (sweet spot 5-7%), +1 RS 98, +1 17% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/STX.png" data-ticker="STX" data-tv="https://www.tradingview.com/chart/?symbol=STX">STX</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>923.12</td>
+<td>876.83</td>
+<td style="color:#8b949e;">+2 ADR 5.0% (sweet spot 5-7%), +1 RS 98, +1 17% off 52w high</td>
 </tr>
 <tr>
 <td>3</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/LITE.png" data-ticker="LITE" data-tv="https://www.tradingview.com/chart/?symbol=LITE">LITE</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">988.98</td>
-<td data-label="Stop">931.77</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.8% (sweet spot 5-7%), +1 RS 98, +1 12% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/LITE.png" data-ticker="LITE" data-tv="https://www.tradingview.com/chart/?symbol=LITE">LITE</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>988.98</td>
+<td>931.77</td>
+<td style="color:#8b949e;">+2 ADR 5.8% (sweet spot 5-7%), +1 RS 98, +1 12% off 52w high</td>
 </tr>
 <tr>
 <td>4</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/DDOG.png" data-ticker="DDOG" data-tv="https://www.tradingview.com/chart/?symbol=DDOG">DDOG</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">256.92</td>
-<td data-label="Stop">244.43</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 4.9%, +1 RS 95, +1 11% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/DDOG.png" data-ticker="DDOG" data-tv="https://www.tradingview.com/chart/?symbol=DDOG">DDOG</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>256.92</td>
+<td>244.43</td>
+<td style="color:#8b949e;">+1 ADR 4.9%, +1 RS 95, +1 11% off 52w high</td>
 </tr>
 <tr>
 <td>5</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/HPE.png" data-ticker="HPE" data-tv="https://www.tradingview.com/chart/?symbol=HPE">HPE</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">63.52</td>
-<td data-label="Stop">59.83</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.8% (sweet spot 5-7%), +1 RS 97</td>
+<td><button class="ww-tk" data-chart="worth-watching/HPE.png" data-ticker="HPE" data-tv="https://www.tradingview.com/chart/?symbol=HPE">HPE</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>63.52</td>
+<td>59.83</td>
+<td style="color:#8b949e;">+2 ADR 5.8% (sweet spot 5-7%), +1 RS 97</td>
 </tr>
 <tr>
 <td>6</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/ALAB.png" data-ticker="ALAB" data-tv="https://www.tradingview.com/chart/?symbol=ALAB">ALAB</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">QM</td>
-<td data-label="Buy-stop">363.46</td>
-<td data-label="Stop">341.65</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 6.0% (sweet spot 5-7%), +1 RS 95</td>
+<td><button class="ww-tk" data-chart="worth-watching/ALAB.png" data-ticker="ALAB" data-tv="https://www.tradingview.com/chart/?symbol=ALAB">ALAB</button></td>
+<td><b class="grade-A">A</b></td>
+<td>QM</td>
+<td>363.46</td>
+<td>341.65</td>
+<td style="color:#8b949e;">+2 ADR 6.0% (sweet spot 5-7%), +1 RS 95</td>
 </tr>
 <tr>
 <td>7</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/CRWD.png" data-ticker="CRWD" data-tv="https://www.tradingview.com/chart/?symbol=CRWD">CRWD</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">262.49</td>
-<td data-label="Stop">247.40</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 97</td>
+<td><button class="ww-tk" data-chart="worth-watching/CRWD.png" data-ticker="CRWD" data-tv="https://www.tradingview.com/chart/?symbol=CRWD">CRWD</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>262.49</td>
+<td>247.40</td>
+<td style="color:#8b949e;">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 97</td>
 </tr>
 <tr>
 <td>8</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/MRVL.png" data-ticker="MRVL" data-tv="https://www.tradingview.com/chart/?symbol=MRVL">MRVL</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">262.36</td>
-<td data-label="Stop">250.38</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 4.6%, +1 RS 97, +1 18% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/MRVL.png" data-ticker="MRVL" data-tv="https://www.tradingview.com/chart/?symbol=MRVL">MRVL</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>262.36</td>
+<td>250.38</td>
+<td style="color:#8b949e;">+1 ADR 4.6%, +1 RS 97, +1 18% off 52w high</td>
 </tr>
 <tr>
 <td>9</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/SNDK.png" data-ticker="SNDK" data-tv="https://www.tradingview.com/chart/?symbol=SNDK">SNDK</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">1887.04</td>
-<td data-label="Stop">1779.33</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 99</td>
+<td><button class="ww-tk" data-chart="worth-watching/SNDK.png" data-ticker="SNDK" data-tv="https://www.tradingview.com/chart/?symbol=SNDK">SNDK</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>1887.04</td>
+<td>1779.33</td>
+<td style="color:#8b949e;">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 99</td>
 </tr>
 <tr>
 <td>10</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/DELL.png" data-ticker="DELL" data-tv="https://www.tradingview.com/chart/?symbol=DELL">DELL</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">588.40</td>
-<td data-label="Stop">554.57</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 98</td>
+<td><button class="ww-tk" data-chart="worth-watching/DELL.png" data-ticker="DELL" data-tv="https://www.tradingview.com/chart/?symbol=DELL">DELL</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>588.40</td>
+<td>554.57</td>
+<td style="color:#8b949e;">+2 ADR 5.7% (sweet spot 5-7%), +1 RS 98</td>
 </tr>
 <tr>
 <td>11</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/INTC.png" data-ticker="INTC" data-tv="https://www.tradingview.com/chart/?symbol=INTC">INTC</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">127.39</td>
-<td data-label="Stop">121.54</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 4.6%, +1 RS 98</td>
+<td><button class="ww-tk" data-chart="worth-watching/INTC.png" data-ticker="INTC" data-tv="https://www.tradingview.com/chart/?symbol=INTC">INTC</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>127.39</td>
+<td>121.54</td>
+<td style="color:#8b949e;">+1 ADR 4.6%, +1 RS 98</td>
 </tr>
 <tr>
 <td>12</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/FTNT.png" data-ticker="FTNT" data-tv="https://www.tradingview.com/chart/?symbol=FTNT">FTNT</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">178.74</td>
-<td data-label="Stop">170.83</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 4.4%, +1 RS 96</td>
+<td><button class="ww-tk" data-chart="worth-watching/FTNT.png" data-ticker="FTNT" data-tv="https://www.tradingview.com/chart/?symbol=FTNT">FTNT</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>178.74</td>
+<td>170.83</td>
+<td style="color:#8b949e;">+1 ADR 4.4%, +1 RS 96</td>
 </tr>
 <tr>
 <td>13</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/SMCI.png" data-ticker="SMCI" data-tv="https://www.tradingview.com/chart/?symbol=SMCI">SMCI</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">QM</td>
-<td data-label="Buy-stop">41.54</td>
-<td data-label="Stop">39.36</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.3% (sweet spot 5-7%)</td>
+<td><button class="ww-tk" data-chart="worth-watching/SMCI.png" data-ticker="SMCI" data-tv="https://www.tradingview.com/chart/?symbol=SMCI">SMCI</button></td>
+<td><b class="grade-A">A</b></td>
+<td>QM</td>
+<td>41.54</td>
+<td>39.36</td>
+<td style="color:#8b949e;">+2 ADR 5.3% (sweet spot 5-7%)</td>
 </tr>
 <tr>
 <td>14</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/TER.png" data-ticker="TER" data-tv="https://www.tradingview.com/chart/?symbol=TER">TER</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">389.14</td>
-<td data-label="Stop">373.86</td>
-<td style="color:#8b949e;" data-label="Why">+1 RS 95, +1 20% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/TER.png" data-ticker="TER" data-tv="https://www.tradingview.com/chart/?symbol=TER">TER</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>389.14</td>
+<td>373.86</td>
+<td style="color:#8b949e;">+1 RS 95, +1 20% off 52w high</td>
 </tr>
 <tr>
 <td>15</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/PANW.png" data-ticker="PANW" data-tv="https://www.tradingview.com/chart/?symbol=PANW">PANW</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">393.30</td>
-<td data-label="Stop">373.87</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 4.9%, +1 RS 96</td>
+<td><button class="ww-tk" data-chart="worth-watching/PANW.png" data-ticker="PANW" data-tv="https://www.tradingview.com/chart/?symbol=PANW">PANW</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>393.30</td>
+<td>373.87</td>
+<td style="color:#8b949e;">+1 ADR 4.9%, +1 RS 96</td>
 </tr>
 <tr>
 <td>16</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/MU.png" data-ticker="MU" data-tv="https://www.tradingview.com/chart/?symbol=MU">MU</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">1096.16</td>
-<td data-label="Stop">1053.52</td>
-<td style="color:#8b949e;" data-label="Why">+1 RS 99, +1 11% off 52w high</td>
+<td><button class="ww-tk" data-chart="worth-watching/MU.png" data-ticker="MU" data-tv="https://www.tradingview.com/chart/?symbol=MU">MU</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>1096.16</td>
+<td>1053.52</td>
+<td style="color:#8b949e;">+1 RS 99, +1 11% off 52w high</td>
 </tr>
 <tr>
 <td>17</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/HOOD.png" data-ticker="HOOD" data-tv="https://www.tradingview.com/chart/?symbol=HOOD">HOOD</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">QM</td>
-<td data-label="Buy-stop">124.72</td>
-<td data-label="Stop">118.21</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.2% (sweet spot 5-7%)</td>
+<td><button class="ww-tk" data-chart="worth-watching/HOOD.png" data-ticker="HOOD" data-tv="https://www.tradingview.com/chart/?symbol=HOOD">HOOD</button></td>
+<td><b class="grade-A">A</b></td>
+<td>QM</td>
+<td>124.72</td>
+<td>118.21</td>
+<td style="color:#8b949e;">+2 ADR 5.2% (sweet spot 5-7%)</td>
 </tr>
 <tr>
 <td>18</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/SWKS.png" data-ticker="SWKS" data-tv="https://www.tradingview.com/chart/?symbol=SWKS">SWKS</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">Minervini + QM</td>
-<td data-label="Buy-stop">91.45</td>
-<td data-label="Stop">86.00</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 6.0% (sweet spot 5-7%)</td>
+<td><button class="ww-tk" data-chart="worth-watching/SWKS.png" data-ticker="SWKS" data-tv="https://www.tradingview.com/chart/?symbol=SWKS">SWKS</button></td>
+<td><b class="grade-A">A</b></td>
+<td>Minervini + QM</td>
+<td>91.45</td>
+<td>86.00</td>
+<td style="color:#8b949e;">+2 ADR 6.0% (sweet spot 5-7%)</td>
 </tr>
 <tr>
 <td>19</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/MSTR.png" data-ticker="MSTR" data-tv="https://www.tradingview.com/chart/?symbol=MSTR">MSTR</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">QM</td>
-<td data-label="Buy-stop">168.50</td>
-<td data-label="Stop">158.64</td>
-<td style="color:#8b949e;" data-label="Why">+2 ADR 5.8% (sweet spot 5-7%)</td>
+<td><button class="ww-tk" data-chart="worth-watching/MSTR.png" data-ticker="MSTR" data-tv="https://www.tradingview.com/chart/?symbol=MSTR">MSTR</button></td>
+<td><b class="grade-A">A</b></td>
+<td>QM</td>
+<td>168.50</td>
+<td>158.64</td>
+<td style="color:#8b949e;">+2 ADR 5.8% (sweet spot 5-7%)</td>
 </tr>
 <tr>
 <td>20</td>
-<td data-label="Ticker"><button class="ww-tk" data-chart="worth-watching/ARM.png" data-ticker="ARM" data-tv="https://www.tradingview.com/chart/?symbol=ARM">ARM</button></td>
-<td data-label="Grade"><b class="grade-A">A</b></td>
-<td data-label="Strategy">QM</td>
-<td data-label="Buy-stop">333.20</td>
-<td data-label="Stop">316.61</td>
-<td style="color:#8b949e;" data-label="Why">+1 ADR 5.0%, +1 RS 96</td>
+<td><button class="ww-tk" data-chart="worth-watching/ARM.png" data-ticker="ARM" data-tv="https://www.tradingview.com/chart/?symbol=ARM">ARM</button></td>
+<td><b class="grade-A">A</b></td>
+<td>QM</td>
+<td>333.20</td>
+<td>316.61</td>
+<td style="color:#8b949e;">+1 ADR 5.0%, +1 RS 96</td>
 </tr>
 </tbody>
 </table>
@@ -2666,15 +2659,15 @@ archetype avg. Screener output, not a recommendation.</p></details>
 
 <script>
 (function () {
-  // Keep tables as tables. If one is wider than the screen, tighten it; only
-  // if it still doesn't fit, show one card per row (cells are pre-labelled).
+  // Keep tables as tables. If one is wider than the screen, tighten it (twice if
+  // needed); if it still doesn't fit, its box scrolls sideways (words never split mid-word).
   function fit() {
-    document.querySelectorAll("table[data-stackable]").forEach(function (t) {
-      t.classList.remove("compact", "stack");
-      var box = t.parentElement, w = box.clientWidth;
+    document.querySelectorAll("table[data-fit]").forEach(function (t) {
+      t.classList.remove("compact", "tight");
+      var w = t.parentElement.clientWidth;
       if (!w || t.scrollWidth <= w + 1) return;
       t.classList.add("compact");
-      if (t.scrollWidth > w + 1) { t.classList.remove("compact"); t.classList.add("stack"); }
+      if (t.scrollWidth > w + 1) t.classList.add("tight");
     });
   }
   var timer;
