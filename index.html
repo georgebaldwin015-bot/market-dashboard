@@ -34,6 +34,10 @@
   .pill.bear { background: rgba(248,81,73,.18); color: var(--red); }
   .pill.unknown { background: var(--panel2); color: var(--muted); }
   #advice { font-size: 0.85rem; color: var(--text); flex: 1; min-width: 0; }
+  /* Exit band picker: one choice for every screen */
+  #bandpick { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+  #bandpick span { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  #bandpick .seg button { padding: 3px 7px; font-size: 0.72rem; }
   #conf { display: none; margin-top: 7px; font-size: 0.8rem; color: var(--muted); align-items: baseline; gap: 8px; }
   #conf b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
   #conf.high b { background: rgba(63,185,80,.18); color: var(--green); }
@@ -92,6 +96,7 @@
   .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.72rem; color: var(--muted); margin: 6px 6px 0; align-items: center; }
   .legend i { display: inline-block; width: 14px; border-top: 2px dotted; vertical-align: middle; margin-right: 4px; }
   .legend i.solid { border-top-style: dashed; } .legend i.pv { border-top: 2px solid var(--blue); }
+  .legend i.sel { border-top-style: solid; border-top-width: 3px; } .legend b { color: var(--text); }
   .legend a { margin-left: auto; color: var(--blue); text-decoration: none; }
   .tk { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; }
   .sub { font-size: 0.78rem; color: var(--muted); }
@@ -119,11 +124,13 @@
   .posn.alert { border-color: rgba(248,81,73,.6); }
   .posn .top { display: flex; align-items: baseline; gap: 10px; }
   .posn .big { font-size: 1.05rem; font-weight: 700; margin-left: auto; }
-  .posn .stops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
-  .posn .stops div { background: var(--panel2); border-radius: 8px; padding: 6px 8px; }
+  .posn .stops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin-top: 10px; }
+  .posn .stops div { background: var(--panel2); border-radius: 8px; padding: 5px 6px; min-width: 0; }
   .posn .stops .k { font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-  .posn .stops .v { font-weight: 600; font-size: 0.92rem; }
-  .posn .stops .on { outline: 1px solid var(--amber); }
+  .posn .stops .v { font-weight: 600; font-size: 0.88rem; white-space: nowrap; }
+  .posn .stops .on { outline: 1.5px solid var(--amber); }
+  .posn .stops .dim { opacity: .55; }
+  .posn .also { color: var(--muted); font-size: 0.72rem; margin-top: 6px; }
   .posn .hit { color: var(--red); font-size: 0.78rem; margin-top: 8px; }
   .buy { color: var(--green); font-weight: 600; } .sell { color: var(--red); font-weight: 600; }
   /* Market */
@@ -204,6 +211,7 @@
   <div class="mrow">
     <span id="cycle" class="pill unknown">…</span>
     <div id="advice">Loading market state…</div>
+    <div id="bandpick" title="Exit: trail at close minus k x ADR"><span>Exit</span><div class="seg"></div></div>
     <button class="iconbtn" id="settings-btn" aria-label="Settings">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
     </button>
@@ -253,6 +261,13 @@
   function load(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   let settings = Object.assign({}, DEF, load("md.settings", {}));
+  // The exit everywhere: trail at close - k x ADR once that is above the
+  // entry. 4x by default (best on a $10k account out of sample); the pick is
+  // this device's and applies to every screen. Unpicked bands draw dotted.
+  const BAND_KS = [2, 4, 6, 8], DEFAULT_BAND = 4;
+  let band = load("md.band", DEFAULT_BAND);
+  if (!BAND_KS.includes(band)) band = DEFAULT_BAND;
+  const bandText = (k) => `Trail the stop at close − ${k}× ADR once that's above your entry (so it never drops back below breakeven); until then the 1× ADR stop.`;
   const GRADES = ["A+", "A", "B", "C", "D", "F"];
   const GROUPS = { top: ["A+", "A", "B"], All: GRADES };
   GRADES.forEach((g) => GROUPS[g] = [g]);
@@ -386,7 +401,7 @@
       ${!tableView && !showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
       <details class="foot"><summary>ⓘ Rules</summary>
         <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
-        <b>Exit:</b> ${esc(data.rules.exit)}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
+        <b>Exit (${band}×):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
         Shares = ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop). Change it in settings (⚙).
       </details>`;
     el.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => { filters.grade = b.dataset.g; save("md.filters", filters); renderToday(); });
@@ -484,7 +499,9 @@
     return out;
   }
   function legend(s) {
-    return `<div class="legend">${BANDS.map(([k, c]) => `<span><i style="border-color:${c}"></i>${k}×</span>`).join("")}
+    return `<div class="legend">${BANDS.map(([k, c]) => k === band
+        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit</b></span>`
+        : `<span><i style="border-color:${c}"></i>${k}×</span>`).join("")}
       <span><i class="pv"></i>Buy-stop</span>
       <span><i class="solid" style="border-color:var(--red)"></i>Stop</span>
       <a href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">TradingView ›</a></div>`;
@@ -521,7 +538,9 @@
       cs.createPriceLine({ price: s.stop, color: "#f85149", lineWidth: 2, lineStyle: 2, title: "", axisLabelVisible: true });
       const adr = sma(b.h.map((h, i) => h - b.l[i]), 20);
       BANDS.forEach(([k, color]) => {
-        const line = chart.addLineSeries({ color, lineWidth: 1, lineStyle: 1, priceLineVisible: false,
+        const sel = k === band;   // the chosen exit is a solid line, the others dotted
+        const line = chart.addLineSeries({ color: sel ? color.replace(/[\d.]+\)$/, ".8)") : color, lineWidth: sel ? 2 : 1,
+          lineStyle: sel ? 0 : 1, priceLineVisible: false,
           lastValueVisible: false, crosshairMarkerVisible: false,
           autoscaleInfoProvider: () => null });   // scale to price, not to the lowest band
         line.setData(b.t.map((d, i) => adr[i] == null ? { time: d } : { time: d, value: b.c[i] - k * adr[i] }));
@@ -651,52 +670,45 @@
       + stat("Avg R", rfmt(st.avg_r), st.avg_r > 0 ? "good" : "bad") + stat("Total R", rfmt(st.total_r).replace("R", "R"), st.total_r > 0 ? "good" : "bad")
       : '<div class="sub" style="grid-column:1/-1">No closed trades in this window.</div>';
     const pos = acct.positions.map((p) => {
-      const s = p.stops || {}, cand = [s.initial, s.live, s.band4].filter((x) => x != null), tight = cand.length ? Math.max(...cand) : null;
-      const box = (k, l) => `<div class="${s[k] != null && s[k] === tight ? "on" : ""}"><div class="k">${l}</div><div class="v">${s[k] == null ? "–" : fmt(s[k])}</div></div>`;
-      const hit = (p.hit || []).map((h) => `⚠ ${h.rule === "band4" ? "4× band" : "Live rule"} stop hit ${esc(h.date)} at ${fmt(h.price)}`).join("<br>");
+      // Tonight's stop is the chosen band's (outlined); the other bands are shown dimmed for comparison.
+      const s = p.stops || {};
+      const box = (k, l, cls) => `<div class="${cls}"><div class="k">${l}</div><div class="v">${s[k] == null ? "–" : fmt(s[k])}</div></div>`;
+      const mine = (p.hit || []).find((h) => h.k === band);
+      const hit = mine ? `⚠ ${band}× band stop hit ${esc(mine.date)} at ${fmt(mine.price)}` : "";
+      const also = (p.hit || []).filter((h) => h.k !== band).map((h) => `${h.k}× out ${esc(h.date)} at ${fmt(h.price)}`).join(" · ");
       return `<div class="posn ${hit ? "alert" : ""}">
         <div class="top"><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(p.symbol)}" target="_blank" rel="noopener">${esc(p.symbol)}</a>
           <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>
           <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%</div>
-        <div class="stops">${box("initial", "Initial 1× ADR")}${box("live", "Live rule")}${box("band4", "4× band")}</div>
-        ${hit ? `<div class="hit">${hit}</div>` : ""}</div>`;
+        <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === band ? "on" : "dim")).join("")}</div>
+        ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
     }).join("") || '<div class="empty" style="padding:14px 0">No open positions.</div>';
     const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
     let closed = acct.closed; const closedTotal = closed.length;
     if (!showAllClosed) closed = closed.slice(0, 15);
     const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td><b>${esc(t.symbol)}</b><div class="sub">${t.days ?? "–"}d</div></td>
-      <td class="${pc(t.r)}">${rfmt(t.r)}</td><td class="${pc(t.rule_r)}">${rfmt(t.rule_r)}</td></tr>`).join("");
+      <td class="${pc(t.r)}">${rfmt(t.r)}</td>${(() => { const b = (t.bands || {})[band];
+        return b ? `<td class="${pc(b.r)}">${rfmt(b.r)}${b.exit ? "" : '<div class="sub">holding</div>'}</td>` : "<td>–</td>"; })()}</tr>`).join("");
     el.innerHTML = `
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
       <div class="mk-cards" style="grid-template-columns:repeat(4,1fr)">${cards}</div>
-      <div class="panel"><h3>Growth <span class="sub">${acct.growth ? "IBKR's return (open positions and real sizes) vs the same account on the rules' exits" : `your exits vs the rules' exits · ${fmt(settings.risk, 1)}% risk a trade, compounded`}</span></h3>
+      <div class="panel"><h3>Growth <span class="sub">IBKR's return (open positions, real sizes) vs the same account on each ADR exit · ${band}× solid, others dotted</span></h3>
         <div id="growth-cv" style="height:200px"></div><div class="legend" id="growth-leg"></div></div>
-      <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · the highest is outlined</span></h2>
+      <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · your ${band}× exit is outlined</span></h2>
       ${pos}
       <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
-      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the rules would have made</span></h3>
-        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>Rule</th></tr></thead><tbody>${cl}</tbody></table>
+      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${band}× ADR exit would have made</span></h3>
+        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${cl}</tbody></table>
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
     drawGrowth();
   }
 
-  // Same closed trades, two outcomes: what you did vs what the rule would
-  // have done (rule R, closed on the rule's exit date -- or marked today if
-  // the rule would still hold it). Compounded at the settings' risk %.
   let growthChart = null;
-  function growthSeries(events, since, as_of) {
-    const byDay = {};
-    events.forEach(([d, r]) => { if (r == null || !d || (since && d < since)) return; (byDay[d] = byDay[d] || []).push(r); });
-    const days = Object.keys(byDay).sort();
-    let eq = 1; const pts = [];
-    days.forEach((d) => { byDay[d].forEach((r) => { eq *= 1 + settings.risk * r / 100; }); pts.push({ time: d, value: (eq - 1) * 100 }); });
-    return pts;
-  }
   // IBKR's daily time-weighted return (the Performance screen's number)
   // and the same account re-run with the rules' exits, chained over the
   // window. "All" starts from the return made before the daily history.
@@ -707,22 +719,23 @@
   }
   function drawGrowth() {
     const box = $("#growth-cv"), leg = $("#growth-leg"); if (!box || !acct) return;
-    const days = { "30d": 30, "90d": 90, "365d": 365 }[acctWin];
-    const since = days ? new Date(new Date(acct.as_of).getTime() - days * 864e5).toISOString().slice(0, 10) : null;
-    const g = acct.growth, base = g && !since ? g.pre_history_pct || 0 : 0;
+    const g = acct.growth;
+    if (!g || !g.days || !g.days.length || !g.bands) { box.innerHTML = '<div class="msg">Growth appears after the next IBKR sync.</div>'; leg.innerHTML = ""; return; }
     // IBKR's windows are calendar months back, start day included (1Y from 25 Sep = 25 Sep onwards)
     const months = { "30d": 1, "90d": 3, "365d": 12 }[acctWin];
-    const gSince = months ? (() => { const d = new Date(acct.as_of); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0, 10); })() : null;
-    const actual = g ? navSeries(g.days, 1, gSince, base) : growthSeries(acct.closed.map((t) => [t.exit_date, t.r]), since);
-    const rule = g ? navSeries(g.days, 2, gSince, base) : growthSeries(acct.closed.filter((t) => !since || t.exit_date >= since)
-      .map((t) => [t.rule_exit || acct.as_of, t.rule_r]), null);
-    if (!actual.length && !rule.length) { box.innerHTML = '<div class="msg">No closed trades in this window.</div>'; leg.innerHTML = ""; return; }
-    const first = [actual[0], rule[0]].filter(Boolean).map((p) => p.time).sort()[0];
-    const start = new Date(new Date(first).getTime() - 864e5).toISOString().slice(0, 10);
-    [actual, rule].forEach((s) => s.unshift({ time: start, value: base }));
-    const last = (s) => s.length ? s[s.length - 1].value : 0;
+    const since = months ? (() => { const d = new Date(acct.as_of); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0, 10); })() : null;
+    const base = since ? 0 : g.pre_history_pct || 0;
+    const actual = navSeries(g.days, 1, since, base);
+    if (!actual.length) { box.innerHTML = '<div class="msg">No data in this window.</div>'; leg.innerHTML = ""; return; }
+    const lines = g.bands.map((k, i) => ({ k, color: (BANDS.find((b) => b[0] === k) || [0, "#d29922"])[1].replace(/[\d.]+\)$/, "1)"),
+      pts: navSeries(g.days, 2 + i, since, base) }));
+    const start = new Date(new Date(actual[0].time).getTime() - 864e5).toISOString().slice(0, 10);
+    [actual, ...lines.map((l) => l.pts)].forEach((p) => p.unshift({ time: start, value: base }));
+    const last = (p) => p.length ? p[p.length - 1].value : 0;
     const pctS = (v) => (v > 0 ? "+" : "") + fmt(v, 1) + "%";
-    leg.innerHTML = `<span><i class="pv"></i>Actual ${pctS(last(actual))}</span><span><i class="pv" style="border-color:var(--amber)"></i>Rule-based ${pctS(last(rule))}</span>`;
+    leg.innerHTML = `<span><i class="pv"></i><b>IBKR ${pctS(last(actual))}</b></span>` + lines.map((l) => l.k === band
+      ? `<span><i class="sel" style="border-color:${l.color}"></i><b>${l.k}× ${pctS(last(l.pts))}</b></span>`
+      : `<span><i style="border-color:${l.color}"></i>${l.k}× ${pctS(last(l.pts))}</span>`).join("");
     loadLib().then((L) => {
       if (growthChart) { try { growthChart.remove(); } catch (e) {} }
       box.innerHTML = "";
@@ -730,8 +743,11 @@
         grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
         rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false,
         localization: { priceFormatter: (v) => fmt(v, 1) + "%" } });
-      const line = (data, color) => growthChart.addLineSeries({ color, lineWidth: 2, priceLineVisible: false, lastValueVisible: true }).setData(data);
-      line(rule, "#d29922"); line(actual, "#58a6ff");
+      lines.filter((l) => l.k !== band).forEach((l) => growthChart.addLineSeries({ color: l.color.replace(/1\)$/, ".7)"), lineWidth: 1, lineStyle: 1,
+        priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }).setData(l.pts));
+      const sel = lines.find((l) => l.k === band);
+      if (sel) growthChart.addLineSeries({ color: sel.color, lineWidth: 2, priceLineVisible: false, lastValueVisible: true }).setData(sel.pts);
+      growthChart.addLineSeries({ color: "#58a6ff", lineWidth: 2, priceLineVisible: false, lastValueVisible: true }).setData(actual);
       growthChart.timeScale().fitContent();
     }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
   }
@@ -746,6 +762,19 @@
     if (r > 0 && r <= 10) settings.risk = r;
     save("md.settings", settings); $("#sheet").classList.remove("open"); renderToday();
   };
+
+  function renderBandPick() {
+    const seg = $("#bandpick .seg");
+    seg.innerHTML = BAND_KS.map((k) => `<button class="${k === band ? "on" : ""}" data-band="${k}">${k}×</button>`).join("");
+    seg.querySelectorAll("button").forEach((b) => b.onclick = () => {
+      band = +b.dataset.band; save("md.band", band); renderBandPick();
+      if (data) renderToday();
+      document.querySelectorAll(".card.open[data-t]").forEach(drawChart);
+      if (acct) renderAccount();
+    });
+    sizeTop();
+  }
+  renderBandPick();
 
   // ---------- boot ----------
   route(); sizeTop();
