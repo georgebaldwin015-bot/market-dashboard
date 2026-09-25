@@ -2,91 +2,345 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Momentum Desk">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Momentum Desk</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background-color: rgb(15, 17, 21);
-    color: rgb(230, 232, 236);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  :root {
+    --bg: #0d1117; --panel: #161b22; --panel2: #1c2230; --line: #2a313c;
+    --text: #e6e8ec; --muted: #8b949e; --faint: #6e7681;
+    --green: #3fb950; --amber: #d29922; --red: #f85149; --blue: #58a6ff;
+    --A: #7ee787; --B: #79c0ff; --C: #e3b341; --D: #ff7b72;
+    --nav-h: 62px; --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px);
   }
-  .tabs {
-    display: flex;
-    gap: 4px;
-     flex-wrap: wrap;
-    padding: 12px 16px 0;
-    border-bottom: 1px solid rgb(40, 44, 52);
-  }
-  .tab {
-    padding: 10px 18px;
-    cursor: pointer;
-    color: rgb(150, 154, 162);
-    border-radius: 6px 6px 0 0;
-    font-size: 0.95rem;
-    user-select: none;
-  }
-  .tab.active {
-    color: rgb(230, 232, 236);
-    background-color: rgb(22, 25, 30);
-    font-weight: 600;
-  }
-  .tab-content {
-    display: none;
-    height: calc(100vh - 52px);
-  }
-  .tab-content.active { display: block; }
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  button { font: inherit; color: inherit; }
+
+  /* Market bar: always on top, every screen */
+  #market { position: fixed; top: 0; left: 0; right: 0; z-index: 20; background: var(--bg);
+    padding: calc(8px + var(--safe-t)) 16px 8px; border-bottom: 1px solid var(--line); }
+  .mrow { display: flex; align-items: center; gap: 10px; }
+  .pill { font-weight: 700; font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; letter-spacing: .02em; }
+  .pill.bull { background: rgba(63,185,80,.18); color: var(--green); }
+  .pill.transition { background: rgba(210,153,34,.18); color: var(--amber); }
+  .pill.bear { background: rgba(248,81,73,.18); color: var(--red); }
+  .pill.unknown { background: var(--panel2); color: var(--muted); }
+  #advice { font-size: 0.85rem; color: var(--text); flex: 1; min-width: 0; }
+  #mstats { display: flex; gap: 14px; margin-top: 6px; font-size: 0.75rem; color: var(--muted); overflow-x: auto; white-space: nowrap; }
+  #mstats b { color: var(--text); font-weight: 600; }
+  #stale { display: none; margin-top: 6px; font-size: 0.75rem; color: var(--amber); }
+  .iconbtn { background: none; border: 0; padding: 4px; color: var(--muted); cursor: pointer; }
+
+  /* Views */
+  main { position: fixed; left: 0; right: 0; bottom: calc(var(--nav-h) + var(--safe-b)); top: var(--top-h, 92px); }
+  .view { display: none; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .view.active { display: block; }
+  .view iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
+  .pad { padding: 14px 16px 24px; max-width: 900px; margin: 0 auto; }
+
+  /* Bottom nav */
+  nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--panel);
+    border-top: 1px solid var(--line); display: flex; padding-bottom: var(--safe-b); }
+  nav button { flex: 1; height: var(--nav-h); background: none; border: 0; color: var(--faint);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font-size: 0.68rem; cursor: pointer; }
+  nav button svg { width: 22px; height: 22px; }
+  nav button.active { color: var(--blue); }
+
+  /* Today */
+  h2 { font-size: 1.05rem; margin: 4px 0 10px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px;
+    font-size: 0.82rem; cursor: pointer; color: var(--muted); }
+  .chip.on { color: var(--text); border-color: var(--blue); background: rgba(88,166,255,.12); }
+  .chip .n { font-weight: 700; margin-left: 4px; }
+  .search { width: 100%; background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    border-radius: 10px; padding: 9px 12px; font-size: 16px; margin-bottom: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+  .chead { display: flex; align-items: center; gap: 10px; }
+  .grade { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; flex: none; }
+  .gA { background: rgba(46,160,67,.22); color: var(--A); } .gB { background: rgba(88,166,255,.2); color: var(--B); }
+  .gC { background: rgba(210,153,34,.2); color: var(--C); } .gD { background: rgba(248,81,73,.2); color: var(--D); }
+  .tk { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; }
+  .sub { font-size: 0.78rem; color: var(--muted); }
+  .grow { flex: 1; min-width: 0; }
+  .near { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--panel2); color: var(--muted); white-space: nowrap; }
+  .near.hot { color: var(--amber); background: rgba(210,153,34,.15); }
+  .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .lv { background: var(--panel2); border-radius: 8px; padding: 7px 9px; min-width: 0; }
+  .lv .k { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .lv .v { font-size: 0.95rem; font-weight: 600; margin-top: 2px; }
+  .lv .x { font-size: 0.7rem; color: var(--faint); }
+  .reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+  .rz { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; background: var(--panel2); color: var(--muted); }
+  .rz.p { background: rgba(46,160,67,.15); color: var(--A); } .rz.n { background: rgba(248,81,73,.15); color: var(--D); }
+  details.why { margin-top: 8px; font-size: 0.8rem; }
+  details.why summary { color: var(--muted); cursor: pointer; }
+  details.why ul { margin: 6px 0 0 18px; padding: 0; }
+  details.why li { margin: 3px 0; color: var(--muted); }
+  details.why li.p { color: var(--A); } details.why li.n { color: var(--D); }
+  .foot { font-size: 0.75rem; color: var(--faint); line-height: 1.5; margin-top: 16px; }
+  .foot summary { cursor: pointer; display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; list-style: none; margin-bottom: 6px; }
+  .empty { color: var(--muted); padding: 30px 0; text-align: center; }
+  .more { width: 100%; background: var(--panel); border: 1px dashed var(--line); color: var(--muted);
+    border-radius: 12px; padding: 10px; cursor: pointer; }
+
+  /* Research list */
+  .list a { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px; margin-bottom: 10px; color: var(--text); text-decoration: none; }
+  .list .t { font-weight: 600; } .list .d { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  .back { background: none; border: 0; color: var(--blue); padding: 8px 16px; cursor: pointer; font-size: 0.9rem; }
+  #research-frame { display: none; height: 100%; }
+  #research-frame iframe { width: 100%; height: calc(100% - 38px); border: 0; display: block; }
+
+  /* Settings sheet */
+  #sheet { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 40; display: none; align-items: flex-end; }
+  #sheet.open { display: flex; }
+  #sheet .box { background: var(--panel); width: 100%; max-width: 560px; margin: 0 auto; border-radius: 16px 16px 0 0;
+    padding: 18px 18px calc(18px + var(--safe-b)); }
+  #sheet label { display: block; font-size: 0.8rem; color: var(--muted); margin: 12px 0 4px; }
+  #sheet input { width: 100%; background: var(--bg); border: 1px solid var(--line); color: var(--text);
+    border-radius: 10px; padding: 10px 12px; font-size: 16px; }
+  #sheet .row { display: flex; gap: 10px; margin-top: 16px; }
+  #sheet .row button { flex: 1; padding: 11px; border-radius: 10px; border: 0; cursor: pointer; }
+  .chartbtn { margin-left: auto; background: none; border: 1px solid var(--line); color: var(--blue);
+    border-radius: 8px; padding: 3px 9px; font-size: 0.75rem; cursor: pointer; }
+  #chart-modal { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 50; display: none;
+    flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 12px; }
+  #chart-modal.open { display: flex; }
+  #chart-modal img { max-width: 100%; max-height: 78vh; border-radius: 8px; }
+  #chart-modal .bar { display: flex; gap: 18px; font-size: .9rem; }
+  #chart-modal a { color: var(--blue); }
+  .primary { background: var(--blue); color: #0d1117 !important; font-weight: 700; }
+  .ghost { background: var(--panel2); }
 </style>
 </head>
 <body>
-  <div class="tabs">
-    <div class="tab" id="tab-industry" onclick="showTab('industry')">Industry Analysis</div>
-    <div class="tab" id="tab-strategy" onclick="showTab('strategy')">Momentum Desk Strategy</div>
-    <div class="tab" id="tab-journal" onclick="showTab('journal')">Trade Journal</div>
-    <div class="tab" id="tab-backtest" onclick="showTab('backtest')">Backtest</div>
-    <div class="tab" id="tab-gallery" onclick="showTab('gallery')">Setup Gallery</div>
-  </div>
 
-  <div class="tab-content" id="content-industry">
-    <iframe src="industry.html" title="Industry Analysis"></iframe>
+<header id="market">
+  <div class="mrow">
+    <span id="cycle" class="pill unknown">…</span>
+    <div id="advice">Loading market state…</div>
+    <button class="iconbtn" id="settings-btn" aria-label="Settings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
   </div>
-  <div class="tab-content" id="content-strategy">
-    <iframe src="strategy.html" title="Momentum Desk Strategy"></iframe>
-  </div>
-  <div class="tab-content" id="content-journal">
-    <iframe src="trade-journal.html" title="Trade Journal"></iframe>
-  </div>
-  <div class="tab-content" id="content-backtest">
-    <iframe src="backtest.html" title="Backtest"></iframe>
-  </div>
-  <div class="tab-content" id="content-gallery">
-    <iframe src="setup-gallery.html" title="Setup Gallery"></iframe>
-  </div>
+  <div id="mstats"></div>
+  <div id="stale"></div>
+</header>
 
-  <script>
-    function showTab(name) {
-      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('tab-' + name).classList.add('active');
-      document.getElementById('content-' + name).classList.add('active');
-      history.replaceState(null, '', '#' + name);
+<main>
+  <section class="view" id="view-today"><div class="pad" id="today"></div></section>
+  <section class="view" id="view-markets"><iframe data-src="industry.html" title="Industry Analysis"></iframe></section>
+  <section class="view" id="view-desk"><iframe data-src="strategy.html" title="Momentum Desk Strategy"></iframe></section>
+  <section class="view" id="view-research">
+    <div class="pad list" id="research-list">
+      <h2>Research</h2>
+      <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A, B, C and D setups look like, with your ADR bands and why each qualifies</div></div></a>
+      <a href="#research/backtest.html"><div><div class="t">Backtest &amp; live track record</div><div class="d">5-year results and how the live recommendations have done</div></div></a>
+      <a href="#research/setup-gallery.html"><div><div class="t">Setup Gallery</div><div class="d">Best historical trades by category</div></div></a>
+    </div>
+    <div id="research-frame"><button class="back" onclick="location.hash='#research'">‹ Research</button><iframe title="Research"></iframe></div>
+  </section>
+  <section class="view" id="view-journal"><iframe data-src="trade-journal.html" title="Trade Journal"></iframe></section>
+</main>
+
+<nav>
+  <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Today</button>
+  <button data-view="markets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Markets</button>
+  <button data-view="desk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg>Desk</button>
+  <button data-view="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Research</button>
+  <button data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/></svg>Journal</button>
+</nav>
+
+<div id="chart-modal" role="dialog" aria-label="Chart">
+  <img alt="">
+  <div class="bar"><b id="cm-t"></b><a id="cm-tv" target="_blank" rel="noopener">TradingView</a><a href="#" id="cm-x">Close</a></div>
+</div>
+
+<div id="sheet" role="dialog" aria-label="Settings">
+  <div class="box">
+    <h2>Position sizing</h2>
+    <div class="sub">Stored on this device only. Used to work out share counts on Today.</div>
+    <label for="acct">Account size ($)</label><input id="acct" type="number" inputmode="decimal" min="0">
+    <label for="risk">Risk per trade (% of account)</label><input id="risk" type="number" inputmode="decimal" step="0.1" min="0">
+    <div class="row"><button class="ghost" id="sheet-cancel">Cancel</button><button class="primary" id="sheet-save">Save</button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ---------- settings (this device only) ----------
+  const DEF = { acct: 10000, risk: 1 };
+  function load(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  let settings = Object.assign({}, DEF, load("md.settings", {}));
+  let filters = Object.assign({ grade: "AB", strategy: "All", q: "" }, load("md.filters", {}));
+
+  const $ = (s) => document.querySelector(s);
+  const fmt = (n, d = 2) => n == null ? "–" : Number(n).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------- routing ----------
+  const VIEWS = ["today", "markets", "desk", "research", "journal"];
+  const LEGACY = { industry: "markets", strategy: "desk", backtest: "research/backtest.html",
+                   gallery: "research/setup-gallery.html", grades: "research/setup-grades.html" };
+  function route() {
+    let h = location.hash.replace(/^#/, "");
+    const q = new URLSearchParams(location.search).get("tab");
+    if (!h && q) h = q;                          // old email links: ?tab=strategy
+    if (LEGACY[h]) h = LEGACY[h];
+    const [view, sub] = h.split("/");
+    const v = VIEWS.includes(view) ? view : "today";
+    document.querySelectorAll(".view").forEach((el) => el.classList.toggle("active", el.id === "view-" + v));
+    document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
+    const frame = document.querySelector("#view-" + v + " > iframe");
+    if (frame && !frame.getAttribute("src")) frame.src = frame.dataset.src;
+    if (v === "research") {
+      $("#research-list").style.display = sub ? "none" : "";
+      $("#research-frame").style.display = sub ? "block" : "none";
+      if (sub) { const f = $("#research-frame iframe"); if (f.getAttribute("src") !== sub) f.src = sub; }
     }
-    // Default to the industry tab, unless the URL says otherwise.
-    // Prefer #tab=strategy (a query param) over #strategy (a hash) --
-    // the email link uses a query param specifically because hash
-    // fragments get stripped by many email link-scanners/click-trackers,
-    // while query params survive redirect-based link rewriting.
-    const params = new URLSearchParams(window.location.search);
-    const fromQuery = params.get('tab');
-    const fromHash = window.location.hash.replace('#', '');
-    const initial = fromQuery || fromHash || 'industry';
-    showTab(initial);
-  </script>
+  }
+  document.querySelectorAll("nav button").forEach((b) => b.addEventListener("click", () => { location.hash = b.dataset.view; }));
+  window.addEventListener("hashchange", route);
+
+  function sizeTop() { document.documentElement.style.setProperty("--top-h", $("#market").offsetHeight + "px"); }
+  window.addEventListener("resize", sizeTop);
+
+  // ---------- market bar ----------
+  const signed = (v, d) => (v > 0 ? "+" : "") + fmt(v, d) + "%";
+  function renderMarket(d) {
+    const m = d.market || {};
+    const pill = $("#cycle");
+    pill.className = "pill " + (m.cycle || "unknown");
+    pill.textContent = m.cycle_name || "Unknown";
+    $("#advice").textContent = m.advice || "";
+    const stat = (k, v) => v == null ? "" : `<span>${k} <b>${esc(v)}</b></span>`;
+    $("#mstats").innerHTML = [
+      stat("Index vs 200d", m.index_vs_200d_pct == null ? null : signed(m.index_vs_200d_pct, 1)),
+      stat("Market 20d", m.market_20d_pct == null ? null : signed(m.market_20d_pct, 1)),
+      stat("Above 50d", m.pct_above_50ma == null ? null : fmt(m.pct_above_50ma, 0) + "%"),
+      stat("Highs/Lows", m.new_highs == null ? null : m.new_highs + "/" + m.new_lows),
+      stat("Regime", m.regime),
+      stat("As of", d.date),
+    ].join("");
+    const age = (Date.now() - new Date(d.date + "T21:00:00Z").getTime()) / 864e5;
+    if (age > 4) { $("#stale").style.display = "block"; $("#stale").textContent = `⚠ Data is from ${d.date} -- the nightly run may have failed.`; }
+    sizeTop();
+  }
+
+  // ---------- today ----------
+  let data = null, showAll = false;
+  function shares(s) {
+    const riskPerShare = s.pivot - s.stop;
+    if (!(riskPerShare > 0)) return null;
+    const n = Math.floor(settings.acct * settings.risk / 100 / riskPerShare);
+    return { n, cost: n * s.pivot };
+  }
+  function card(s) {
+    const sh = shares(s);
+    const chips = (s.reasons || []).map((r) => `<span class="rz ${r.startsWith("-") ? "n" : "p"}">${esc(r)}</span>`).join("");
+    const why = (s.why || []).map((l) => {
+      const pts = parseInt((l.match(/\(([-+]?\d+)\)$/) || [])[1] || "0", 10);
+      return `<li class="${pts > 0 ? "p" : pts < 0 ? "n" : ""}">${esc(l)}</li>`;
+    }).join("");
+    const at = s.pct_to_pivot <= 0.001;
+    return `<div class="card">
+      <div class="chead">
+        <div class="grade g${s.grade}">${s.grade}</div>
+        <div class="grow">
+          <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
+          <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%</div>
+        </div>
+        <span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
+      </div>
+      <div class="levels">
+        <div class="lv"><div class="k">Buy-stop</div><div class="v">$${fmt(s.pivot)}</div><div class="x">close $${fmt(s.close)}</div></div>
+        <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">1x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
+        <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
+      </div>
+      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}</div>
+      ${s.chart ? `<div class="reasons"><button class="chartbtn" data-chart="${esc(s.chart)}" data-t="${esc(s.ticker)}">Chart</button></div>` : ""}
+      <details class="why"><summary>Why grade ${s.grade} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
+    </div>`;
+  }
+  function renderToday() {
+    const el = $("#today");
+    if (!data) { el.innerHTML = '<div class="empty">No data yet -- it appears after the next nightly run.</div>'; return; }
+    const c = data.counts || {};
+    const n = (g) => g === "AB" ? (c.A || 0) + (c.B || 0) : g === "All" ? data.setups.length : (c[g] || 0);
+    const gradeChip = (g, label) => `<button class="chip ${filters.grade === g ? "on" : ""}" data-g="${g}">${label}<span class="n">${n(g)}</span></button>`;
+    const stratChip = (s) => `<button class="chip ${filters.strategy === s ? "on" : ""}" data-s="${s}">${s}</button>`;
+    let rows = data.setups.filter((s) =>
+      (filters.grade === "All" || filters.grade.includes(s.grade)) &&
+      (filters.strategy === "All" || s.strategies.includes(filters.strategy)) &&
+      (!filters.q || (s.ticker + " " + s.sector).toLowerCase().includes(filters.q.toLowerCase())));
+    const LIMIT = 40, total = rows.length;
+    if (!showAll) rows = rows.slice(0, LIMIT);
+    el.innerHTML = `
+      <h2>Armed for next session</h2>
+      <div class="chips">${gradeChip("AB", "A + B")}${gradeChip("A", "A")}${gradeChip("B", "B")}${gradeChip("C", "C")}${gradeChip("D", "D")}${gradeChip("All", "All")}</div>
+      <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
+      <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
+      ${rows.length ? rows.map(card).join("") : '<div class="empty">Nothing matches.</div>'}
+      ${!showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
+      <details class="foot"><summary>ⓘ Rules</summary>
+        <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
+        <b>Exit:</b> ${esc(data.rules.exit)}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
+        Shares = ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop). Change it in settings (⚙).
+      </details>`;
+    el.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => { filters.grade = b.dataset.g; save("md.filters", filters); renderToday(); });
+    el.querySelectorAll("[data-s]").forEach((b) => b.onclick = () => { filters.strategy = b.dataset.s; save("md.filters", filters); renderToday(); });
+    const q = $("#q");
+    q.oninput = () => {
+      filters.q = q.value; save("md.filters", filters);
+      const pos = q.selectionStart; renderToday();
+      const nq = $("#q"); nq.focus(); nq.setSelectionRange(pos, pos);
+    };
+    const more = $("#more"); if (more) more.onclick = () => { showAll = true; renderToday(); };
+  }
+
+  // ---------- chart pop-up ----------
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-chart]"), m = $("#chart-modal");
+    if (b) {
+      m.querySelector("img").src = b.dataset.chart;
+      $("#cm-t").textContent = b.dataset.t;
+      $("#cm-tv").href = "https://www.tradingview.com/chart/?symbol=" + encodeURIComponent(b.dataset.t);
+      m.classList.add("open");
+    } else if (m.classList.contains("open") && (e.target.id === "cm-x" || e.target === m || e.target.tagName === "IMG")) {
+      e.preventDefault(); m.classList.remove("open");
+    }
+  });
+
+  // ---------- settings sheet ----------
+  $("#settings-btn").onclick = () => { $("#acct").value = settings.acct; $("#risk").value = settings.risk; $("#sheet").classList.add("open"); };
+  $("#sheet-cancel").onclick = () => $("#sheet").classList.remove("open");
+  $("#sheet").onclick = (e) => { if (e.target.id === "sheet") $("#sheet").classList.remove("open"); };
+  $("#sheet-save").onclick = () => {
+    const a = parseFloat($("#acct").value), r = parseFloat($("#risk").value);
+    if (a > 0) settings.acct = a;
+    if (r > 0 && r <= 10) settings.risk = r;
+    save("md.settings", settings); $("#sheet").classList.remove("open"); renderToday();
+  };
+
+  // ---------- boot ----------
+  route(); sizeTop();
+  fetch("today.json", { cache: "no-cache" })
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((d) => { data = d; renderMarket(d); renderToday(); })
+    .catch(() => { $("#advice").textContent = "Market state unavailable -- today.json appears after the next nightly run."; renderToday(); });
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js").catch(() => {});
+})();
+</script>
 </body>
 </html>
