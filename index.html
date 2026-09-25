@@ -140,6 +140,13 @@
   .panel h3 { font-size: 0.9rem; margin: 2px 2px 8px; display: flex; align-items: baseline; gap: 8px; }
   .panel h3 .sub { font-weight: 400; }
   #breadth-cv { height: 170px; }
+  /* Market/Account tables: fixed layout so a long name wraps instead of widening the page */
+  table.st.fit { table-layout: fixed; font-size: 0.74rem; }
+  table.st.fit th, table.st.fit td { padding-left: 3px; padding-right: 3px; }
+  table.st.fit td:first-child { white-space: normal; overflow-wrap: break-word; }
+  table.st.fit th.n, table.st.fit td:not(:first-child) { width: 17%; }
+  table.st.fit th.n4 { width: 19%; }
+  .view > .pad { overflow-x: hidden; }   /* never let a screen pan sideways */
   table.st td.pos { color: var(--green); } table.st td.neg { color: var(--red); }
   table.st tr.lead td { background: var(--panel2); font-size: 0.72rem; }
   table.st tr.lead .tk { font-size: 0.8rem; }
@@ -552,7 +559,7 @@
   }
   function th(tbl, key, label) {
     const cur = mktSort[tbl], on = cur.replace("-", "") === key;
-    return `<th data-t="${tbl}" data-k="${key}" class="${on ? "sorted" : ""}">${label}${on ? (cur.startsWith("-") ? " ▾" : " ▴") : ""}</th>`;
+    return `<th data-t="${tbl}" data-k="${key}" class="${on ? "sorted" : ""} ${key === "name" ? "" : "n"}">${label}${on ? (cur.startsWith("-") ? " ▾" : " ▴") : ""}</th>`;
   }
   function renderMarket2() {
     const el = $("#market-view");
@@ -588,10 +595,10 @@
       <div class="mk-cards">${cards}</div>${flags}
       <div class="panel"><h3>Breadth <span class="sub">% of stocks above their <b style="color:var(--blue)">50-day</b> and <b style="color:var(--amber)">200-day</b> average, 60 sessions</span></h3><div id="breadth-cv"></div></div>
       <div class="panel"><h3>Sectors <span class="sub">tap a sector for its RS leaders</span></h3>
-        <table class="st"><thead><tr>${th("sec", "name", "Sector")}${th("sec", "m1", "1M")}${th("sec", "m3", "3M")}${th("sec", "y1", "1Y")}${th("sec", "pct_rs70", "RS70")}</tr></thead><tbody>${secRows}</tbody></table>
+        <table class="st fit"><thead><tr>${th("sec", "name", "Sector")}${th("sec", "m1", "1M")}${th("sec", "m3", "3M")}${th("sec", "y1", "1Y")}${th("sec", "pct_rs70", "RS70")}</tr></thead><tbody>${secRows}</tbody></table>
         <div class="sub" style="margin:6px 2px">RS70 = share of the sector's names beating 70% of the market; the small number after it is how many clear a Minervini/QM screen.</div></div>
       <div class="panel"><h3>Industries <span class="sub">${indTotal} with 3+ names</span></h3>
-        <table class="st"><thead><tr>${th("ind", "name", "Industry")}${th("ind", "m1", "1M")}${th("ind", "m3", "3M")}${th("ind", "y1", "1Y")}</tr></thead><tbody>${indRows}</tbody></table>
+        <table class="st fit"><thead><tr>${th("ind", "name", "Industry")}${th("ind", "m1", "1M")}${th("ind", "m3", "3M")}${th("ind", "y1", "1Y")}</tr></thead><tbody>${indRows}</tbody></table>
         ${!showAllInd && indTotal > 15 ? `<button class="more" id="ind-more" style="margin-top:8px">Show all ${indTotal}</button>` : ""}</div>
       <a class="tbtn" style="display:block;text-align:center;text-decoration:none;margin-bottom:16px" href="#research/industry.html">Heatmap &amp; trend charts ›</a>`;
     el.querySelectorAll(".mk").forEach((c) => c.onclick = () => c.classList.toggle("open"));
@@ -668,9 +675,9 @@
         <div id="growth-cv" style="height:200px"></div><div class="legend" id="growth-leg"></div></div>
       <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · the highest is outlined</span></h2>
       ${pos}
-      <div class="panel"><h3>Recent activity</h3><table class="st"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
+      <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
       <div class="panel"><h3>Closed trades <span class="sub">actual vs what the rules would have made</span></h3>
-        <table class="st"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>Rule</th></tr></thead><tbody>${cl}</tbody></table>
+        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>Rule</th></tr></thead><tbody>${cl}</tbody></table>
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
