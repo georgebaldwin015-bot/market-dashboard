@@ -128,10 +128,13 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
 .kpi-label { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.05em; }
 .kpi-value { font-size: 1.35rem; font-weight: 700; margin-top: 4px; line-height: 1.2; }
 .kpi-sub { font-size: 0.75rem; color: #8b949e; margin-top: 3px; }
+.kpi.has-info { cursor: pointer; } .kpi-i { opacity: .6; font-size: .8em; }
+.kpi-info { display: none; font-size: 0.75rem; color: #c9d1d9; margin-top: 8px; padding-top: 7px; border-top: 1px solid #2a313c; line-height: 1.4; }
+.kpi.open .kpi-info { display: block; }
 </style></head>
 <body>
 <h1>Setup Grades -- what A+ to F look like</h1>
-<div class="meta">Generated 2026-09-25 09:24 UTC · Minervini + QM backtest trades on the live entry rule
+<div class="meta">Generated 2026-09-25 16:25 UTC · Minervini + QM backtest trades on the live entry rule
 (fill when price trades into the 20-day highest close; gaps through it skipped)</div>
 
 <div class="exec-summary">
@@ -559,7 +562,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip chip-pos">+2 ADR 5.7% (sweet spot 5-7%)</span><span class="chip chip-pos">+1 RS 96</span></div>
 <details class="why"><summary>Why grade A+ (score +3)</summary><ul><li class="why-pos">ADR 5.7%: in the 5-7% sweet spot, moves fast enough to run (+2)</li><li class="why-pos">RS 96: top 5% of the market (+1)</li><li class="why-zero">Stage 2: not Stage 1 (0)</li><li class="why-zero">Market regime: constructive (0)</li><li class="why-zero">Market +3.1% in 20 days: not overextended (0)</li></ul></details>
 <div class="highlight-prices">Entry $63.67 · Stop $60.02 · Exit $150.14</div>
-<div class="trails">Live rule +23.7R · <span style="color:#f2d600">2 band +23.7R</span> · <span style="color:#ff9800">4 band +23.4R</span> · <span style="color:#f44336">6 band +19.9R</span> · <span style="color:#c2185b">8 band +36.0R open</span></div>
+<div class="trails">Live rule +23.7R · <span style="color:#f2d600">2 band +23.7R</span> · <span style="color:#ff9800">4 band +23.4R</span> · <span style="color:#f44336">6 band +19.9R</span> · <span style="color:#c2185b">8 band +36.9R open</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -915,7 +918,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip chip-pos">+1 ADR 4.8%</span><span class="chip chip-pos">+1 RS 97</span></div>
 <details class="why"><summary>Why grade A (score +2)</summary><ul><li class="why-pos">ADR 4.8%: 4-5%, reasonably fast (+1)</li><li class="why-pos">RS 97: top 5% of the market (+1)</li><li class="why-zero">Stage 2: not Stage 1 (0)</li><li class="why-zero">Market regime: constructive (0)</li><li class="why-zero">Market +1.1% in 20 days: not overextended (0)</li></ul></details>
 <div class="highlight-prices">Entry $1208.24 · Stop $1150.73 · Exit $1355.24</div>
-<div class="trails">Live rule +2.6R · <span style="color:#f2d600">2 band +2.2R</span> · <span style="color:#ff9800">4 band +9.0R</span> · <span style="color:#f44336">6 band +6.4R</span> · <span style="color:#c2185b">8 band +7.6R open</span></div>
+<div class="trails">Live rule +2.6R · <span style="color:#f2d600">2 band +2.2R</span> · <span style="color:#ff9800">4 band +9.0R</span> · <span style="color:#f44336">6 band +6.4R</span> · <span style="color:#c2185b">8 band +7.5R open</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -1223,7 +1226,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip chip-pos">+2 ADR 5.7% (sweet spot 5-7%)</span><span class="chip chip-pos">+1 RS 98</span><span class="chip chip-neg">-1 market: caution</span></div>
 <details class="why"><summary>Why grade A (score +2)</summary><ul><li class="why-pos">ADR 5.7%: in the 5-7% sweet spot, moves fast enough to run (+2)</li><li class="why-pos">RS 98: top 5% of the market (+1)</li><li class="why-zero">Stage 2: not Stage 1 (0)</li><li class="why-neg">Market regime: caution (-1)</li><li class="why-zero">Market +4.3% in 20 days: not overextended (0)</li></ul></details>
 <div class="highlight-prices">Entry $263.45 · Stop $248.54 · Exit $403.71</div>
-<div class="trails">Live rule +9.4R · <span style="color:#f2d600">2 band +9.3R</span> · <span style="color:#ff9800">4 band +7.0R</span> · <span style="color:#f44336">6 band +5.5R</span> · <span style="color:#c2185b">8 band +54.8R open</span></div>
+<div class="trails">Live rule +9.4R · <span style="color:#f2d600">2 band +9.3R</span> · <span style="color:#ff9800">4 band +7.0R</span> · <span style="color:#f44336">6 band +5.5R</span> · <span style="color:#c2185b">8 band +54.7R open</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -1929,7 +1932,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip chip-pos">+1 ADR 4.7%</span></div>
 <details class="why"><summary>Why grade B (score +1)</summary><ul><li class="why-pos">ADR 4.7%: 4-5%, reasonably fast (+1)</li><li class="why-zero">RS 81: below the 95 cut-off (0)</li><li class="why-zero">Stage 2: not Stage 1 (0)</li><li class="why-zero">Market regime: defensive (0)</li><li class="why-zero">Market +3.1% in 20 days: not overextended (0)</li></ul></details>
 <div class="highlight-prices">Entry $31.00 · Stop $29.54 · Exit $32.82</div>
-<div class="trails">Live rule +1.2R · <span style="color:#f2d600">2 band +1.1R</span> · <span style="color:#ff9800">4 band +0.1R open</span> · <span style="color:#f44336">6 band +0.1R open</span> · <span style="color:#c2185b">8 band +0.1R open</span></div>
+<div class="trails">Live rule +1.2R · <span style="color:#f2d600">2 band +1.1R</span> · <span style="color:#ff9800">4 band +0.0R</span> · <span style="color:#f44336">6 band +0.0R</span> · <span style="color:#c2185b">8 band +0.0R</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -2495,7 +2498,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip">no score factors</span></div>
 <details class="why"><summary>Why grade C (score +0)</summary><ul><li class="why-zero">ADR 3.8%: average speed (0)</li><li class="why-zero">RS 86: below the 95 cut-off (0)</li><li class="why-zero">Stage 2: not Stage 1 (0)</li><li class="why-zero">Market regime: constructive (0)</li><li class="why-zero">Market +4.2% in 20 days: not overextended (0)</li></ul></details>
 <div class="highlight-prices">Entry $53.98 · Stop $51.94 · Exit $61.53</div>
-<div class="trails">Live rule +3.7R · <span style="color:#f2d600">2 band +2.1R</span> · <span style="color:#ff9800">4 band +2.7R</span> · <span style="color:#f44336">6 band +3.9R open</span> · <span style="color:#c2185b">8 band +3.9R open</span></div>
+<div class="trails">Live rule +3.7R · <span style="color:#f2d600">2 band +2.1R</span> · <span style="color:#ff9800">4 band +2.7R</span> · <span style="color:#f44336">6 band +4.3R open</span> · <span style="color:#c2185b">8 band +4.3R open</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -3837,7 +3840,7 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
 <div class="chips"><span class="chip chip-neg">-2 Stage 1 (no uptrend yet)</span></div>
 <details class="why"><summary>Why grade F (score -2)</summary><ul><li class="why-zero">ADR 3.2%: average speed (0)</li><li class="why-zero">RS 87: below the 95 cut-off (0)</li><li class="why-neg">Stage 1: still basing, no established uptrend (-2)</li><li class="why-zero">Market regime: defensive (0)</li><li class="why-zero">Market -3.4% in 20 days: not overextended (0)</li><li class="why-zero">9% below 52-week high: outside the 10-20% zone (0)</li></ul></details>
 <div class="highlight-prices">Entry $216.69 · Stop $209.76 · Exit $237.40</div>
-<div class="trails">Live rule +3.0R · <span style="color:#f2d600">2 band +3.3R</span> · <span style="color:#ff9800">4 band +6.6R</span> · <span style="color:#f44336">6 band +3.8R</span> · <span style="color:#c2185b">8 band +1.8R open</span></div>
+<div class="trails">Live rule +3.0R · <span style="color:#f2d600">2 band +3.3R</span> · <span style="color:#ff9800">4 band +6.6R</span> · <span style="color:#f44336">6 band +3.8R</span> · <span style="color:#c2185b">8 band +1.6R open</span></div>
 </div>
 </div>
 <div class="highlight-card">
@@ -4308,6 +4311,11 @@ with 2022-26 in view; live recs graded from 2026-09-24 onward are the real test.
   window.addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(fit, 150); });
   document.addEventListener("toggle", fit, true);  // tables inside <details> measure once opened
   fit();
+  // Tap a top-line card for its one-sentence explanation.
+  document.addEventListener("click", function (e) {
+    var k = e.target.closest && e.target.closest(".kpi.has-info");
+    if (k) k.classList.toggle("open");
+  });
 })();
 </script></body>
 </html>
