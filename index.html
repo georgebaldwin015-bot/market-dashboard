@@ -386,7 +386,7 @@
         layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
         grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
         rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
-        timeScale: { borderVisible: false, rightOffset: 3 },
+        timeScale: { borderVisible: false, rightOffset: 8 },
         handleScroll: { vertTouchDrag: false },
       });
       charts.set(t, chart);
@@ -406,7 +406,9 @@
         line.setData(b.t.map((d, i) => adr[i] == null ? { time: d } : { time: d, value: b.c[i] - k * adr[i] }));
       });
       const n = candles.length;
-      chart.timeScale().setVisibleLogicalRange({ from: Math.max(20, n - 90), to: n + 2 });
+      // ~9 months on screen; the empty space on the right keeps the axis
+      // price tags clear of the latest candles.
+      chart.timeScale().setVisibleLogicalRange({ from: Math.max(20, n - 180), to: n + 8 });
     }).catch(() => fallback("Chart couldn't load -- check your connection."));
   }
   document.addEventListener("click", (e) => {
