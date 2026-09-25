@@ -671,7 +671,7 @@
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
       <div class="mk-cards" style="grid-template-columns:repeat(4,1fr)">${cards}</div>
-      <div class="panel"><h3>Growth <span class="sub">your exits vs the rules' exits · ${fmt(settings.risk, 1)}% risk a trade, compounded</span></h3>
+      <div class="panel"><h3>Growth <span class="sub">${acct.growth ? "IBKR's return (open positions and real sizes) vs the same account on the rules' exits" : `your exits vs the rules' exits · ${fmt(settings.risk, 1)}% risk a trade, compounded`}</span></h3>
         <div id="growth-cv" style="height:200px"></div><div class="legend" id="growth-leg"></div></div>
       <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · the highest is outlined</span></h2>
       ${pos}
@@ -696,17 +696,29 @@
     days.forEach((d) => { byDay[d].forEach((r) => { eq *= 1 + settings.risk * r / 100; }); pts.push({ time: d, value: (eq - 1) * 100 }); });
     return pts;
   }
+  // IBKR's daily time-weighted return (the Performance screen's number)
+  // and the same account re-run with the rules' exits, chained over the
+  // window. "All" starts from the return made before the daily history.
+  function navSeries(rows, col, since, base) {
+    let eq = 1 + base / 100; const pts = [];
+    rows.forEach((r) => { if (since && r[0] < since) return; eq *= 1 + r[col] / 100; pts.push({ time: r[0], value: (eq - 1) * 100 }); });
+    return pts;
+  }
   function drawGrowth() {
     const box = $("#growth-cv"), leg = $("#growth-leg"); if (!box || !acct) return;
     const days = { "30d": 30, "90d": 90, "365d": 365 }[acctWin];
     const since = days ? new Date(new Date(acct.as_of).getTime() - days * 864e5).toISOString().slice(0, 10) : null;
-    const actual = growthSeries(acct.closed.map((t) => [t.exit_date, t.r]), since);
-    const rule = growthSeries(acct.closed.filter((t) => !since || t.exit_date >= since)
+    const g = acct.growth, base = g && !since ? g.pre_history_pct || 0 : 0;
+    // IBKR's windows are calendar months back, start day included (1Y from 25 Sep = 25 Sep onwards)
+    const months = { "30d": 1, "90d": 3, "365d": 12 }[acctWin];
+    const gSince = months ? (() => { const d = new Date(acct.as_of); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0, 10); })() : null;
+    const actual = g ? navSeries(g.days, 1, gSince, base) : growthSeries(acct.closed.map((t) => [t.exit_date, t.r]), since);
+    const rule = g ? navSeries(g.days, 2, gSince, base) : growthSeries(acct.closed.filter((t) => !since || t.exit_date >= since)
       .map((t) => [t.rule_exit || acct.as_of, t.rule_r]), null);
     if (!actual.length && !rule.length) { box.innerHTML = '<div class="msg">No closed trades in this window.</div>'; leg.innerHTML = ""; return; }
     const first = [actual[0], rule[0]].filter(Boolean).map((p) => p.time).sort()[0];
     const start = new Date(new Date(first).getTime() - 864e5).toISOString().slice(0, 10);
-    [actual, rule].forEach((s) => s.unshift({ time: start, value: 0 }));
+    [actual, rule].forEach((s) => s.unshift({ time: start, value: base }));
     const last = (s) => s.length ? s[s.length - 1].value : 0;
     const pctS = (v) => (v > 0 ? "+" : "") + fmt(v, 1) + "%";
     leg.innerHTML = `<span><i class="pv"></i>Actual ${pctS(last(actual))}</span><span><i class="pv" style="border-color:var(--amber)"></i>Rule-based ${pctS(last(rule))}</span>`;
