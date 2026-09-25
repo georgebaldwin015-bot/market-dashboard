@@ -15,7 +15,7 @@
     --bg: #0d1117; --panel: #161b22; --panel2: #1c2230; --line: #2a313c;
     --text: #e6e8ec; --muted: #8b949e; --faint: #6e7681;
     --green: #3fb950; --amber: #d29922; --red: #f85149; --blue: #58a6ff;
-    --A: #7ee787; --B: #79c0ff; --C: #e3b341; --D: #ff7b72;
+    --Ap: #56d364; --A: #7ee787; --B: #79c0ff; --C: #e3b341; --D: #f0883e; --F: #ff7b72;
     --nav-h: 62px; --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px);
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -67,8 +67,23 @@
   .chead { display: flex; align-items: center; gap: 10px; }
   .grade { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
     font-weight: 800; flex: none; }
-  .gA { background: rgba(46,160,67,.22); color: var(--A); } .gB { background: rgba(88,166,255,.2); color: var(--B); }
-  .gC { background: rgba(210,153,34,.2); color: var(--C); } .gD { background: rgba(248,81,73,.2); color: var(--D); }
+  .gAp { background: rgba(46,160,67,.4); color: var(--Ap); } .gA { background: rgba(46,160,67,.22); color: var(--A); }
+  .gB { background: rgba(88,166,255,.2); color: var(--B); } .gC { background: rgba(210,153,34,.2); color: var(--C); }
+  .gD { background: rgba(240,136,62,.2); color: var(--D); } .gF { background: rgba(248,81,73,.2); color: var(--F); }
+  .gAp { font-size: 0.85rem; }
+  .card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .card.open { border-color: #3a4350; }
+  .caret { color: var(--faint); font-size: 0.8rem; transition: transform .15s; margin-left: 2px; }
+  .card.open .caret { transform: rotate(180deg); }
+  .chartbox { display: none; margin: 10px -6px 0; cursor: default; }
+  .card.open .chartbox { display: block; }
+  .chartbox .cv { height: 280px; }
+  .chartbox img { width: 100%; border-radius: 8px; }
+  .chartbox .msg { color: var(--muted); font-size: 0.8rem; padding: 20px 0; text-align: center; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.72rem; color: var(--muted); margin: 6px 6px 0; align-items: center; }
+  .legend i { display: inline-block; width: 14px; border-top: 2px dotted; vertical-align: middle; margin-right: 4px; }
+  .legend i.solid { border-top-style: dashed; } .legend i.pv { border-top: 2px solid var(--blue); }
+  .legend a { margin-left: auto; color: var(--blue); text-decoration: none; }
   .tk { font-weight: 700; font-size: 1.05rem; color: var(--text); text-decoration: none; }
   .sub { font-size: 0.78rem; color: var(--muted); }
   .grow { flex: 1; min-width: 0; }
@@ -111,14 +126,6 @@
     border-radius: 10px; padding: 10px 12px; font-size: 16px; }
   #sheet .row { display: flex; gap: 10px; margin-top: 16px; }
   #sheet .row button { flex: 1; padding: 11px; border-radius: 10px; border: 0; cursor: pointer; }
-  .chartbtn { margin-left: auto; background: none; border: 1px solid var(--line); color: var(--blue);
-    border-radius: 8px; padding: 3px 9px; font-size: 0.75rem; cursor: pointer; }
-  #chart-modal { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 50; display: none;
-    flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 12px; }
-  #chart-modal.open { display: flex; }
-  #chart-modal img { max-width: 100%; max-height: 78vh; border-radius: 8px; }
-  #chart-modal .bar { display: flex; gap: 18px; font-size: .9rem; }
-  #chart-modal a { color: var(--blue); }
   .primary { background: var(--blue); color: #0d1117 !important; font-weight: 700; }
   .ghost { background: var(--panel2); }
 </style>
@@ -144,7 +151,7 @@
   <section class="view" id="view-research">
     <div class="pad list" id="research-list">
       <h2>Research</h2>
-      <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A, B, C and D setups look like, with your ADR bands and why each qualifies</div></div></a>
+      <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A+ to F setups look like, with your ADR bands and why each qualifies</div></div></a>
       <a href="#research/backtest.html"><div><div class="t">Backtest &amp; live track record</div><div class="d">5-year results and how the live recommendations have done</div></div></a>
       <a href="#research/setup-gallery.html"><div><div class="t">Setup Gallery</div><div class="d">Best historical trades by category</div></div></a>
     </div>
@@ -160,11 +167,6 @@
   <button data-view="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Research</button>
   <button data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/></svg>Journal</button>
 </nav>
-
-<div id="chart-modal" role="dialog" aria-label="Chart">
-  <img alt="">
-  <div class="bar"><b id="cm-t"></b><a id="cm-tv" target="_blank" rel="noopener">TradingView</a><a href="#" id="cm-x">Close</a></div>
-</div>
 
 <div id="sheet" role="dialog" aria-label="Settings">
   <div class="box">
@@ -183,7 +185,12 @@
   function load(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   let settings = Object.assign({}, DEF, load("md.settings", {}));
-  let filters = Object.assign({ grade: "AB", strategy: "All", q: "" }, load("md.filters", {}));
+  const GRADES = ["A+", "A", "B", "C", "D", "F"];
+  const GROUPS = { top: ["A+", "A", "B"], All: GRADES };
+  GRADES.forEach((g) => GROUPS[g] = [g]);
+  let filters = Object.assign({ grade: "top", strategy: "All", q: "" }, load("md.filters", {}));
+  if (!GROUPS[filters.grade]) filters.grade = "top";   // e.g. the old "AB" setting
+  const gcls = (g) => "g" + String(g).replace("+", "p");
 
   const $ = (s) => document.querySelector(s);
   const fmt = (n, d = 2) => n == null ? "–" : Number(n).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -254,14 +261,15 @@
       return `<li class="${pts > 0 ? "p" : pts < 0 ? "n" : ""}">${esc(l)}</li>`;
     }).join("");
     const at = s.pct_to_pivot <= 0.001;
-    return `<div class="card">
+    return `<div class="card ${openCharts.has(s.ticker) ? "open" : ""}" data-t="${esc(s.ticker)}">
       <div class="chead">
-        <div class="grade g${s.grade}">${s.grade}</div>
+        <div class="grade ${gcls(s.grade)}">${esc(s.grade)}</div>
         <div class="grow">
           <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
           <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%</div>
         </div>
         <span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
+        <span class="caret" aria-hidden="true">▾</span>
       </div>
       <div class="levels">
         <div class="lv"><div class="k">Buy-stop</div><div class="v">$${fmt(s.pivot)}</div><div class="x">close $${fmt(s.close)}</div></div>
@@ -269,26 +277,26 @@
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
       <div class="reasons">${chips || '<span class="rz">no score factors</span>'}</div>
-      ${s.chart ? `<div class="reasons"><button class="chartbtn" data-chart="${esc(s.chart)}" data-t="${esc(s.ticker)}">Chart</button></div>` : ""}
-      <details class="why"><summary>Why grade ${s.grade} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
+      <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
+      <div class="chartbox"></div>
     </div>`;
   }
   function renderToday() {
     const el = $("#today");
     if (!data) { el.innerHTML = '<div class="empty">No data yet -- it appears after the next nightly run.</div>'; return; }
     const c = data.counts || {};
-    const n = (g) => g === "AB" ? (c.A || 0) + (c.B || 0) : g === "All" ? data.setups.length : (c[g] || 0);
+    const n = (g) => g === "All" ? data.setups.length : GROUPS[g].reduce((a, x) => a + (c[x] || 0), 0);
     const gradeChip = (g, label) => `<button class="chip ${filters.grade === g ? "on" : ""}" data-g="${g}">${label}<span class="n">${n(g)}</span></button>`;
     const stratChip = (s) => `<button class="chip ${filters.strategy === s ? "on" : ""}" data-s="${s}">${s}</button>`;
     let rows = data.setups.filter((s) =>
-      (filters.grade === "All" || filters.grade.includes(s.grade)) &&
+      GROUPS[filters.grade].includes(s.grade) &&
       (filters.strategy === "All" || s.strategies.includes(filters.strategy)) &&
       (!filters.q || (s.ticker + " " + s.sector).toLowerCase().includes(filters.q.toLowerCase())));
     const LIMIT = 40, total = rows.length;
     if (!showAll) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      <div class="chips">${gradeChip("AB", "A + B")}${gradeChip("A", "A")}${gradeChip("B", "B")}${gradeChip("C", "C")}${gradeChip("D", "D")}${gradeChip("All", "All")}</div>
+      <div class="chips">${gradeChip("top", "A+ – B")}${GRADES.map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
       ${rows.length ? rows.map(card).join("") : '<div class="empty">Nothing matches.</div>'}
@@ -307,18 +315,93 @@
       const nq = $("#q"); nq.focus(); nq.setSelectionRange(pos, pos);
     };
     const more = $("#more"); if (more) more.onclick = () => { showAll = true; renderToday(); };
+    el.querySelectorAll(".card.open").forEach(drawChart);
   }
 
-  // ---------- chart pop-up ----------
+  // ---------- tap a card: its chart opens inside it ----------
+  // Candles, buy-stop, stop and the TradingView "ADR Trailing Bands"
+  // (close - k x SMA(high - low, 20), k = 2/4/6/8), worked out here from
+  // bars/<TICKER>.json exactly as the Pine script does.
+  const openCharts = new Set(), charts = new Map();
+  const LWC = "https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js";
+  const BANDS = [[2, "#f2d600"], [4, "#ff9800"], [6, "#f44336"], [8, "#880e4f"]];
+  let lib = null;
+  function loadLib() {
+    if (!lib) lib = new Promise((ok, no) => {
+      const sc = document.createElement("script"); sc.src = LWC;
+      sc.onload = () => ok(window.LightweightCharts); sc.onerror = () => { lib = null; no(new Error("chart library")); };
+      document.head.appendChild(sc);
+    });
+    return lib;
+  }
+  const bars = {};
+  function loadBars(t) {
+    if (!bars[t]) bars[t] = fetch("bars/" + encodeURIComponent(t) + ".json", { cache: "no-cache" })
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch((e) => { delete bars[t]; throw e; });
+    return bars[t];
+  }
+  function sma(xs, n) {
+    const out = []; let run = 0;
+    xs.forEach((x, i) => { run += x; if (i >= n) run -= xs[i - n]; out.push(i >= n - 1 ? run / n : null); });
+    return out;
+  }
+  function legend(s) {
+    return `<div class="legend">${BANDS.map(([k, c]) => `<span><i style="border-color:${c}"></i>${k}×</span>`).join("")}
+      <span><i class="pv"></i>Buy-stop</span>
+      <span><i class="solid" style="border-color:var(--red)"></i>Stop</span>
+      <a href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">TradingView ›</a></div>`;
+  }
+  function drawChart(cardEl) {
+    const t = cardEl.dataset.t, s = data.setups.find((x) => x.ticker === t), box = cardEl.querySelector(".chartbox");
+    if (!s || !box) return;
+    const old = charts.get(t); if (old) { old.remove(); charts.delete(t); }
+    const fallback = (why) => {
+      box.innerHTML = s.chart ? `<img src="${esc(s.chart)}" alt="${esc(t)} chart">${legend(s)}`
+                              : `<div class="msg">${why}</div>${legend(s)}`;
+    };
+    if (!s.bars) { fallback("No chart data for this one yet."); return; }
+    box.innerHTML = `<div class="cv"><div class="msg">Loading chart…</div></div>${legend(s)}`;
+    Promise.all([loadLib(), loadBars(t)]).then(([L, b]) => {
+      if (!openCharts.has(t) || !cardEl.isConnected) return;
+      const cv = box.querySelector(".cv"); cv.innerHTML = "";
+      const chart = L.createChart(cv, {
+        autoSize: true,
+        layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.08, bottom: 0.08 } },
+        timeScale: { borderVisible: false, rightOffset: 3 },
+        handleScroll: { vertTouchDrag: false },
+      });
+      charts.set(t, chart);
+      const candles = b.t.map((d, i) => ({ time: d, open: b.o[i], high: b.h[i], low: b.l[i], close: b.c[i] }));
+      const cs = chart.addCandlestickSeries({ upColor: "#3fb950", downColor: "#f85149", borderVisible: false,
+        wickUpColor: "#3fb950", wickDownColor: "#f85149", priceLineVisible: false, lastValueVisible: false });
+      cs.setData(candles);
+      // No titles on the lines (they'd sit over the latest candles): the price
+      // tags live on the axis and the legend below names each line.
+      cs.createPriceLine({ price: s.pivot, color: "#58a6ff", lineWidth: 2, lineStyle: 0, title: "", axisLabelVisible: true });
+      cs.createPriceLine({ price: s.stop, color: "#f85149", lineWidth: 2, lineStyle: 2, title: "", axisLabelVisible: true });
+      const adr = sma(b.h.map((h, i) => h - b.l[i]), 20);
+      BANDS.forEach(([k, color]) => {
+        const line = chart.addLineSeries({ color, lineWidth: 1, lineStyle: 1, priceLineVisible: false,
+          lastValueVisible: false, crosshairMarkerVisible: false,
+          autoscaleInfoProvider: () => null });   // scale to price, not to the lowest band
+        line.setData(b.t.map((d, i) => adr[i] == null ? { time: d } : { time: d, value: b.c[i] - k * adr[i] }));
+      });
+      const n = candles.length;
+      chart.timeScale().setVisibleLogicalRange({ from: Math.max(20, n - 90), to: n + 2 });
+    }).catch(() => fallback("Chart couldn't load -- check your connection."));
+  }
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-chart]"), m = $("#chart-modal");
-    if (b) {
-      m.querySelector("img").src = b.dataset.chart;
-      $("#cm-t").textContent = b.dataset.t;
-      $("#cm-tv").href = "https://www.tradingview.com/chart/?symbol=" + encodeURIComponent(b.dataset.t);
-      m.classList.add("open");
-    } else if (m.classList.contains("open") && (e.target.id === "cm-x" || e.target === m || e.target.tagName === "IMG")) {
-      e.preventDefault(); m.classList.remove("open");
+    const cardEl = e.target.closest(".card[data-t]");
+    if (!cardEl || e.target.closest("a, button, summary, details, input, .chartbox")) return;
+    const t = cardEl.dataset.t;
+    if (openCharts.has(t)) {
+      openCharts.delete(t); cardEl.classList.remove("open");
+      const c = charts.get(t); if (c) { c.remove(); charts.delete(t); }
+    } else {
+      openCharts.add(t); cardEl.classList.add("open"); drawChart(cardEl);
     }
   });
 
