@@ -1,6 +1,6 @@
 {
-  "name": "Momentum Desk",
-  "short_name": "Momentum Desk",
+  "name": "Edge Lab",
+  "short_name": "Edge Lab",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0d1117",
