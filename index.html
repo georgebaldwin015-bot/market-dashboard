@@ -113,6 +113,18 @@
   .foot { font-size: 0.75rem; color: var(--faint); line-height: 1.5; margin-top: 16px; }
   .foot summary { cursor: pointer; display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; list-style: none; margin-bottom: 6px; }
   .empty { color: var(--muted); padding: 30px 0; text-align: center; }
+  /* Account */
+  .posn { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+  .posn.alert { border-color: rgba(248,81,73,.6); }
+  .posn .top { display: flex; align-items: baseline; gap: 10px; }
+  .posn .big { font-size: 1.05rem; font-weight: 700; margin-left: auto; }
+  .posn .stops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+  .posn .stops div { background: var(--panel2); border-radius: 8px; padding: 6px 8px; }
+  .posn .stops .k { font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .posn .stops .v { font-weight: 600; font-size: 0.92rem; }
+  .posn .stops .on { outline: 1px solid var(--amber); }
+  .posn .hit { color: var(--red); font-size: 0.78rem; margin-top: 8px; }
+  .buy { color: var(--green); font-weight: 600; } .sell { color: var(--red); font-weight: 600; }
   /* Market */
   .mk-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; align-items: start; }
   .mk { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid #3c4048; border-radius: 12px; padding: 10px 12px; cursor: pointer; }
@@ -206,14 +218,14 @@
     </div>
     <div id="research-frame"><button class="back" onclick="location.hash='#research'">‹ Research</button><iframe title="Research"></iframe></div>
   </section>
-  <section class="view" id="view-journal"><iframe data-src="trade-journal.html" title="Trade Journal"></iframe></section>
+  <section class="view" id="view-account"><div class="pad" id="account-view"></div></section>
 </main>
 
 <nav>
   <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Today</button>
   <button data-view="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg>Market</button>
   <button data-view="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Research</button>
-  <button data-view="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/></svg>Journal</button>
+  <button data-view="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Account</button>
 </nav>
 
 <div id="sheet" role="dialog" aria-label="Settings">
@@ -245,8 +257,8 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   // ---------- routing ----------
-  const VIEWS = ["today", "market", "research", "journal"];
-  const LEGACY = { industry: "market", strategy: "market", markets: "market", desk: "market", backtest: "research/backtest.html",
+  const VIEWS = ["today", "market", "research", "account"];
+  const LEGACY = { journal: "account", industry: "market", strategy: "market", markets: "market", desk: "market", backtest: "research/backtest.html",
                    gallery: "research/setup-gallery.html", grades: "research/setup-grades.html" };
   function route() {
     let h = location.hash.replace(/^#/, "");
@@ -260,6 +272,7 @@
     const frame = document.querySelector("#view-" + v + " > iframe");
     if (frame && !frame.getAttribute("src")) frame.src = frame.dataset.src;
     if (v === "market") renderMarket2();
+    if (v === "account") renderAccount();
     if (v === "research") {
       $("#research-list").style.display = sub ? "none" : "";
       $("#research-frame").style.display = sub ? "block" : "none";
@@ -606,6 +619,59 @@
       add("p50", "#58a6ff"); add("p200", "#d29922");
       breadthChart.timeScale().fitContent();
     }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
+  }
+
+  // ---------- Account (IBKR, from account.json) ----------
+  let acct = null, acctLoading = false, acctWin = load("md.acctwin", "90d"), showAllClosed = false;
+  const rfmt = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 2) + "R";
+  function renderAccount() {
+    const el = $("#account-view");
+    if (!acct) {
+      if (!acctLoading) {
+        acctLoading = true; el.innerHTML = '<div class="empty">Loading…</div>';
+        fetch("account.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
+          .then((d) => { acct = d; renderAccount(); })
+          .catch(() => { el.innerHTML = '<div class="empty">Account data appears after the next IBKR sync.</div>'; })
+          .finally(() => { acctLoading = false; });
+      }
+      return;
+    }
+    const st = acct.stats[acctWin] || { n: 0 };
+    const win = (k, l) => `<button class="${acctWin === k ? "on" : ""}" data-w="${k}">${l}</button>`;
+    const stat = (l, v, tone) => `<div class="mk ${tone || ""}" style="cursor:default"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+    const cards = st.n ? stat("Trades", st.n) + stat("Win rate", st.win_rate + "%", st.win_rate >= 40 ? "good" : st.win_rate >= 25 ? "warn" : "bad")
+      + stat("Avg R", rfmt(st.avg_r), st.avg_r > 0 ? "good" : "bad") + stat("Total R", rfmt(st.total_r).replace("R", "R"), st.total_r > 0 ? "good" : "bad")
+      : '<div class="sub" style="grid-column:1/-1">No closed trades in this window.</div>';
+    const pos = acct.positions.map((p) => {
+      const s = p.stops || {}, cand = [s.initial, s.live, s.band4].filter((x) => x != null), tight = cand.length ? Math.max(...cand) : null;
+      const box = (k, l) => `<div class="${s[k] != null && s[k] === tight ? "on" : ""}"><div class="k">${l}</div><div class="v">${s[k] == null ? "–" : fmt(s[k])}</div></div>`;
+      const hit = (p.hit || []).map((h) => `⚠ ${h.rule === "band4" ? "4× band" : "Live rule"} stop hit ${esc(h.date)} at ${fmt(h.price)}`).join("<br>");
+      return `<div class="posn ${hit ? "alert" : ""}">
+        <div class="top"><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(p.symbol)}" target="_blank" rel="noopener">${esc(p.symbol)}</a>
+          <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>
+          <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
+        <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%</div>
+        <div class="stops">${box("initial", "Initial 1× ADR")}${box("live", "Live rule")}${box("band4", "4× band")}</div>
+        ${hit ? `<div class="hit">${hit}</div>` : ""}</div>`;
+    }).join("") || '<div class="empty" style="padding:14px 0">No open positions.</div>';
+    const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
+      <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
+    let closed = acct.closed; const closedTotal = closed.length;
+    if (!showAllClosed) closed = closed.slice(0, 15);
+    const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td><b>${esc(t.symbol)}</b><div class="sub">${t.days ?? "–"}d</div></td>
+      <td class="${pc(t.r)}">${rfmt(t.r)}</td><td class="${pc(t.rule_r)}">${rfmt(t.rule_r)}</td></tr>`).join("");
+    el.innerHTML = `
+      <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
+      <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
+      <div class="mk-cards" style="grid-template-columns:repeat(4,1fr)">${cards}</div>
+      <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · the highest is outlined</span></h2>
+      ${pos}
+      <div class="panel"><h3>Recent activity</h3><table class="st"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
+      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the rules would have made</span></h3>
+        <table class="st"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>Rule</th></tr></thead><tbody>${cl}</tbody></table>
+        ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
+    el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
+    const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
   }
 
   // ---------- settings sheet ----------
