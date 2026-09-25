@@ -660,6 +660,8 @@
 
   // ---------- Account (IBKR, from account.json) ----------
   let acct = null, acctLoading = false, acctWin = load("md.acctwin", "90d"), showAllClosed = false;
+  let acctGrade = load("md.acctgrade", "All");   // same grade groups as Today; "All" includes ungraded trades
+  if (!GROUPS[acctGrade]) acctGrade = "All";
   const rfmt = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 2) + "R";
   function renderAccount() {
     const el = $("#account-view");
@@ -673,8 +675,12 @@
       }
       return;
     }
-    const st = acct.stats[acctWin] || { n: 0 };
-    const openRs = acct.positions.map((p) => p.r_now).filter((r) => r != null);
+    // Grade filter (chips below): trades and positions whose Today grade is in the group.
+    const gOk = (x) => acctGrade === "All" || (x.grade && GROUPS[acctGrade].includes(x.grade.grade));
+    const mkStats = (rs) => rs.length ? { n: rs.length, win_rate: Math.round(100 * rs.filter((r) => r > 0).length / rs.length),
+      avg_r: Math.round(100 * rs.reduce((a, b) => a + b, 0) / rs.length) / 100, total_r: Math.round(10 * rs.reduce((a, b) => a + b, 0)) / 10 } : { n: 0 };
+    const positions = acct.positions.filter(gOk);
+    const openRs = positions.map((p) => p.r_now).filter((r) => r != null);
     const openR = openRs.length ? Math.round(openRs.reduce((a, b) => a + b, 0) * 100) / 100 : null;
     const win = (k, l) => `<button class="${acctWin === k ? "on" : ""}" data-w="${k}">${l}</button>`;
     const stat = (l, v, tone) => `<div class="mk ${tone || ""}" style="cursor:default"><div class="l">${l}</div><div class="v">${v}</div></div>`;
@@ -685,18 +691,20 @@
     // a trade the band would still hold counts at tonight's close.
     const days = { "30d": 30, "90d": 90, "365d": 365 }[acctWin];
     const cut = days ? new Date(new Date(acct.as_of).getTime() - days * 864e5).toISOString().slice(0, 10) : null;
-    const brs = acct.closed.filter((t) => !cut || (t.exit_date || "") >= cut).map((t) => ((t.bands || {})[band] || {}).r).filter((r) => r != null);
-    const bst = brs.length ? { n: brs.length, win_rate: Math.round(100 * brs.filter((r) => r > 0).length / brs.length),
-      avg_r: Math.round(100 * brs.reduce((a, b) => a + b, 0) / brs.length) / 100, total_r: Math.round(10 * brs.reduce((a, b) => a + b, 0)) / 10 } : { n: 0 };
+    const inWin = acct.closed.filter((t) => !cut || (t.exit_date || "") >= cut);
+    const sel = inWin.filter(gOk);
+    const st = mkStats(sel.map((t) => t.r).filter((r) => r != null));
+    const bst = mkStats(sel.map((t) => ((t.bands || {})[band] || {}).r).filter((r) => r != null));
+    const nIn = (grp) => inWin.filter((t) => grp === "All" || (t.grade && GROUPS[grp].includes(t.grade.grade))).length;
+    const gchipF = (grp, label) => `<button class="chip ${acctGrade === grp ? "on" : ""}" data-ag="${grp}">${label}<span class="n">${nIn(grp)}</span></button>`;
     // Growth % for the window, as on the chart (IBKR's windows; "All" includes the pre-history).
     const g = acct.growth, gi = g && g.bands ? g.bands.indexOf(band) : -1;
     const months = { "30d": 1, "90d": 3, "365d": 12 }[acctWin];
     const gCut = months ? (() => { const d = new Date(acct.as_of); d.setMonth(d.getMonth() - months); return d.toISOString().slice(0, 10); })() : null;
     const growthPct = (col) => { if (!g || !g.days || col < 1) return null;
       const pts = navSeries(g.days, col, gCut, gCut ? 0 : g.pre_history_pct || 0); return pts.length ? pts[pts.length - 1].value : null; };
-    const gstat = (v) => stat("Growth", v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "%", v == null ? "" : v > 0 ? "good" : "bad");
+    const gstat = (v) => stat(acctGrade === "All" ? "Growth" : "Acct %", v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "%", v == null ? "" : v > 0 ? "good" : "bad");
     // Your trades by the grade Today would have given them: your R vs the chosen band's.
-    const inWin = acct.closed.filter((t) => !cut || (t.exit_date || "") >= cut);
     const gRows = GRADES.map((gr) => {
       const ts = inWin.filter((t) => t.grade && t.grade.grade === gr);
       if (!ts.length) return "";
@@ -704,7 +712,7 @@
       const mine = avg(ts.map((t) => t.r).filter((r) => r != null));
       const bnd = avg(ts.map((t) => ((t.bands || {})[band] || {}).r).filter((r) => r != null));
       const wins = ts.filter((t) => t.r > 0).length;
-      return `<tr><td><span class="grade sm ${gcls(gr)}">${gr}</span></td><td>${ts.length}</td><td>${Math.round(100 * wins / ts.length)}%</td>
+      return `<tr style="${gOk({ grade: { grade: gr } }) ? "" : "opacity:.4"}"><td><span class="grade sm ${gcls(gr)}">${gr}</span></td><td>${ts.length}</td><td>${Math.round(100 * wins / ts.length)}%</td>
         <td class="${pc(mine)}">${rfmt(mine == null ? null : Math.round(mine * 100) / 100)}</td><td class="${pc(bnd)}">${rfmt(bnd == null ? null : Math.round(bnd * 100) / 100)}</td></tr>`;
     }).join("");
     const ungraded = inWin.filter((t) => !t.grade).length;
@@ -714,7 +722,7 @@
     const bandCards = statRow(bst) + (bst.n ? gstat(growthPct(gi < 0 ? -1 : 2 + gi)) : "");
     const cards = statRow(st) + (st.n ? gstat(growthPct(1)) : "");
     const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" title="${esc((g.on_screen ? "" : "Not on the screen that day. ") + (g.reasons || []).join(", "))}">${esc(g.grade)}</span>` : "";
-    const pos = acct.positions.map((p) => {
+    const pos = positions.map((p) => {
       // Tonight's stop is the chosen band's (outlined); the other bands are shown dimmed for comparison.
       const s = p.stops || {};
       const box = (k, l, cls) => `<div class="${cls}"><div class="k">${l}</div><div class="v">${s[k] == null ? "–" : fmt(s[k])}</div></div>`;
@@ -728,10 +736,10 @@
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%</div>
         <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === band ? "on" : "dim")).join("")}</div>
         ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
-    }).join("") || '<div class="empty" style="padding:14px 0">No open positions.</div>';
+    }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
     const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
-    let closed = acct.closed; const closedTotal = closed.length;
+    let closed = acct.closed.filter(gOk); const closedTotal = closed.length;
     if (!showAllClosed) closed = closed.slice(0, 15);
     const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td>${gchip(t.grade)}<b>${esc(t.symbol)}</b><div class="sub">${t.days ?? "–"}d</div></td>
       <td class="${pc(t.r)}">${rfmt(t.r)}</td>${(() => { const b = (t.bands || {})[band];
@@ -739,6 +747,8 @@
     el.innerHTML = `
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
+      <div class="chips">${gchipF("top", "A+ – B")}${GRADES.map((gr) => gchipF(gr, gr)).join("")}${gchipF("All", "All")}</div>
+      ${acctGrade === "All" ? "" : '<div class="openr">Filtered by the grade Today would have given each entry. Growth is the whole account (it can\'t be split by grade).</div>'}
       <div class="rowlab">Your exits</div>
       <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${cards}</div>
       ${openR != null ? `<div class="openr">R boxes are closed trades only (open positions add ${rfmt(openR)}); Growth includes open positions.</div>` : ""}
@@ -754,6 +764,7 @@
         <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${cl}</tbody></table>
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
+    el.querySelectorAll("[data-ag]").forEach((b) => b.onclick = () => { acctGrade = b.dataset.ag; save("md.acctgrade", acctGrade); renderAccount(); });
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
     drawGrowth();
   }
