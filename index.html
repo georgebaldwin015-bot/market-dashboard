@@ -144,7 +144,7 @@
   .mk.na { opacity: .4; }
   .mk-cards.even .mk { padding: 7px 7px; border-radius: 10px; }
   .mk-cards.even .l { white-space: nowrap; letter-spacing: 0; font-size: 0.58rem; }
-  .mk-cards.even .v { font-size: 0.95rem; white-space: nowrap; }
+  .mk-cards.even .v { font-size: 0.95rem; white-space: nowrap; overflow: hidden; }
   .rowlab { font-size: 0.7rem; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: .05em; margin: 8px 2px 5px; }
   .rowlab span { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; }
   .openr { font-size: 0.75rem; color: var(--muted); margin: 0 2px 10px; }
@@ -187,6 +187,8 @@
   .grade.sm { width: 26px; height: 22px; font-size: 0.72rem; border-radius: 6px; }
   .wl { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--panel2); margin: 4px 0 2px; }
   .wl i { background: var(--green); } .wl b { background: var(--red); }
+  .gtip { font-size: 0.74rem; color: var(--text); opacity: .85; background: var(--panel2); border-radius: 8px; padding: 6px 8px; margin: 6px 0 2px; line-height: 1.35; }
+  .grade[data-gtip] { cursor: pointer; }
   .grade.inl { display: inline-flex; vertical-align: middle; margin-right: 5px; }
   .grade.off { opacity: .55; outline: 1px dashed var(--muted); }   /* not armed on the screen that day */
   #toast { position: fixed; left: 50%; bottom: calc(80px + var(--safe-b)); transform: translateX(-50%); background: var(--panel2);
@@ -665,7 +667,7 @@
   let acct = null, acctLoading = false, acctWin = load("md.acctwin", "90d"), showAllClosed = false;
   let acctGrade = load("md.acctgrade", "All");   // same grade groups as Today; "All" includes ungraded trades
   if (!GROUPS[acctGrade]) acctGrade = "All";
-  const rfmt = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 2) + "R";
+  const rfmt = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "R";   // one decimal everywhere
   function renderAccount() {
     const el = $("#account-view");
     if (!acct) {
@@ -688,7 +690,7 @@
     const win = (k, l) => `<button class="${acctWin === k ? "on" : ""}" data-w="${k}">${l}</button>`;
     const stat = (l, v, tone) => `<div class="mk ${tone || ""}" style="cursor:default"><div class="l">${l}</div><div class="v">${v}</div></div>`;
     const statRow = (st) => st.n ? stat("Trades", st.n) + stat("Win rate", st.win_rate + "%", st.win_rate >= 40 ? "good" : st.win_rate >= 25 ? "warn" : "bad")
-      + stat("Avg R", rfmt(st.avg_r), st.avg_r > 0 ? "good" : "bad") + stat("Total R", rfmt(st.total_r), st.total_r > 0 ? "good" : "bad")
+      + stat("Avg R", rfmt(st.avg_r), st.avg_r > 0 ? "good" : "bad") + stat("Total R", (st.total_r > 0 ? "+" : "") + fmt(st.total_r, 1) + "R", st.total_r > 0 ? "good" : "bad")
       : '<div class="sub" style="grid-column:1/-1">No closed trades in this window.</div>';
     // The same trades (same window, by your exit date) had you used the chosen band's exit;
     // a trade the band would still hold counts at tonight's close.
@@ -742,7 +744,9 @@
       ${ungraded ? `<div class="sub" style="margin-top:6px">${ungraded} trade${ungraded > 1 ? "s" : ""} not graded (not enough price history).</div>` : ""}</div>` : "";
     const bandCards = statRow(bst) + (bst.n ? gstat(growthPct(gi < 0 ? -1 : 2 + gi)) : "");
     const cards = statRow(st) + (st.n ? gstat(growthPct(1)) : "");
-    const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" title="${esc((g.on_screen ? "" : "Not on the screen that day. ") + (g.reasons || []).join(", "))}">${esc(g.grade)}</span>` : "";
+    // Tap a grade badge for the one-line why (on/off 'Today' that day + the scoring points).
+    const gtip = (g) => `${g.on_screen ? "On ‘Today’ that day" : "Not on ‘Today’ that day"}${g.on_screen && g.strategy ? " (" + g.strategy + ")" : ""} · ${(g.reasons || []).join(", ") || "no points either way"}`;
+    const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" role="button" data-gtip="${esc(gtip(g))}">${esc(g.grade)}</span>` : "";
     const pos = positions.map((p) => {
       // Tonight's stop is the chosen band's (outlined); the other bands are shown dimmed for comparison.
       const s = p.stops || {};
@@ -788,6 +792,19 @@
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     el.querySelectorAll("[data-ag]").forEach((b) => b.onclick = () => { acctGrade = b.dataset.ag; save("md.acctgrade", acctGrade); renderAccount(); });
     const cm = $("#closed-more"); if (cm) cm.onclick = () => { showAllClosed = true; renderAccount(); };
+    el.querySelectorAll("[data-gtip]").forEach((c) => c.onclick = (e) => {
+      e.stopPropagation();
+      const card = c.closest(".posn"), host = card || c.closest("td");
+      const old = host.querySelector(".gtip");
+      if (old) { old.remove(); return; }
+      const d = document.createElement("div"); d.className = "gtip"; d.textContent = c.dataset.gtip;
+      if (card) card.querySelector(".top").after(d); else host.appendChild(d);
+    });
+    // Numbers never spill out of the stat boxes: shrink any that don't fit (narrow phones).
+    el.querySelectorAll(".mk-cards.even .v").forEach((v) => {
+      let f = 0.95;
+      while (v.scrollWidth > v.clientWidth + 0.5 && f > 0.6) { f -= 0.05; v.style.fontSize = f + "rem"; }
+    });
     drawGrowth();
   }
 
