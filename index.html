@@ -190,6 +190,13 @@
   .tiprow td { padding-top: 0 !important; }
   .gtip { white-space: normal; overflow-wrap: break-word; font-size: 0.74rem; color: var(--text); opacity: .85; background: var(--panel2); border-radius: 8px; padding: 6px 8px; margin: 6px 0 2px; line-height: 1.35; }
   .grade[data-gtip] { cursor: pointer; }
+  .offplan { font-size: 0.66rem; font-weight: 700; color: var(--red); border: 1px solid rgba(248,81,73,.5); border-radius: 999px; padding: 1px 7px; margin-left: 6px; white-space: nowrap; }
+  .offplan.sm { margin-left: 0; padding: 0 5px; }
+  .warnc { color: var(--amber); }
+  .live h3 { display: flex; align-items: center; gap: 6px; }
+  .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); display: inline-block; }
+  .live .dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  tr.hitrow td { background: rgba(248,81,73,.12); }
   .grade.inl { display: inline-flex; vertical-align: middle; margin-right: 5px; }
   .grade.off { opacity: .55; outline: 1px dashed var(--muted); }   /* not armed on the screen that day */
   #toast { position: fixed; left: 50%; bottom: calc(80px + var(--safe-b)); transform: translateX(-50%); background: var(--panel2);
@@ -208,6 +215,17 @@
   #research-frame iframe { width: 100%; height: calc(100% - 38px); border: 0; display: block; }
 
   /* Settings sheet */
+  /* Ticker page: slides over any tab */
+  #tsheet { position: fixed; inset: 0; background: var(--bg); z-index: 45; display: none; overflow-y: auto; }
+  #tsheet.open { display: block; }
+  #tsheet .tbox { max-width: 760px; margin: 0 auto; padding: calc(12px + var(--safe-t)) 16px 40px; }
+  #tsheet .thead { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  #tsheet .thead b { font-size: 1.3rem; } #tsheet .grow { flex: 1; }
+  #tsheet .thead a { color: var(--blue); text-decoration: none; font-size: 0.85rem; }
+  #ts-chart { height: 300px; }
+  .tkl { color: var(--text); text-decoration: none; cursor: pointer; }
+  .disc .row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; margin: 8px 0; font-size: 0.85rem; }
+  .disc .score { font-size: 1.6rem; font-weight: 700; }
   #sheet { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 40; display: none; align-items: flex-end; }
   #sheet.open { display: flex; }
   #sheet .box { background: var(--panel); width: 100%; max-width: 560px; margin: 0 auto; border-radius: 16px 16px 0 0;
@@ -243,6 +261,7 @@
   <section class="view" id="view-research">
     <div class="pad list" id="research-list">
       <h2>Research</h2>
+      <a href="#research/review.html"><div><div class="t">Strategy review</div><div class="d">The whole system in plain English: setups, grades, market confidence, exits, and what your own trades say</div></div></a>
       <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A+ to F setups look like, with your ADR bands and why each qualifies</div></div></a>
       <a href="#research/backtest.html"><div><div class="t">Backtest &amp; live track record</div><div class="d">5-year results and how the live recommendations have done</div></div></a>
       <a href="#research/industry.html"><div><div class="t">Full market report</div><div class="d">Heatmap, sector and industry trend charts, top momentum names</div></div></a>
@@ -260,6 +279,13 @@
   <button data-view="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Account</button>
 </nav>
 
+<div id="tsheet" role="dialog" aria-label="Ticker">
+  <div class="tbox">
+    <div class="thead"><b id="ts-title"></b><span class="sub" id="ts-sub"></span><span class="grow"></span>
+      <a id="ts-tv" target="_blank" rel="noopener">TradingView ›</a><button class="iconbtn" id="ts-close" aria-label="Close">✕</button></div>
+    <div id="ts-body"></div>
+  </div>
+</div>
 <div id="sheet" role="dialog" aria-label="Settings">
   <div class="box">
     <h2>Position sizing</h2>
@@ -311,7 +337,10 @@
     const frame = document.querySelector("#view-" + v + " > iframe");
     if (frame && !frame.getAttribute("src")) frame.src = frame.dataset.src;
     if (v === "market") renderMarket2();
-    if (v === "account") renderAccount();
+    if (v === "account") {
+      renderAccount(); loadLive();
+      if (!liveTimer) liveTimer = setInterval(() => { if (location.hash.startsWith("#account") && !document.hidden) loadLive(); }, 120000);
+    }
     if (v === "research") {
       $("#research-list").style.display = sub ? "none" : "";
       $("#research-frame").style.display = sub ? "block" : "none";
@@ -666,6 +695,32 @@
 
   // ---------- Account (IBKR, from account.json) ----------
   let acct = null, acctLoading = false, acctWin = load("md.acctwin", "90d"), showAllClosed = false;
+  // Live strip (live.json, every 15 min in market hours): refetched when Account opens and every 2 min while it's shown.
+  let live = null, liveTimer = null;
+  function loadLive() {
+    fetch("live.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d) { live = d; if (acct && location.hash.startsWith("#account")) renderAccount(); } }).catch(() => {});
+  }
+  function liveStrip() {
+    if (!live || !live.positions) return "";
+    const t = new Date(live.as_of), age = (Date.now() - t) / 6e4;
+    const hhmm = t.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const fresh = live.market_open && age < 45;
+    const rows = live.positions.map((p) => {
+      const s = (p.stops || {})[band] ?? (p.stops || {}).initial;
+      const hit = (p.breached || []).includes(String(band)) || (s === (p.stops || {}).initial && (p.breached || []).includes("initial"));
+      const gap = p.last && s ? (p.last / s - 1) * 100 : null;
+      return `<tr class="${hit ? "hitrow" : ""}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.new_today ? '<div class="sub">new today</div>' : ""}</td>
+        <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${p.pct_day == null ? "" : (p.pct_day > 0 ? "+" : "") + fmt(p.pct_day, 1) + "%"}</div></td>
+        <td class="${pc(p.r_now)}">${rfmt(p.r_now)}</td>
+        <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${band}× ${fmt(s)}</div></td></tr>`;
+    }).join("");
+    const fills = (live.fills_today || []).map((f) => `${f.side === "BUY" ? "Bought" : "Sold"} ${fmt(f.qty, f.qty % 1 ? 2 : 0)} ${esc(f.symbol)} @ ${fmt(f.price)}`).join(" · ");
+    return `<div class="panel live"><h3><span class="dot ${fresh ? "on" : ""}"></span>Live <span class="sub">${fresh ? "updated " + hhmm + " · about 15–25 min behind" : "market closed · last update " + hhmm}</span></h3>
+      ${rows ? `<table class="st fit"><thead><tr><th>Ticker</th><th>Last</th><th>R now</th><th>To stop</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="sub">No open positions.</div>'}
+      ${fills ? `<div class="sub" style="margin-top:6px">Today: ${fills}</div>` : ""}</div>`;
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && location.hash.startsWith("#account")) loadLive(); });
   let acctGrade = load("md.acctgrade", "All");   // same grade groups as Today; "All" includes ungraded trades
   if (!GROUPS[acctGrade]) acctGrade = "All";
   const rfmt = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 1) + "R";   // one decimal everywhere
@@ -737,6 +792,33 @@
         <td>${rs.length ? Math.round(100 * w / rs.length) + "%" : "–"}<div class="sub">${band}× ${brs.length ? Math.round(100 * bw / brs.length) + "%" : "–"}</div></td>
         <td class="${pc(tot)}">${rfmt(Math.round(tot * 10) / 10)}</td><td class="${pc(btot)}">${rfmt(Math.round(btot * 10) / 10)}</td></tr>`;
     }).join("");
+    const PLAN = ["A+", "A", "B"];
+    // Discipline: did each trade follow the rules? Plan grade (A+ to B), entry at the
+    // 'Today' buy-stop (within 1%), exit no earlier than the chosen band (a stop-out counts
+    // as following it; holding far past the stop doesn't).
+    const disc = { plan: [0, 0], entry: [0, 0], exit: [0, 0], early: 0, earlyR: 0 };
+    sel.forEach((t) => {
+      const g = t.grade;
+      if (g) { disc.plan[1]++; if (PLAN.includes(g.grade)) disc.plan[0]++; }
+      if (g && g.buy_stop && t.entry) { disc.entry[1]++; if (Math.abs(t.entry / g.buy_stop - 1) <= 0.01) disc.entry[0]++; }
+      const b = (t.bands || {})[band];
+      if (t.r != null && b) {
+        disc.exit[1]++;
+        const stopped = t.r <= -0.8, heldPast = t.r < -1.3;
+        const early = !stopped && (b.exit == null || b.exit > (t.exit_date || ""));
+        if (!early && !heldPast) disc.exit[0]++;
+        if (early) { disc.early++; disc.earlyR += (b.r || 0) - t.r; }
+      }
+    });
+    const dTot = disc.plan[1] + disc.entry[1] + disc.exit[1], dOk = disc.plan[0] + disc.entry[0] + disc.exit[0];
+    const dRow = (label, [ok, n], note) => n ? `<div class="row"><div>${label}<div class="sub">${note}</div>
+      <div class="wl"><i style="width:${100 * ok / n}%"></i><b style="width:${100 * (n - ok) / n}%"></b></div></div><b>${ok}/${n}</b></div>` : "";
+    const discPanel = dTot ? `<div class="panel disc"><h3>Discipline <span class="sub">did each trade follow the rules</span></h3>
+      <div class="score" style="color:${dOk / dTot >= 0.8 ? "var(--green)" : dOk / dTot >= 0.6 ? "var(--amber)" : "var(--red)"}">${Math.round(100 * dOk / dTot)}%</div>
+      ${dRow("On-plan grade", disc.plan, "A+ to B only")}
+      ${dRow("Entered at the buy-stop", disc.entry, "within 1% of the ‘Today’ buy-stop")}
+      ${dRow(`Exited by the ${band}× rule`, disc.exit, disc.early ? `${disc.early} sold before the band · that cost ${fmt(Math.abs(disc.earlyR), 1)}R vs holding to the band` : "no early exits")}
+    </div>` : "";
     const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${band}× exit on the same trades</span></h3>
       <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${band}× total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
@@ -748,6 +830,9 @@
     // Tap a grade badge for the one-line why (on/off 'Today' that day + the scoring points).
     const gtip = (g) => `${g.on_screen ? "On ‘Today’ that day" : "Not on ‘Today’ that day"}${g.on_screen && g.strategy ? " (" + g.strategy + ")" : ""} · ${(g.reasons || []).join(", ") || "no points either way"}`;
     const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" role="button" data-gtip="${esc(gtip(g))}">${esc(g.grade)}</span>` : "";
+    // Off plan = graded outside A+ to B; risk = % of the account put at risk on the entry.
+    const offPlan = (x) => x.grade && !PLAN.includes(x.grade.grade);
+    const riskTxt = (v) => v == null ? "" : `<span class="${v > 2 ? "neg" : v > 1.25 ? "warnc" : ""}">risked ${fmt(v, 1)}%</span>`;
     const pos = positions.map((p) => {
       // Tonight's stop is the chosen band's (outlined); the other bands are shown dimmed for comparison.
       const s = p.stops || {};
@@ -756,10 +841,10 @@
       const hit = mine ? `⚠ ${band}× band stop hit ${esc(mine.date)} at ${fmt(mine.price)}` : "";
       const also = (p.hit || []).filter((h) => h.k !== band).map((h) => `${h.k}× out ${esc(h.date)} at ${fmt(h.price)}`).join(" · ");
       return `<div class="posn ${hit ? "alert" : ""}">
-        <div class="top">${gchip(p.grade)}<a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(p.symbol)}" target="_blank" rel="noopener">${esc(p.symbol)}</a>
-          <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>
+        <div class="top">${gchip(p.grade)}<a class="tk tkl" data-ticker="${esc(p.symbol)}">${esc(p.symbol)}</a>
+          <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>${offPlan(p) ? '<span class="offplan">off plan</span>' : ""}
           <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
-        <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%</div>
+        <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%${p.risk_pct != null ? " · " + riskTxt(p.risk_pct) : ""}</div>
         <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === band ? "on" : "dim")).join("")}</div>
         ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
     }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
@@ -767,11 +852,12 @@
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
     let closed = acct.closed.filter(gOk); const closedTotal = closed.length;
     if (!showAllClosed) closed = closed.slice(0, 15);
-    const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td>${gchip(t.grade)}<b>${esc(t.symbol)}</b><div class="sub">${t.days ?? "–"}d</div></td>
+    const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td>${gchip(t.grade)}<a class="tkl" data-ticker="${esc(t.symbol)}"><b>${esc(t.symbol)}</b></a><div class="sub">${t.days ?? "–"}d${t.risk_pct != null ? " · " + fmt(t.risk_pct, 1) + "%" : ""}${offPlan(t) ? ' · <span class="offplan sm">off plan</span>' : ""}</div></td>
       <td class="${pc(t.r)}">${rfmt(t.r)}</td>${(() => { const b = (t.bands || {})[band];
         return b ? `<td class="${pc(b.r)}">${rfmt(b.r)}${b.exit ? "" : '<div class="sub">holding</div>'}</td>` : "<td>–</td>"; })()}</tr>`).join("");
     el.innerHTML = `
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
+      ${liveStrip()}
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
       <div class="chips">${gchipF("top", "A+ – B")}${GRADES.map((gr) => gchipF(gr, gr)).join("")}${gchipF("All", "All")}</div>
       ${acctGrade === "All" ? "" : '<div class="openr">Filtered by the grade ‘Today’ would have given each entry. Growth is the whole account (it can\'t be split by grade).</div>'}
@@ -786,6 +872,7 @@
       ${pos}
       ${byGrade}
       ${wlTable}
+      ${discPanel}
       <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
       <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${band}× ADR exit would have made</span></h3>
         <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${cl}</tbody></table>
@@ -871,6 +958,64 @@
     if (r > 0 && r <= 10) settings.risk = r;
     save("md.settings", settings); $("#sheet").classList.remove("open"); renderToday();
   };
+
+  // ---------- ticker page: chart with bands + your trades in that name ----------
+  let tsChart = null;
+  function openTicker(sym) {
+    const sh = $("#tsheet"); sh.classList.add("open");
+    $("#ts-title").textContent = sym;
+    $("#ts-tv").href = "https://www.tradingview.com/chart/?symbol=" + encodeURIComponent(sym);
+    const mine = acct ? acct.closed.filter((t) => t.symbol === sym) : [];
+    const pos = acct ? acct.positions.find((p) => p.symbol === sym) : null;
+    const g = (pos && pos.grade) || (mine[0] && mine[0].grade);
+    $("#ts-sub").innerHTML = g ? `grade <span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}">${esc(g.grade)}</span>` : "";
+    const rows = mine.map((t) => { const b = (t.bands || {})[band];
+      return `<tr><td>${esc(t.entry_date || "")}<div class="sub">→ ${esc(t.exit_date || "")}</div></td><td>${t.grade ? `<span class="grade sm ${gcls(t.grade.grade)}">${esc(t.grade.grade)}</span>` : "–"}</td>
+        <td class="${pc(t.r)}">${rfmt(t.r)}</td><td class="${pc(b && b.r)}">${b ? rfmt(b.r) : "–"}</td></tr>`; }).join("");
+    $("#ts-body").innerHTML = `<div class="panel"><div id="ts-chart"><div class="msg">Loading chart…</div></div><div class="legend" id="ts-leg"></div></div>
+      ${pos ? `<div class="panel"><h3>Open position <span class="sub">since ${esc(pos.entry_date)} · ${rfmt(pos.r_now)} · ${band}× stop ${fmt((pos.stops || {})[band])}</span></h3>
+        ${pos.grade ? `<div class="sub">${esc(gtipText(pos.grade))}</div>` : ""}</div>` : ""}
+      <div class="panel"><h3>Your trades in ${esc(sym)} <span class="sub">actual vs ${band}× exit</span></h3>
+        ${rows ? `<table class="st fit"><thead><tr><th>Dates</th><th>Grade</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="sub">No closed trades yet.</div>'}</div>`;
+    Promise.all([loadLib(), loadBars(sym)]).then(([L, b]) => {
+      const box = $("#ts-chart"); if (!box || !$("#tsheet").classList.contains("open")) return;
+      box.innerHTML = "";
+      if (tsChart) { try { tsChart.remove(); } catch (e) {} }
+      tsChart = L.createChart(box, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false, rightOffset: 6 } });
+      const cs = tsChart.addCandlestickSeries({ upColor: "#3fb950", downColor: "#f85149", borderVisible: false,
+        wickUpColor: "#3fb950", wickDownColor: "#f85149", priceLineVisible: false, lastValueVisible: true });
+      cs.setData(b.t.map((d, i) => ({ time: d, open: b.o[i], high: b.h[i], low: b.l[i], close: b.c[i] })));
+      const adr = sma(b.h.map((h, i) => h - b.l[i]), 20);
+      BANDS.forEach(([k, color]) => {
+        const sel = k === band;
+        tsChart.addLineSeries({ color: sel ? color.replace(/[\d.]+\)$/, ".55)") : color, lineWidth: 1, lineStyle: sel ? 0 : 1,
+          priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, autoscaleInfoProvider: () => null })
+          .setData(b.t.map((d, i) => adr[i] == null ? { time: d } : { time: d, value: b.c[i] - k * adr[i] }));
+      });
+      // Your entries and exits on the chart.
+      const first = b.t[0], mk = [];
+      mine.forEach((t) => {
+        if (t.entry_date >= first) mk.push({ time: t.entry_date, position: "belowBar", color: "#58a6ff", shape: "arrowUp", text: "B" });
+        if (t.exit_date && t.exit_date >= first) mk.push({ time: t.exit_date, position: "aboveBar", color: t.r > 0 ? "#3fb950" : "#f85149", shape: "arrowDown", text: "S" });
+      });
+      if (pos && pos.entry_date >= first) mk.push({ time: pos.entry_date, position: "belowBar", color: "#58a6ff", shape: "arrowUp", text: "B" });
+      mk.sort((a, c) => a.time < c.time ? -1 : a.time > c.time ? 1 : 0);
+      cs.setMarkers(mk);
+      if (pos && (pos.stops || {})[band] != null) cs.createPriceLine({ price: pos.stops[band], color: "#f85149", lineWidth: 1, lineStyle: 2, title: "", axisLabelVisible: true });
+      tsChart.timeScale().fitContent();
+      $("#ts-leg").innerHTML = `<span><i class="pv"></i>B = your buy</span><span>S = your sell</span>` + BANDS.map(([k, c]) => k === band
+        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit</b></span>` : `<span><i style="border-color:${c.replace(/[\d.]+\)$/, ".6)")}"></i>${k}×</span>`).join("");
+    }).catch(() => { const box = $("#ts-chart"); if (box) box.innerHTML = '<div class="msg">No chart data for this ticker yet (it appears after the next IBKR sync).</div>'; });
+  }
+  function closeTicker() { $("#tsheet").classList.remove("open"); if (tsChart) { try { tsChart.remove(); } catch (e) {} tsChart = null; } }
+  $("#ts-close").onclick = closeTicker;
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-ticker]");
+    if (a) { e.preventDefault(); openTicker(a.dataset.ticker); }
+  });
+  const gtipText = (g) => `${g.on_screen ? "On ‘Today’ that day" : "Not on ‘Today’ that day"}${g.on_screen && g.strategy ? " (" + g.strategy + ")" : ""} · ${(g.reasons || []).join(", ") || "no points either way"}`;
 
   function renderBandPick() {
     const seg = $("#bandpick .seg");
