@@ -194,7 +194,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
     <h2>Live Recommendations Track Record</h2>
     <p>What actually happened to the real tickers flagged by the Qullamaggie Momentum / Minervini
     screener (data/setup_history.jsonl) -- not backtest data. Legacy Bull Flag setups (screener retired 2026-08-12) are listed separately below the table
-    and are not in these totals. Auto-generated as of 2026-09-25T13:19:37Z; one row per ticker per Worth Watching
+    and are not in these totals. Auto-generated as of 2026-09-26T00:56:03Z; one row per ticker per Worth Watching
     cycle (its earliest flag on/after that cycle's reappearance on the shortlist, merged across
     systems if flagged by more than one that cycle -- see group_by_cycle()). A ticker that dropped
     off Worth Watching and later reappeared is graded as a new, separate setup rather than
@@ -202,20 +202,56 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
     in R-multiples using the project's one
     mechanical stop rule (1x ADR initial stop, breakeven at 2R, trail at max(2x ADR, 7%)) walked forward
     against real daily prices -- not raw %-change, so a spike that later gave it all back is scored at
-    what the stop would have actually banked, not its peak. Fills are realistic: the fill day itself is checked on intraday bars (a stop hit after the fill that day counts), and a stop that price gaps through fills at the open, not at the stop. On the old daily-bar fills the same setups would total -7.44R. 9 additional flagged setup(s) were excluded (9 no flag price logged) -- checked against the &gt;20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 69 flagged too recently to have a post-entry bar yet. Of the graded trades, the 31 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.15R/trade vs -0.41R/trade for the 49 that hadn't.</p>
+    what the stop would have actually banked, not its peak. Fills are realistic: the fill day itself is checked on intraday bars (a stop hit after the fill that day counts), and a stop that price gaps through fills at the open, not at the stop. On the old daily-bar fills the same setups would total -7.44R. 9 additional flagged setup(s) were excluded (9 no flag price logged) -- checked against the &gt;20%-past-pivot rule George asked for (see build_live_track_record.py for the audit list). 73 flagged too recently to have a post-entry bar yet. Of the graded trades, the 31 that had also appeared on a daily Worth Watching shortlist (tracked since 2026-08-07) averaged +0.15R/trade vs -0.41R/trade for the 49 that hadn't.</p>
     <p class="callout"><b>-15.54R</b> total if every one of these 80 setups had been taken exactly as flagged, sized to the project's standard risk (avg -0.19R/trade) -- 26 still open and marked to market, 54 closed (-46.56R realized, avg -0.86R/trade, 9% win rate).</p>
     <div class="table-wrap tw">
     <table data-fit="1">
     <thead><tr><th>Ticker</th><th>System</th><th>Flagged</th><th>Entry</th><th>Status</th><th>R</th><th>Worth Watching</th><th>Note</th></tr></thead>
     <tbody>
     <tr>
+            <td><b>MRNA</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-09-25</td>
+            <td>$196.44</td>
+            <td style="color:rgb(210,153,34);">Pivot Touched</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (9x)</td>
+            <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
+        </tr><tr>
+            <td><b>ALAB</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-09-25</td>
+            <td>$366.00</td>
+            <td style="color:rgb(210,153,34);">Pivot Touched</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
+            <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
+        </tr><tr>
+            <td><b>AKAM</b></td>
+            <td title="Qullamaggie Momentum">QM</td>
+            <td>2026-09-25</td>
+            <td>$123.33</td>
+            <td style="color:rgb(140,144,152);">Expired</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
+        </tr><tr>
+            <td><b>EMR</b></td>
+            <td title="Trend Template">Minervini</td>
+            <td>2026-09-25</td>
+            <td>$159.50</td>
+            <td style="color:rgb(140,144,152);">Expired</td>
+            <td style="color:rgb(140,144,152);">--</td>
+            <td title="">—</td>
+            <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
+        </tr><tr>
             <td><b>CRWD</b></td>
             <td title="Trend Template">Minervini</td>
             <td>2026-09-24</td>
             <td>$259.67</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>DELL</b></td>
@@ -224,7 +260,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$536.02</td>
             <td style="color:rgb(140,144,152);">Expired</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
         </tr><tr>
             <td><b>PANW</b></td>
@@ -233,7 +269,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$389.92</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>TER</b></td>
@@ -242,7 +278,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$387.70</td>
             <td style="color:rgb(140,144,152);">Expired</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (15x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (26x)</td>
             <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
         </tr><tr>
             <td><b>SWKS</b></td>
@@ -251,7 +287,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$87.81</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (24x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>HPE</b></td>
@@ -260,7 +296,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$63.52</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>FTNT</b></td>
@@ -269,7 +305,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$178.67</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (15x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (23x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>INTC</b></td>
@@ -278,7 +314,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$127.39</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>STX</b></td>
@@ -287,7 +323,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$905.92</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (15x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (26x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>META</b></td>
@@ -305,7 +341,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$260.90</td>
             <td style="color:rgb(88,166,255);">Open</td>
             <td style="color:rgb(190,194,200);">-0.29R</td>
-            <td title="2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (16x)</td>
+            <td title="2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (27x)</td>
             <td class="note">Still open, underwater -- -0.29R unrealized</td>
         </tr><tr>
             <td><b>TRGP</b></td>
@@ -332,7 +368,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$1,072</td>
             <td style="color:rgb(140,144,152);">Expired</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (16x)</td>
+            <td title="2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (24x)</td>
             <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
         </tr><tr>
             <td><b>AMD</b></td>
@@ -431,7 +467,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$333.20</td>
             <td style="color:#f0883e;">Closed</td>
             <td style="color:#f0883e;">-1.00R</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (13x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (17x)</td>
             <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>ASML</b></td>
@@ -449,7 +485,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$247.47</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (14x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (25x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>JCI</b></td>
@@ -566,7 +602,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$217.99</td>
             <td style="color:#f0883e;">Closed</td>
             <td style="color:#f0883e;">-1.00R</td>
-            <td title="2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (20x)</td>
+            <td title="2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (31x)</td>
             <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>MRK</b></td>
@@ -764,7 +800,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$180.77</td>
             <td style="color:rgb(210,153,34);">Pivot Touched</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-03, 2026-09-15, 2026-09-16, 2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24">★ (11x)</td>
+            <td title="2026-09-03, 2026-09-15, 2026-09-16, 2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (22x)</td>
             <td class="note">Pivot just touched -- not enough bars yet to simulate a fill</td>
         </tr><tr>
             <td><b>STT</b></td>
@@ -854,7 +890,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$1,567</td>
             <td style="color:rgb(140,144,152);">Expired</td>
             <td style="color:rgb(140,144,152);">--</td>
-            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (15x)</td>
+            <td title="2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (26x)</td>
             <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
         </tr><tr>
             <td><b>CTVA</b></td>
@@ -908,7 +944,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td>$956.14</td>
             <td style="color:#f0883e;">Closed</td>
             <td style="color:#f0883e;">-1.55R</td>
-            <td title="2026-08-28, 2026-09-01, 2026-09-02, 2026-09-03, 2026-09-15, 2026-09-16, 2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24">★ (26x)</td>
+            <td title="2026-08-28, 2026-09-01, 2026-09-02, 2026-09-03, 2026-09-15, 2026-09-16, 2026-09-17, 2026-09-18, 2026-09-18, 2026-09-22, 2026-09-23, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-24, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25, 2026-09-25">★ (37x)</td>
             <td class="note">Stopped out at -1.55R -- loss</td>
         </tr><tr>
             <td><b>FFIV</b></td>
@@ -1724,7 +1760,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td class="note">Stopped out at -1.00R -- loss</td>
         </tr><tr>
             <td><b>DAL</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-08-10</td>
             <td>$91.34</td>
             <td style="color:rgb(140,144,152);">Expired</td>
@@ -1814,7 +1850,7 @@ table.compact.tight th, table.compact.tight td { padding: 3px 3px !important; }
             <td class="note">Expired -- never touched its pivot and has since dropped off Worth Watching</td>
         </tr><tr>
             <td><b>GOOGL</b></td>
-            <td title="Bull Flag (retired 2026-08-12)">QM</td>
+            <td title="Bull Flag (retired 2026-08-12)">Both</td>
             <td>2026-08-07</td>
             <td>$357.75</td>
             <td style="color:rgb(140,144,152);">Expired</td>
