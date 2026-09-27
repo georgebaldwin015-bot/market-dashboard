@@ -503,7 +503,9 @@
     }
     const file = new File([txt], name, { type: "text/plain" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: name }).catch(() => {});   // iPhone: share sheet -> Save to Files / TradingView
+      // Files only: with a title too, iOS hands some targets the title as a text snippet
+      // instead of the file (TradingView then imported the file name as one "symbol").
+      navigator.share({ files: [file] }).catch(() => {});   // iPhone: share sheet -> Save to Files / TradingView
       return;
     }
     const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name;
