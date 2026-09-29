@@ -193,6 +193,8 @@
   .gtip { white-space: normal; overflow-wrap: break-word; font-size: 0.74rem; color: var(--text); opacity: .85; background: var(--panel2); border-radius: 8px; padding: 6px 8px; margin: 6px 0 2px; line-height: 1.35; }
   .grade[data-gtip] { cursor: pointer; }
   .offplan { font-size: 0.66rem; font-weight: 700; color: var(--red); border: 1px solid rgba(248,81,73,.5); border-radius: 999px; padding: 1px 7px; margin-left: 6px; white-space: nowrap; }
+  .ern { font-size: 0.66rem; font-weight: 700; color: var(--amber); border: 1px solid rgba(210,153,34,.55); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  .ern.skip { color: var(--red); border-color: rgba(248,81,73,.5); }
   .offplan.sm { margin-left: 0; padding: 0 5px; }
   .warnc { color: var(--amber); }
   .live h3 { display: flex; align-items: center; gap: 6px; }
@@ -327,6 +329,11 @@
   GRADES.forEach((g) => GROUPS[g] = [g]);
   let filters = Object.assign({ grade: "top", strategy: "All", q: "", view: "cards", sort: "" }, load("md.filters", {}));
   if (!GROUPS[filters.grade]) filters.grade = "top";   // e.g. the old "AB" setting
+  const ernTag = (e, short) => {
+    if (!e) return "";
+    const d = e.in_days === 0 ? "today" : e.in_days === 1 ? "tmrw" : e.in_days + "d";
+    return `<span class="ern${e.skip ? " skip" : ""}">${short ? "ER " + d : (e.skip ? "skip · " : "") + "earnings " + d}</span>`;
+  };
   const gcls = (g) => "g" + String(g).replace("+", "p");
 
   const $ = (s) => document.querySelector(s);
@@ -417,7 +424,7 @@
           <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
           <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%</div>
         </div>
-        <span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
+        ${ernTag(s.earnings)}<span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
         <span class="caret" aria-hidden="true">▾</span>
       </div>
       <div class="levels">
@@ -495,7 +502,7 @@
     const body = rows.map((s) => `<tr class="${s.in_play === false ? "out" : ""}">
       <td><span class="grade sm ${gcls(s.grade)}">${esc(s.grade)}</span></td>
       <td><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
-        <div class="sub">${esc(s.strategies.join("+"))}</div></td>
+        <div class="sub">${esc(s.strategies.join("+"))}</div>${ernTag(s.earnings)}</td>
       <td>${fmt(s.pivot)}</td><td>${fmt(s.stop)}</td>
       <td>${s.pct_to_pivot <= 0.001 ? "at" : fmt(s.pct_to_pivot, 1) + "%"}</td>
       <td>${fmt(s.adr_pct, 1)}%</td><td>${s.rs == null ? "–" : Math.round(s.rs)}</td></tr>`).join("");
@@ -777,7 +784,7 @@
     if (acct && acct.positions && acct.positions.length) {
       const d = acct.rel_as_of ? new Date(acct.rel_as_of + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : acct.as_of;
       return { fresh: false, at: d, book: acct.book_rel, fills: [], rows: acct.positions.map((p) => ({
-        symbol: p.symbol, last: p.last, pct_day: p.rel ? p.rel.day_pct : null, r_now: p.r_now, stops: p.stops, rel: p.rel,
+        symbol: p.symbol, last: p.last, pct_day: p.rel ? p.rel.day_pct : null, r_now: p.r_now, stops: p.stops, rel: p.rel, earnings: p.earnings,
         breached: (p.hit || []).map((h) => String(h.k)) })) };
     }
     return null;
@@ -791,13 +798,13 @@
       const hit = (p.breached || []).includes(String(band)) || (s === st.initial && (p.breached || []).includes("initial"));
       const gap = p.last && s ? (p.last / s - 1) * 100 : null;
       const r = p.rel;
-      const open = openRel.has(p.symbol) && r;
-      return `<tr class="lrow ${hit ? "hitrow" : ""}" data-rel="${esc(p.symbol)}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.new_today ? '<div class="sub">new today</div>' : r && r.beta != null ? `<div class="sub">β ${fmt(r.beta, 1)}${r.peer_etf ? " · " + esc(r.peer_etf) : ""}</div>` : ""}</td>
+      const open = openRel.has(p.symbol) && (r || p.earnings);
+      return `<tr class="lrow ${hit ? "hitrow" : ""}" data-rel="${esc(p.symbol)}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.earnings ? `<div>${ernTag(p.earnings, true)}</div>` : ""}${p.new_today ? '<div class="sub">new today</div>' : r && r.beta != null ? `<div class="sub">β ${fmt(r.beta, 1)}${r.peer_etf ? " · " + esc(r.peer_etf) : ""}</div>` : ""}</td>
         <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${sgn(p.pct_day)}</div></td>
         <td>${vchip(r)}</td>
         <td class="${pc(p.r_now)}">${rfmt(p.r_now)}</td>
         <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${band}× ${fmt(s)}</div></td></tr>` +
-        (open ? `<tr class="relrow"><td colspan="5"><div class="gtip">${esc(r.text)}</div></td></tr>` : "");
+        (open ? `<tr class="relrow"><td colspan="5"><div class="gtip">${p.earnings ? esc(p.earnings.advice) + (r ? "<br><br>" : "") : ""}${r ? esc(r.text) : ""}</div></td></tr>` : "");
     }).join("");
     const b = src.book;
     const bookLine = b && b.verdict ? `<div class="bookline ${b.verdict.replace(" ", "")}"><b>Your positions ${sgn(b.day_pct)}</b> · market ${sgn(b.mkt_pct)} · expected at their beta (${fmt(b.beta, 1)}) ${sgn(b.expected_pct)} → <b>${b.strong ? "well " : ""}${esc(b.verdict)}</b></div>`
@@ -941,6 +948,7 @@
           <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>${offPlan(p) ? '<span class="offplan">off plan</span>' : ""}
           <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%${p.risk_pct != null ? " · " + riskTxt(p.risk_pct) : ""}</div>
+        ${p.earnings ? `<div class="sub" style="margin-top:4px">${ernTag(p.earnings)} ${esc(p.earnings.advice)}</div>` : ""}
         <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === band ? "on" : "dim")).join("")}</div>
         ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
     }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
