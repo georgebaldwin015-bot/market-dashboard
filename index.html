@@ -163,6 +163,8 @@
   table.st.fit td:first-child { white-space: normal; overflow-wrap: break-word; }
   table.st.fit th.n, table.st.fit td:not(:first-child) { width: 17%; }
   table.st.fit th.n4 { width: 19%; }
+  table.st.sec6 td:not(:first-child), table.st.sec6 th:not(:first-child) { width: 14%; }
+  table.st.sec6 th:last-child, table.st.sec6 td:last-child { width: 17%; }
   .view > .pad { overflow-x: hidden; }   /* never let a screen pan sideways */
   table.st td.pos { color: var(--green); } table.st td.neg { color: var(--red); }
   table.st tr.lead td { background: var(--panel2); font-size: 0.72rem; }
@@ -197,6 +199,16 @@
   .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); display: inline-block; }
   .live .dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
   tr.hitrow td { background: rgba(248,81,73,.12); }
+  tr.lrow { cursor: pointer; }
+  .vchip { display: inline-block; font-weight: 700; border-radius: 6px; padding: 0 5px; }
+  .vchip.inline { color: var(--muted); background: var(--panel2); }
+  .vchip.lagging { color: var(--red); background: rgba(248,81,73,.14); } .vchip.leading { color: var(--green); background: rgba(63,185,80,.14); }
+  .vchip.strong { outline: 1px solid currentColor; }
+  .tone-bull { color: var(--green); } .tone-bear { color: var(--red); } .tone-transition { color: var(--amber); }
+  .readlist { margin: 8px 0 4px; padding-left: 18px; font-size: 0.82rem; } .readlist li { margin: 3px 0; }
+  table.st.trend-t td:first-child, table.st.tape-t td:first-child { width: 42%; }
+  .bookline { font-size: 0.8rem; margin: 2px 0 8px; padding: 6px 8px; border-radius: 8px; background: var(--panel2); border-left: 3px solid var(--muted); }
+  .bookline.lagging { border-left-color: var(--red); } .bookline.leading { border-left-color: var(--green); } .bookline.inline { border-left-color: var(--blue); }
   .grade.inl { display: inline-flex; vertical-align: middle; margin-right: 5px; }
   .grade.off { opacity: .55; outline: 1px dashed var(--muted); }   /* not armed on the screen that day */
   #toast { position: fixed; left: 50%; bottom: calc(80px + var(--safe-b)); transform: translateX(-50%); background: var(--panel2);
@@ -647,9 +659,9 @@
     const secRows = sortRows(mkt.sectors, mktSort.sec).map((s, i) => {
       const open = openSec.has(s.name);
       const leaders = open ? s.leaders.map((l) => `<tr class="lead"><td><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(l.ticker)}" target="_blank" rel="noopener">${esc(l.ticker)}</a> <span class="sub">RS ${l.rs ?? "–"}</span></td>
-        <td class="${pc(l.m1)}">${pct(l.m1)}</td><td class="${pc(l.m3)}">${pct(l.m3)}</td><td colspan="2" class="sub">${l.off_high == null ? "" : fmt(l.off_high, 0) + "% off high"}</td></tr>`).join("") : "";
+        <td class="${pc(l.d1)}">${pct(l.d1)}</td><td class="${pc(l.m1)}">${pct(l.m1)}</td><td class="${pc(l.m3)}">${pct(l.m3)}</td><td colspan="2" class="sub">${l.off_high == null ? "" : fmt(l.off_high, 0) + "% off high"}</td></tr>`).join("") : "";
       return `<tr class="sec ${open ? "open" : ""}" data-sec="${esc(s.name)}"><td>${esc(SHORT[s.name] || s.name)} <span class="sub">${s.n}</span></td>
-        <td class="${pc(s.m1)}">${pct(s.m1)}</td><td class="${pc(s.m3)}">${pct(s.m3)}</td><td class="${pc(s.y1)}">${pct(s.y1)}</td>
+        <td class="${pc(s.d1)}">${pct(s.d1)}</td><td class="${pc(s.m1)}">${pct(s.m1)}</td><td class="${pc(s.m3)}">${pct(s.m3)}</td><td class="${pc(s.y1)}">${pct(s.y1)}</td>
         <td>${s.pct_rs70 ?? "–"}%${s.clearing ? ` <span class="sub">· ${s.clearing}</span>` : ""}</td></tr>${leaders}`;
     }).join("");
     let inds = sortRows(mkt.industries, mktSort.ind);
@@ -657,12 +669,14 @@
     if (!showAllInd) inds = inds.slice(0, 15);
     const indRows = inds.map((s) => `<tr><td>${esc(s.name)}<div class="sub">${esc(s.sector)} · ${s.n}</div></td>
       <td class="${pc(s.m1)}">${pct(s.m1)}</td><td class="${pc(s.m3)}">${pct(s.m3)}</td><td class="${pc(s.y1)}">${pct(s.y1)}</td></tr>`).join("");
+    const trendPanels = marketTrend();
     el.innerHTML = `
       <h2>Market <span class="sub" style="font-weight:400">${esc(mkt.date)}</span></h2>
       <div class="mk-cards">${cards}</div>${flags}
+      ${trendPanels}
       <div class="panel"><h3>Breadth <span class="sub">% of stocks above their <b style="color:var(--blue)">50-day</b> and <b style="color:var(--amber)">200-day</b> average, 60 sessions</span></h3><div id="breadth-cv"></div></div>
       <div class="panel"><h3>Sectors <span class="sub">tap a sector for its RS leaders</span></h3>
-        <table class="st fit"><thead><tr>${th("sec", "name", "Sector")}${th("sec", "m1", "1M")}${th("sec", "m3", "3M")}${th("sec", "y1", "1Y")}${th("sec", "pct_rs70", "RS70")}</tr></thead><tbody>${secRows}</tbody></table>
+        <table class="st fit sec6"><thead><tr>${th("sec", "name", "Sector")}${th("sec", "d1", "1D")}${th("sec", "m1", "1M")}${th("sec", "m3", "3M")}${th("sec", "y1", "1Y")}${th("sec", "pct_rs70", "RS70")}</tr></thead><tbody>${secRows}</tbody></table>
         <div class="sub" style="margin:6px 2px">RS70 = share of the sector's names beating 70% of the market; the small number after it is how many clear a Minervini/QM screen.</div></div>
       <div class="panel"><h3>Industries <span class="sub">${indTotal} with 3+ names</span></h3>
         <table class="st fit"><thead><tr>${th("ind", "name", "Industry")}${th("ind", "m1", "1M")}${th("ind", "m3", "3M")}${th("ind", "y1", "1Y")}</tr></thead><tbody>${indRows}</tbody></table>
@@ -678,7 +692,56 @@
       const n = r.dataset.sec; openSec.has(n) ? openSec.delete(n) : openSec.add(n); renderMarket2();
     });
     const im = $("#ind-more"); if (im) im.onclick = () => { showAllInd = true; renderMarket2(); };
-    drawBreadth();
+    drawBreadth(); drawTrend();
+  }
+  // Trend + today's tape (market.json "trend"): how the market is trending, and whether today's move is normal for it.
+  function marketTrend() {
+    const tr = mkt.trend;
+    if (!tr) return "";
+    const st = tr.state, label = { bull: "Uptrend", bear: "Downtrend", transition: "Transition", unknown: "Unclear" }[st.label] || "Unclear";
+    const cell = (v) => v == null ? "<td>–</td>" : `<td class="${pc(v)}">${v > 0 ? "+" : ""}${fmt(v, 1)}%</td>`;
+    const row = (name, key, note) => `<tr><td>${name}${note ? ` <span class="sub">${note}</span>` : ""}</td>${cell(tr.universe[key])}${tr.spy ? cell(tr.spy[key]) : "<td>–</td>"}</tr>`;
+    const since = st.since ? new Date(st.since + "T12:00:00").toLocaleDateString([], { day: "numeric", month: "short" }) : "";
+    const trendP = `<div class="panel"><h3>Trend <span class="sub"><b class="tone-${st.label}">${label}</b> · ${st.days} sessions${since ? " since " + since : ""}</span></h3>
+      <table class="st fit trend-t"><thead><tr><th></th><th>Universe</th><th>S&amp;P 500</th></tr></thead><tbody>
+        ${row("Close vs 20-day", "vs20")}${row("Close vs 50-day", "vs50")}${row("Close vs 200-day", "vs200")}
+        ${row("50-day trend", "slope50", "10 sessions")}${row("20-day return", "ret20")}
+        ${row("From 52-week high", "off_high", tr.universe.days_since_high ? tr.universe.days_since_high + "d ago" : "at high")}
+      </tbody></table>
+      <div id="trend-cv"></div>
+      <div class="legend"><span><i style="border-color:#c9d1d9;border-top-style:solid"></i>Universe index</span><span><i class="sel" style="border-color:#58a6ff"></i>50-day</span><span><i class="sel" style="border-color:#d29922"></i>200-day</span></div>
+      <div class="sub" style="margin-top:4px">Universe = every stock scanned, equal-weighted: what the Bull / Bear read is based on.</div></div>`;
+    const t = tr.tape, dl = new Date(t.date + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" });
+    const stat = (l, v, cls) => `<div class="mk" style="cursor:default"><div class="l">${l}</div><div class="v ${cls || ""}">${v}</div></div>`;
+    const secs = mkt.sectors.filter((x) => x.d1 != null).slice().sort((a, b) => a.d1 - b.d1);
+    const nm = (x) => `${esc(SHORT[x.name] || x.name)} ${pct(x.d1)}`;
+    const movers = secs.length ? `<div class="sub" style="margin:6px 2px">Weakest: ${secs.slice(0, 2).map(nm).join(" · ")} &nbsp;|&nbsp; Strongest: ${secs.slice(-2).reverse().map(nm).join(" · ")}</div>` : "";
+    const hist = tr.history.map((h) => `<tr><td>${new Date(h.date + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric" })}</td>
+      <td class="${pc(h.spy_pct)}">${pct(h.spy_pct)}</td><td class="${pc(h.ew_pct)}">${pct(h.ew_pct)}</td>
+      <td>${h.up_pct == null ? "–" : `<div class="wl"><i style="width:${h.up_pct}%"></i><b style="width:${100 - h.up_pct}%"></b></div>`}<div class="sub">${h.up_pct ?? "–"}% up</div></td></tr>`).join("");
+    const tapeP = `<div class="panel"><h3>Today's tape <span class="sub">${dl}</span></h3>
+      <div class="mk-cards even" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        ${stat("S&amp;P 500", pct(t.spy_pct), pc(t.spy_pct))}${stat("Universe", pct(t.ew_pct), pc(t.ew_pct))}
+        ${stat("Stocks up", t.up_pct == null ? "–" : t.up_pct + "%", t.up_pct >= 50 ? "pos" : "neg")}${stat("20d lows", `${t.new_lows}<span class="sub"> / ${t.new_highs} hi</span>`, t.new_lows > t.new_highs ? "neg" : "")}
+      </div>
+      <ul class="readlist">${tr.read.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${movers}
+      <table class="st fit tape-t"><thead><tr><th>Day</th><th>S&amp;P</th><th>Universe</th><th>Stocks up</th></tr></thead><tbody>${hist}</tbody></table></div>`;
+    return trendP + tapeP;
+  }
+  let trendChart = null;
+  function drawTrend() {
+    const box = $("#trend-cv"), c = mkt.trend && mkt.trend.chart; if (!box || !c) return;
+    box.style.height = "190px";
+    loadLib().then((L) => {
+      if (trendChart) { try { trendChart.remove(); } catch (e) {} }
+      trendChart = L.createChart(box, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
+      const line = (vals, color, w, last) => trendChart.addLineSeries({ color, lineWidth: w, priceLineVisible: false, lastValueVisible: last, crosshairMarkerVisible: false })
+        .setData(c.dates.map((d, i) => vals[i] == null ? { time: d } : { time: d, value: vals[i] }));
+      line(c.ma200, "#d29922", 1.5, false); line(c.ma50, "#58a6ff", 1.5, false); line(c.idx, "#c9d1d9", 2, true);
+      trendChart.timeScale().fitContent();
+    }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
   }
   let breadthChart = null;
   function drawBreadth() {
@@ -703,25 +766,56 @@
     fetch("live.json?t=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d) { live = d; if (acct && location.hash.startsWith("#account")) renderAccount(); } }).catch(() => {});
   }
+  // Live positions: the intraday file while it is fresh (market open, under 45 minutes old), otherwise
+  // the last close from account.json -- so the panel is never empty when the live job hasn't run.
+  const openRel = new Set();
+  const sgn = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, d) + "%";
+  function liveSource() {
+    const fresh = live && live.positions && live.market_open && (Date.now() - new Date(live.as_of)) / 6e4 < 45;
+    if (fresh) return { fresh: true, at: new Date(live.as_of).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      rows: live.positions, book: live.book, fills: live.fills_today || [] };
+    if (acct && acct.positions && acct.positions.length) {
+      const d = acct.rel_as_of ? new Date(acct.rel_as_of + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : acct.as_of;
+      return { fresh: false, at: d, book: acct.book_rel, fills: [], rows: acct.positions.map((p) => ({
+        symbol: p.symbol, last: p.last, pct_day: p.rel ? p.rel.day_pct : null, r_now: p.r_now, stops: p.stops, rel: p.rel,
+        breached: (p.hit || []).map((h) => String(h.k)) })) };
+    }
+    return null;
+  }
   function liveStrip() {
-    if (!live || !live.positions) return "";
-    const t = new Date(live.as_of), age = (Date.now() - t) / 6e4;
-    const hhmm = t.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    const fresh = live.market_open && age < 45;
-    const rows = live.positions.map((p) => {
-      const s = (p.stops || {})[band] ?? (p.stops || {}).initial;
-      const hit = (p.breached || []).includes(String(band)) || (s === (p.stops || {}).initial && (p.breached || []).includes("initial"));
+    const src = liveSource();
+    if (!src) return "";
+    const vchip = (r) => !r || !r.verdict ? '<span class="sub">–</span>' : `<span class="vchip ${r.verdict.replace(" ", "")}${r.strong ? " strong" : ""}">${sgn(r.excess_pct)}</span><div class="sub">${r.strong ? "well " : ""}${esc(r.verdict)}</div>`;
+    const rows = src.rows.map((p) => {
+      const st = p.stops || {}, s = st[band] ?? st.initial;
+      const hit = (p.breached || []).includes(String(band)) || (s === st.initial && (p.breached || []).includes("initial"));
       const gap = p.last && s ? (p.last / s - 1) * 100 : null;
-      return `<tr class="${hit ? "hitrow" : ""}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.new_today ? '<div class="sub">new today</div>' : ""}</td>
-        <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${p.pct_day == null ? "" : (p.pct_day > 0 ? "+" : "") + fmt(p.pct_day, 1) + "%"}</div></td>
+      const r = p.rel;
+      const open = openRel.has(p.symbol) && r;
+      return `<tr class="lrow ${hit ? "hitrow" : ""}" data-rel="${esc(p.symbol)}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.new_today ? '<div class="sub">new today</div>' : r && r.beta != null ? `<div class="sub">β ${fmt(r.beta, 1)}${r.peer_etf ? " · " + esc(r.peer_etf) : ""}</div>` : ""}</td>
+        <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${sgn(p.pct_day)}</div></td>
+        <td>${vchip(r)}</td>
         <td class="${pc(p.r_now)}">${rfmt(p.r_now)}</td>
-        <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${band}× ${fmt(s)}</div></td></tr>`;
+        <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${band}× ${fmt(s)}</div></td></tr>` +
+        (open ? `<tr class="relrow"><td colspan="5"><div class="gtip">${esc(r.text)}</div></td></tr>` : "");
     }).join("");
-    const fills = (live.fills_today || []).map((f) => `${f.side === "BUY" ? "Bought" : "Sold"} ${fmt(f.qty, f.qty % 1 ? 2 : 0)} ${esc(f.symbol)} @ ${fmt(f.price)}`).join(" · ");
-    return `<div class="panel live"><h3><span class="dot ${fresh ? "on" : ""}"></span>Live <span class="sub">${fresh ? "updated " + hhmm + " · about 15–25 min behind" : "market closed · last update " + hhmm}</span></h3>
-      ${rows ? `<table class="st fit"><thead><tr><th>Ticker</th><th>Last</th><th>R now</th><th>To stop</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="sub">No open positions.</div>'}
+    const b = src.book;
+    const bookLine = b && b.verdict ? `<div class="bookline ${b.verdict.replace(" ", "")}"><b>Your positions ${sgn(b.day_pct)}</b> · market ${sgn(b.mkt_pct)} · expected at their beta (${fmt(b.beta, 1)}) ${sgn(b.expected_pct)} → <b>${b.strong ? "well " : ""}${esc(b.verdict)}</b></div>`
+      : b ? `<div class="bookline"><b>Your positions ${sgn(b.day_pct)}</b> · market ${sgn(b.mkt_pct)}</div>` : "";
+    const fills = src.fills.map((f) => `${f.side === "BUY" ? "Bought" : "Sold"} ${fmt(f.qty, f.qty % 1 ? 2 : 0)} ${esc(f.symbol)} @ ${fmt(f.price)}`).join(" · ");
+    return `<div class="panel live"><h3><span class="dot ${src.fresh ? "on" : ""}"></span>${src.fresh ? "Live" : "Last close"} <span class="sub">${src.fresh ? "updated " + src.at + " · about 15–25 min behind" : src.at + " · live prices show during US market hours"}</span></h3>
+      ${bookLine}
+      ${rows ? `<table class="st fit live-t"><thead><tr><th>Ticker</th><th>Last</th><th>vs mkt</th><th>R now</th><th>To stop</th></tr></thead><tbody>${rows}</tbody></table>
+        <div class="sub" style="margin-top:6px">vs mkt = today's move minus what the market implies at the stock's own beta. Tap a row for the working.</div>` : '<div class="sub">No open positions.</div>'}
       ${fills ? `<div class="sub" style="margin-top:6px">Today: ${fills}</div>` : ""}</div>`;
   }
+  document.addEventListener("click", (e) => {
+    const row = e.target.closest("tr.lrow");
+    if (!row || e.target.closest("a")) return;
+    const sym = row.dataset.rel;
+    openRel.has(sym) ? openRel.delete(sym) : openRel.add(sym);
+    if (acct) renderAccount();
+  });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && location.hash.startsWith("#account")) loadLive(); });
   let acctGrade = load("md.acctgrade", "All");   // same grade groups as Today; "All" includes ungraded trades
   if (!GROUPS[acctGrade]) acctGrade = "All";
