@@ -716,8 +716,8 @@
         ${row("From 52-week high", "off_high", tr.universe.days_since_high ? tr.universe.days_since_high + "d ago" : "at high")}
       </tbody></table>
       <div id="trend-cv"></div>
-      <div class="legend"><span><i style="border-color:#c9d1d9;border-top-style:solid"></i>Universe index</span><span><i class="sel" style="border-color:#58a6ff"></i>50-day</span><span><i class="sel" style="border-color:#d29922"></i>200-day</span></div>
-      <div class="sub" style="margin-top:4px">Universe = every stock scanned, equal-weighted: what the Bull / Bear read is based on.</div></div>`;
+      <div class="legend"><span><i style="border-color:#c9d1d9;border-top-style:solid"></i>Universe index</span>${mkt.trend.chart.spy ? '<span><i style="border-color:#a371f7;border-top-style:solid"></i>S&amp;P 500</span>' : ""}${mkt.trend.chart.qqq ? '<span><i style="border-color:#39c5cf;border-top-style:solid"></i>Nasdaq 100</span>' : ""}<span><i class="sel" style="border-color:#58a6ff"></i>50-day</span><span><i class="sel" style="border-color:#d29922"></i>200-day</span></div>
+      <div class="sub" style="margin-top:4px">Universe = every stock scanned, equal-weighted (what the Bull / Bear read is based on). The S&amp;P 500 and Nasdaq 100 are weighted by company size, so a few mega-caps can lift them while the average stock falls.</div></div>`;
     const t = tr.tape, dl = new Date(t.date + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" });
     const stat = (l, v, cls) => `<div class="mk" style="cursor:default"><div class="l">${l}</div><div class="v ${cls || ""}">${v}</div></div>`;
     const secs = mkt.sectors.filter((x) => x.d1 != null).slice().sort((a, b) => a.d1 - b.d1);
@@ -746,6 +746,7 @@
         rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
       const line = (vals, color, w, last) => trendChart.addLineSeries({ color, lineWidth: w, priceLineVisible: false, lastValueVisible: last, crosshairMarkerVisible: false })
         .setData(c.dates.map((d, i) => vals[i] == null ? { time: d } : { time: d, value: vals[i] }));
+      if (c.qqq) line(c.qqq, "#39c5cf", 1, false); if (c.spy) line(c.spy, "#a371f7", 1, false);
       line(c.ma200, "#d29922", 1.5, false); line(c.ma50, "#58a6ff", 1.5, false); line(c.idx, "#c9d1d9", 2, true);
       trendChart.timeScale().fitContent();
     }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
