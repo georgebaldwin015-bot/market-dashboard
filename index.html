@@ -220,7 +220,13 @@
   .more { width: 100%; background: var(--panel); border: 1px dashed var(--line); color: var(--muted);
     border-radius: 12px; padding: 10px; cursor: pointer; }
 
-  /* Research list */
+  /* Backtest tab */
+  table.st.bt-g td:first-child, table.st.bt-c td:first-child { width: 20%; }
+  table.st.bt-x tr.on td { background: rgba(88,166,255,.08); font-weight: 600; }
+  .verdict { font-size: 0.82rem; margin: 2px 0 10px; padding: 8px 10px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--muted); }
+  .verdict.behind { border-left-color: var(--amber); } .verdict.ahead { border-left-color: var(--green); }
+  .verdict b { font-weight: 700; }
+  /* Report list */
   .list a { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--line);
     border-radius: 12px; padding: 14px; margin-bottom: 10px; color: var(--text); text-decoration: none; }
   .list .t { font-weight: 600; } .list .d { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
@@ -272,16 +278,9 @@
 <main>
   <section class="view" id="view-today"><div class="pad" id="today"></div></section>
   <section class="view" id="view-market"><div class="pad" id="market-view"></div></section>
-  <section class="view" id="view-research">
-    <div class="pad list" id="research-list">
-      <h2>Research</h2>
-      <a href="#research/review.html"><div><div class="t">Strategy review</div><div class="d">The whole system in plain English: setups, grades, market confidence, exits, and what your own trades say</div></div></a>
-      <a href="#research/setup-grades.html"><div><div class="t">Setup Grades</div><div class="d">What A+ to F setups look like, with your ADR bands and why each qualifies</div></div></a>
-      <a href="#research/backtest.html"><div><div class="t">Backtest &amp; live track record</div><div class="d">5-year results and how the live recommendations have done</div></div></a>
-      <a href="#research/industry.html"><div><div class="t">Full market report</div><div class="d">Heatmap, sector and industry trend charts, top momentum names</div></div></a>
-      <a href="#research/setup-gallery.html"><div><div class="t">Setup Gallery</div><div class="d">Best historical trades by category</div></div></a>
-    </div>
-    <div id="research-frame"><button class="back" onclick="location.hash='#research'">‹ Research</button><iframe title="Research"></iframe></div>
+  <section class="view" id="view-backtest">
+    <div class="pad" id="backtest-view"></div>
+    <div id="research-frame"><button class="back" onclick="location.hash='#backtest'">‹ Backtest</button><iframe title="Report"></iframe></div>
   </section>
   <section class="view" id="view-account"><div class="pad" id="account-view"></div></section>
 </main>
@@ -289,7 +288,7 @@
 <nav>
   <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Today</button>
   <button data-view="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg>Market</button>
-  <button data-view="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Research</button>
+  <button data-view="backtest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16"/><path d="M6 16v-4M11 16V7M16 16v-6M21 16V4" transform="translate(-1 0)"/></svg>Backtest</button>
   <button data-view="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>Account</button>
 </nav>
 
@@ -341,15 +340,16 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   // ---------- routing ----------
-  const VIEWS = ["today", "market", "research", "account"];
-  const LEGACY = { journal: "account", industry: "market", strategy: "market", markets: "market", desk: "market", backtest: "research/backtest.html",
-                   gallery: "research/setup-gallery.html", grades: "research/setup-grades.html" };
+  const VIEWS = ["today", "market", "backtest", "account"];
+  const LEGACY = { journal: "account", industry: "market", strategy: "market", markets: "market", desk: "market", research: "backtest",
+                   gallery: "backtest/setup-gallery.html", grades: "backtest/setup-grades.html" };
   function route() {
     let h = location.hash.replace(/^#/, "");
     const q = new URLSearchParams(location.search).get("tab");
     if (!h && q) h = q;                          // old email links: ?tab=strategy
     if (LEGACY[h]) h = LEGACY[h];
-    const [view, sub] = h.split("/");
+    let [view, sub] = h.split("/");
+    if (view === "research") view = "backtest";   // old #research/<page> links
     const v = VIEWS.includes(view) ? view : "today";
     document.querySelectorAll(".view").forEach((el) => el.classList.toggle("active", el.id === "view-" + v));
     document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("active", b.dataset.view === v));
@@ -360,8 +360,9 @@
       renderAccount(); loadLive();
       if (!liveTimer) liveTimer = setInterval(() => { if (location.hash.startsWith("#account") && !document.hidden) loadLive(); }, 120000);
     }
-    if (v === "research") {
-      $("#research-list").style.display = sub ? "none" : "";
+    if (v === "backtest") {
+      $("#backtest-view").style.display = sub ? "none" : "";
+      if (!sub) renderBacktest();
       $("#research-frame").style.display = sub ? "block" : "none";
       if (sub) { const f = $("#research-frame iframe"); if (f.getAttribute("src") !== sub) f.src = sub; }
     }
@@ -688,7 +689,7 @@
       <div class="panel"><h3>Industries <span class="sub">${indTotal} with 3+ names</span></h3>
         <table class="st fit"><thead><tr>${th("ind", "name", "Industry")}${th("ind", "m1", "1M")}${th("ind", "m3", "3M")}${th("ind", "y1", "1Y")}</tr></thead><tbody>${indRows}</tbody></table>
         ${!showAllInd && indTotal > 15 ? `<button class="more" id="ind-more" style="margin-top:8px">Show all ${indTotal}</button>` : ""}</div>
-      <a class="tbtn" style="display:block;text-align:center;text-decoration:none;margin-bottom:16px" href="#research/industry.html">Heatmap &amp; trend charts ›</a>`;
+      <a class="tbtn" style="display:block;text-align:center;text-decoration:none;margin-bottom:16px" href="#backtest/industry.html">Heatmap &amp; trend charts ›</a>`;
     el.querySelectorAll(".mk").forEach((c) => c.onclick = () => c.classList.toggle("open"));
     el.querySelectorAll("th[data-t]").forEach((h) => h.onclick = () => {
       const t = h.dataset.t, k = h.dataset.k;
@@ -764,6 +765,140 @@
       add("p50", "#58a6ff"); add("p200", "#d29922");
       breadthChart.timeScale().fitContent();
     }).catch(() => { box.innerHTML = '<div class="msg">Chart couldn\'t load.</div>'; });
+  }
+
+
+  // ---------- Backtest (from backtest.json) ----------
+  // Closes the loop: what the rules made in the 2022-26 backtest, what they've made live since
+  // 30 Jul on the same rules, by grade and market cycle, for the Exit picker's band.
+  let bt = null, btLoading = false, btChart = null, fwChart = null;
+  const MORE = [
+    ["review.html", "Strategy review", "The whole system in plain English: setups, grades, market confidence, exits"],
+    ["setup-grades.html", "Setup grades", "What A+ to F setups look like, with the ADR bands"],
+    ["setup-gallery.html", "Setup gallery", "Best historical trades by category"],
+    ["industry.html", "Full market report", "Heatmap, sector and industry trend charts"],
+    ["backtest.html", "Detailed backtest report", "The long-form report: every system, entry and exit variant"]];
+  function renderBacktest() {
+    const el = $("#backtest-view");
+    if (!bt) {
+      if (!btLoading) {
+        btLoading = true; el.innerHTML = '<div class="empty">Loading…</div>';
+        fetch("backtest.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw 0; return r.json(); })
+          .then((d) => { bt = d; renderBacktest(); })
+          .catch(() => { el.innerHTML = '<div class="empty">Backtest data appears after the next track-record run.</div>' + moreList(); })
+          .finally(() => { btLoading = false; });
+      }
+      return;
+    }
+    const B = bt.bands[String(band)] || bt.bands["4"], bk = B.backtest, fw = B.forward, ac = B.account || {};
+    const yr = (d) => d ? d.slice(0, 4) : "";
+    const pct = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 0) + "%";
+    const box = (l, v, cls, s) => `<div class="mk ${cls || ""}" style="cursor:default"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
+    const tone = (r) => r == null ? "" : r > 0.3 ? "good" : r > 0 ? "warn" : "bad";
+    const bp = bk.plan || {}, fp = fw.plan || {};
+    // Verdict: live A+ to B vs the backtest's, with the sample size up front.
+    const gap = fp.avg_r != null && bp.avg_r != null ? fp.avg_r - bp.avg_r : null;
+    const early = (fp.n || 0) < 150;
+    const vcls = gap == null ? "" : gap < -0.3 ? "behind" : gap > 0.3 ? "ahead" : "";
+    const verdict = gap == null ? "" : `<div class="verdict ${vcls}">A+ to B on the ${band}× exit: <b>${rfmt(bp.avg_r)} a trade</b> in the backtest
+      (${fmt(bp.n, 0)} trades, ${yr(bt.backtest.start)}–${yr(bt.backtest.end)}), <b>${rfmt(fp.avg_r)}</b> live since ${esc(bt.forward.start)} (${fp.n} trades) →
+      <b>${gap < -0.3 ? "behind the backtest so far" : gap > 0.3 ? "ahead of the backtest so far" : "in line with the backtest"}</b>.
+      ${early ? `Still early: ${fp.n} trades is a small sample, and a few big winners or losers swing it.` : ""}</div>`;
+    const row1 = [box("Trades", fmt(bp.n, 0)), box("Win rate", fmt(bp.win_rate, 0) + "%", bp.win_rate >= 35 ? "good" : "warn"),
+      box("Avg R", rfmt(bp.avg_r), tone(bp.avg_r)), box("Unseen yrs", rfmt(bp.test_avg_r), tone(bp.test_avg_r)),
+      box("$10k acct", pct(ac.all && ac.all.return_pct), ac.all && ac.all.return_pct > 0 ? "good" : "bad")].join("");
+    const row2 = [box("Trades", fmt(fp.n, 0)), box("Win rate", fp.win_rate == null ? "–" : fmt(fp.win_rate, 0) + "%", fp.win_rate >= 35 ? "good" : "warn"),
+      box("Avg R", rfmt(fp.avg_r), tone(fp.avg_r)), box("Total R", rfmt(fp.total_r), tone(fp.total_r)),
+      box("Gap", gap == null ? "–" : rfmt(gap), gap == null ? "" : gap < -0.3 ? "bad" : gap > 0.3 ? "good" : "warn")].join("");
+    // By grade: backtest (all years / unseen years) vs live.
+    const gRows = GRADES.map((g) => {
+      const b = bk.by_grade[g] || {}, f = fw.by_grade[g] || {}, plan = GROUPS.top.includes(g);
+      return `<tr class="${plan ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>
+        <td class="${pc(b.avg_r)}">${rfmt(b.avg_r)}<div class="sub">${fmt(b.n, 0)} · ${fmt(b.win_rate, 0)}% win</div></td>
+        <td class="${pc(b.test_avg_r)}">${rfmt(b.test_avg_r)}</td>
+        <td class="${pc(f.avg_r)}">${f.n ? rfmt(f.avg_r) : "–"}<div class="sub">${f.n || 0} trades</div></td></tr>`;
+    }).join("");
+    const cyc = bk.by_cycle || {};
+    const cRows = ["A+/A", "B", "C", "D/F"].map((gname) => `<tr><td>${gname}</td>${["bull", "transition", "bear"].map((c) => {
+      const x = (cyc[c] || {})[gname] || {};
+      return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}<div class="sub">${x.n || 0}</div></td>`; }).join("")}</tr>`).join("");
+    const xRows = BAND_KS.map((k) => {
+      const b = bt.bands[String(k)] || {}, p = (b.backtest || {}).plan || {}, a = b.account || {};
+      return `<tr class="${k === band ? "on" : ""}"><td>${k}×</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td><td>${fmt(p.win_rate, 0)}%</td>
+        <td class="${pc(a.all && a.all.return_pct)}">${pct(a.all && a.all.return_pct)}</td><td class="${pc(a.test && a.test.return_pct)}">${pct(a.test && a.test.return_pct)}</td>
+        <td>${a.all ? "−" + fmt(a.all.max_dd_pct, 0) + "%" : "–"}</td></tr>`;
+    }).join("");
+    const bestX = BAND_KS.reduce((best, k) => { const t = ((bt.bands[String(k)] || {}).account || {}).test;
+      return t && (best == null || t.return_pct > ((bt.bands[String(best)].account || {}).test || {}).return_pct) ? k : best; }, null);
+    const E = bt.earnings;
+    const ePanel = E ? `<div class="panel"><h3>Earnings <span class="sub">A+ to B, 4× exit</span></h3>
+      <div class="sub" style="margin:0 2px 6px">Entered within 2 trading days of a report: <b class="${pc(E.near_entry.avg_r)}">${rfmt(E.near_entry.avg_r)}</b> a trade
+        (${E.near_entry.n} trades) vs <b class="${pc(E.not_near_entry.avg_r)}">${rfmt(E.not_near_entry.avg_r)}</b> otherwise. No reason to skip a setup for a report.</div>
+      <table class="st fit"><thead><tr><th>Cushion</th><th>Holding added</th><th>Typical</th><th>Worst</th></tr></thead><tbody>
+      ${E.held_through.map((h) => `<tr><td>${h.from < -50 ? "below 0R" : h.to > 50 ? h.from + "R +" : h.from + " to " + h.to + "R"}</td>
+        <td class="${pc(h.adds)}">${rfmt(h.adds)}</td><td class="${pc(h.median)}">${rfmt(h.median)}</td><td class="neg">${rfmt(h.worst)}</td></tr>`).join("")}</tbody></table>
+      <div class="sub" style="margin:6px 2px 2px">Holding through paid on average at every cushion, but over a wide range: size for the bad end.</div></div>` : "";
+    const recent = (fw.recent || []).map((t) => `<tr class="${GROUPS.top.includes(t.grade) ? "" : "out"}"><td>${esc(t.entry_date.slice(5))}</td>
+      <td><span class="grade sm inl ${gcls(t.grade)}">${esc(t.grade)}</span><b>${esc(t.ticker)}</b> <span class="sub">${esc(t.strategy || "")}</span></td>
+      <td class="${pc(t.r)}">${rfmt(t.r)}${t.open ? '<div class="sub">open</div>' : ""}</td></tr>`).join("");
+    el.innerHTML = `
+      <h2>Backtest <span class="sub" style="font-weight:400">does the system work? · ${band}× ADR exit</span></h2>
+      ${verdict}
+      <div class="rowlab">Backtest <span>A+ to B · ${yr(bt.backtest.start)}–${yr(bt.backtest.end)}</span></div>
+      <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${row1}</div>
+      <div class="openr">Unseen yrs = ${yr(bt.backtest.train_end)} on, after the rules were picked. $10k acct = every grade, 1% risk, cash-limited.</div>
+      <div class="rowlab">Live forward test <span>A+ to B · since ${esc(bt.forward.start)}</span></div>
+      <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${row2}</div>
+      <div class="openr">Every setup ‘Today’ armed, filled at the buy-stop with the same rules, as of ${esc(bt.forward.as_of)} (open trades at their last price).</div>
+      <div class="panel"><h3>Cumulative R <span class="sub">backtest, by exit month</span></h3><div id="bt-cv" style="height:190px"></div>
+        <div class="legend"><span><i style="border-color:#3fb950;border-top-style:solid"></i>A+ to B</span><span><i style="border-color:#8b949e"></i>Every grade</span></div></div>
+      <div class="panel"><h3>Live cumulative R <span class="sub">A+ to B, by entry date</span></h3><div id="fw-cv" style="height:150px"></div></div>
+      <div class="panel"><h3>By grade <span class="sub">avg R a trade</span></h3>
+        <table class="st fit bt-g"><thead><tr><th>Grade</th><th>Backtest</th><th>Unseen yrs</th><th>Live</th></tr></thead><tbody>${gRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">The grades work if each row beats the one below it. C and lower are greyed: off plan.</div></div>
+      <div class="panel"><h3>By market cycle <span class="sub">backtest avg R · the cycle at entry</span></h3>
+        <table class="st fit bt-c"><thead><tr><th></th><th>Bull</th><th>Transition</th><th>Bear</th></tr></thead><tbody>${cRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Why the market line limits grades: in a bear only A+/A still pay well, so trade those at half size.</div></div>
+      <div class="panel"><h3>Exits compared <span class="sub">A+ to B avg R · $10k account</span></h3>
+        <table class="st fit bt-x"><thead><tr><th>Exit</th><th>Avg R</th><th>Win</th><th>$10k</th><th>Unseen</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Avg R counts trades still open at their last price, which flatters the wide exits. The $10k account on unseen years is the fair test${bestX ? `, and ${bestX}× wins it` : ""}.</div></div>
+      ${ePanel}
+      <div class="panel"><h3>Latest live trades <span class="sub">A+ to B · ${band}× exit</span></h3>
+        <table class="st fit"><thead><tr><th style="width:18%">Entry</th><th>Setup</th><th style="width:24%">R</th></tr></thead><tbody>${recent}</tbody></table></div>
+      ${moreList()}
+      <div class="sub" style="margin:4px 2px 14px">Backtest: ${fmt(bt.backtest.n, 0)} trades, 20-day-highest-close breakouts graded the way ‘Today’ grades.
+        ${fmt(bt.backtest.ambiguous_pct, 0)}% of fills were on days the daily bar can't say whether the stop was hit first; they count as surviving.</div>`;
+    drawBtCharts(bk, fw);
+  }
+  function moreList() {
+    return `<h2 style="margin-top:16px">More</h2><div class="list">${MORE.map(([f, t, d]) =>
+      `<a href="#backtest/${f}"><div><div class="t">${t}</div><div class="d">${d}</div></div></a>`).join("")}</div>`;
+  }
+  function drawBtCharts(bk, fw) {
+    loadLib().then((L) => {
+      const mk = (box, h) => L.createChart(box, { autoSize: true, height: h, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+        grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
+        rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
+      const R0 = { type: "price", precision: 0, minMove: 1 };
+      const opts = (color, w, last) => ({ color, lineWidth: w, priceLineVisible: false, lastValueVisible: last, crosshairMarkerVisible: false, priceFormat: R0 });
+      const a = $("#bt-cv"), b = $("#fw-cv");
+      if (a && bk.curve && bk.curve.length) {
+        if (btChart) { try { btChart.remove(); } catch (e) {} }
+        btChart = mk(a, 190);
+        btChart.addLineSeries(opts("#8b949e", 1, false)).setData(bk.curve.map((p) => ({ time: p.m + "-01", value: p.all })));
+        btChart.addLineSeries(opts("#3fb950", 2, true)).setData(bk.curve.map((p) => ({ time: p.m + "-01", value: p.plan })));
+        btChart.timeScale().fitContent();
+      }
+      if (b && fw.curve && fw.curve.length) {
+        if (fwChart) { try { fwChart.remove(); } catch (e) {} }
+        fwChart = mk(b, 150);
+        const last = fw.curve[fw.curve.length - 1].plan;
+        fwChart.addBaselineSeries({ baseValue: { type: "price", price: 0 }, topLineColor: "#3fb950", bottomLineColor: "#f85149",
+          topFillColor1: "rgba(63,185,80,.18)", topFillColor2: "rgba(63,185,80,.02)", bottomFillColor1: "rgba(248,81,73,.02)", bottomFillColor2: "rgba(248,81,73,.18)",
+          lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: "price", precision: 1, minMove: 0.1 } }).setData(fw.curve.map((p) => ({ time: p.d, value: p.plan })));
+        fwChart.timeScale().fitContent();
+      }
+    }).catch(() => {});
   }
 
   // ---------- Account (IBKR, from account.json) ----------
@@ -1130,6 +1265,7 @@
       if (data) renderToday();
       document.querySelectorAll(".card.open[data-t]").forEach(drawChart);
       if (acct) renderAccount();
+      if (bt) renderBacktest();
     });
     sizeTop();
   }
