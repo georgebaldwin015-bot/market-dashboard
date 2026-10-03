@@ -38,6 +38,7 @@
   #bandpick { display: inline-flex; align-items: center; gap: 4px; flex: none; }
   #bandpick span { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   #bandpick .seg button { padding: 3px 7px; font-size: 0.72rem; }
+  #bandpick .seg button .ak { font-size: 0.6rem; text-transform: none; letter-spacing: 0; margin-left: 3px; opacity: .75; color: inherit; }
   #conf { display: none; margin-top: 7px; font-size: 0.8rem; color: var(--muted); align-items: baseline; gap: 8px; }
   #conf b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
   #conf.high b { background: rgba(63,185,80,.18); color: var(--green); }
@@ -316,13 +317,23 @@
   function load(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   let settings = Object.assign({}, DEF, load("md.settings", {}));
-  // The exit everywhere: trail at close - k x ADR once that is above the
-  // entry. 4x by default (best on a $10k account out of sample); the pick is
-  // this device's and applies to every screen. Unpicked bands draw dotted.
-  const BAND_KS = [2, 4, 6, 8], DEFAULT_BAND = 4;
+  // The exit everywhere: trail at close - k x ADR once that is above the entry. "auto" (the default
+  // since 2026-10-03, exit_rule.py) picks k from the market the day before entry: 4x while the index is
+  // under 5% above its 200-day, 6x at 5-10%, 8x above. A trade keeps the band it entered with. The pick
+  // is this device's and applies to every screen; unpicked bands draw dotted.
+  const BAND_KS = [2, 4, 6, 8], EXIT_KS = ["auto", 2, 4, 6, 8], DEFAULT_BAND = "auto";
   let band = load("md.band", DEFAULT_BAND);
-  if (!BAND_KS.includes(band)) band = DEFAULT_BAND;
-  const bandText = (k) => `Trail the stop at close − ${k}× ADR once that's above your entry (so it never drops back below breakeven); until then the 1× ADR stop.`;
+  if (load("md.band.v", 0) < 2) { band = "auto"; save("md.band", band); save("md.band.v", 2); }   // Auto becomes the default once
+  if (!EXIT_KS.includes(band)) band = DEFAULT_BAND;
+  const AUTO_COL = "rgba(63,185,80,1)";
+  const blk = (k) => k === "auto" ? "Auto" : k + "×";             // a band's label
+  const bl = () => blk(band);
+  // The band new entries get today (Auto follows today.json's market reading), and a position's own band.
+  const todayBand = () => band === "auto" ? ((typeof data !== "undefined" && data && data.auto && data.auto.band) || 4) : band;
+  const posBand = (p) => band === "auto" ? ((p && p.auto_band) || todayBand()) : band;
+  const bandText = (k) => k === "auto"
+    ? `Auto: trail the stop at close − k× ADR once that's above your entry, k set by the market the day before entry — 4× while the index is under 5% above its 200-day, 6× at 5–10%, 8× above (today: ${todayBand()}×). Until then the 1× ADR stop.`
+    : `Trail the stop at close − ${k}× ADR once that's above your entry (so it never drops back below breakeven); until then the 1× ADR stop.`;
   const GRADES = ["A+", "A", "B", "C", "D", "F"];
   const GROUPS = { top: ["A+", "A", "B"], All: GRADES };
   GRADES.forEach((g) => GROUPS[g] = [g]);
@@ -466,7 +477,7 @@
       ${!tableView && !showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
       <details class="foot"><summary>ⓘ Rules</summary>
         <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
-        <b>Exit (${band}×):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
+        <b>Exit (${bl()}):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
         Shares = ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop). Change it in settings (⚙).
       </details>`;
     el.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => { filters.grade = b.dataset.g; save("md.filters", filters); renderToday(); });
@@ -566,8 +577,8 @@
     return out;
   }
   function legend(s) {
-    return `<div class="legend">${BANDS.map(([k, c]) => k === band
-        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit</b></span>`
+    return `<div class="legend">${BANDS.map(([k, c]) => k === todayBand()
+        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit${band === "auto" ? " (Auto)" : ""}</b></span>`
         : `<span><i style="border-color:${c.replace(/[\d.]+\)$/, ".6)")}"></i>${k}×</span>`).join("")}
       <span><i class="pv"></i>Buy-stop</span>
       <span><i class="solid" style="border-color:var(--red)"></i>Stop</span>
@@ -605,7 +616,7 @@
       cs.createPriceLine({ price: s.stop, color: "#f85149", lineWidth: 2, lineStyle: 2, title: "", axisLabelVisible: true });
       const adr = sma(b.h.map((h, i) => h - b.l[i]), 20);
       BANDS.forEach(([k, color]) => {
-        const sel = k === band;   // the chosen exit is a solid line, the others dotted
+        const sel = k === todayBand();   // the chosen exit is a solid line, the others dotted
         const line = chart.addLineSeries({ color: sel ? color.replace(/[\d.]+\)$/, ".55)") : color, lineWidth: 1,
           lineStyle: sel ? 0 : 1, priceLineVisible: false,
           lastValueVisible: false, crosshairMarkerVisible: false,
@@ -771,7 +782,7 @@
   // ---------- Backtest (from backtest.json) ----------
   // Closes the loop: what the rules made in the 2022-26 backtest, what they've made live since
   // 30 Jul on the same rules, by grade and market cycle, for the Exit picker's band.
-  let bt = null, btLoading = false, btChart = null, fwChart = null;
+  let bt = null, btLoading = false, btChart = null;
   const MORE = [
     ["review.html", "Strategy review", "The whole system in plain English: setups, grades, market confidence, exits"],
     ["setup-grades.html", "Setup grades", "What A+ to F setups look like, with the ADR bands"],
@@ -790,117 +801,101 @@
       }
       return;
     }
-    const B = bt.bands[String(band)] || bt.bands["4"], bk = B.backtest, fw = B.forward, ac = B.account || {};
-    const yr = (d) => d ? d.slice(0, 4) : "";
+    // One question: on the rules we've set (A+ to B, buy-stop, 1× ADR stop), which exit would have done best,
+    // overall and in each market condition? Every exit side by side; the Exit picker's band is marked "yours".
+    const B = (k) => bt.bands[String(k)] || {};
+    const XS = ["2", "4", "6", "8", "auto"].filter((k) => bt.bands[k]);   // every fixed band, then Auto
+    const same = (k, x) => String(k) === String(x);
+    const best = bt.best, mon = (d) => new Date(d + "T12:00:00").toLocaleDateString([], { month: "short", year: "numeric" });
     const pct = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 0) + "%";
-    const box = (l, v, cls, s) => `<div class="mk ${cls || ""}" style="cursor:default"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
-    const tone = (r) => r == null ? "" : r > 0.3 ? "good" : r > 0 ? "warn" : "bad";
-    const bp = bk.plan || {}, fp = fw.plan || {};
-    // Verdict: live A+ to B vs the backtest's, with the sample size up front.
-    const gap = fp.avg_r != null && bp.avg_r != null ? fp.avg_r - bp.avg_r : null;
-    const early = (fp.n || 0) < 150;
-    const vcls = gap == null ? "" : gap < -0.3 ? "behind" : gap > 0.3 ? "ahead" : "";
-    const verdict = gap == null ? "" : `<div class="verdict ${vcls}">A+ to B on the ${band}× exit: <b>${rfmt(bp.avg_r)} a trade</b> in the backtest
-      (${fmt(bp.n, 0)} trades, ${yr(bt.backtest.start)}–${yr(bt.backtest.end)}), <b>${rfmt(fp.avg_r)}</b> live since ${esc(bt.forward.start)} (${fp.n} trades) →
-      <b>${gap < -0.3 ? "behind the backtest so far" : gap > 0.3 ? "ahead of the backtest so far" : "in line with the backtest"}</b>.
-      ${early ? `Still early: ${fp.n} trades is a small sample, and a few big winners or losers swing it.` : ""}</div>`;
-    const row1 = [box("Trades", fmt(bp.n, 0)), box("Win rate", fmt(bp.win_rate, 0) + "%", bp.win_rate >= 35 ? "good" : "warn"),
-      box("Avg R", rfmt(bp.avg_r), tone(bp.avg_r)), box("Unseen yrs", rfmt(bp.test_avg_r), tone(bp.test_avg_r)),
-      box("$10k acct", pct(ac.all && ac.all.return_pct), ac.all && ac.all.return_pct > 0 ? "good" : "bad")].join("");
-    const row2 = [box("Trades", fmt(fp.n, 0)), box("Win rate", fp.win_rate == null ? "–" : fmt(fp.win_rate, 0) + "%", fp.win_rate >= 35 ? "good" : "warn"),
-      box("Avg R", rfmt(fp.avg_r), tone(fp.avg_r)), box("Total R", rfmt(fp.total_r), tone(fp.total_r)),
-      box("Gap", gap == null ? "–" : rfmt(gap), gap == null ? "" : gap < -0.3 ? "bad" : gap > 0.3 ? "good" : "warn")].join("");
-    // By grade: backtest (all years / unseen years) vs live.
-    const gRows = GRADES.map((g) => {
-      const b = bk.by_grade[g] || {}, f = fw.by_grade[g] || {}, plan = GROUPS.top.includes(g);
-      return `<tr class="${plan ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>
-        <td class="${pc(b.avg_r)}">${rfmt(b.avg_r)}<div class="sub">${fmt(b.n, 0)} · ${fmt(b.win_rate, 0)}% win</div></td>
-        <td class="${pc(b.test_avg_r)}">${rfmt(b.test_avg_r)}</td>
-        <td class="${pc(f.avg_r)}">${f.n ? rfmt(f.avg_r) : "–"}<div class="sub">${f.n || 0} trades</div></td></tr>`;
+    const usd = (v) => v == null ? "–" : "$" + Math.round(10000 * (1 + v / 100)).toLocaleString();
+    const plan = (k) => (B(k).backtest || {}).plan || {}, acc = (k) => B(k).account;
+    const scope = bt.account_scope === "plan" ? "A+ to B" : "every grade";
+    const bA = acc(best), bP = plan(best);
+    const AU = bt.auto || {};
+    const autoNow = AU.band_now ? `Auto today: <b>${AU.band_now}×</b> (index ${AU.strength_now > 0 ? "+" : ""}${fmt(AU.strength_now, 1)}% vs its 200-day).` : "";
+    const verdict = best == null ? "" : `<div class="verdict ahead">Best exit on your rules: <b>${best === "auto" ? "Auto (4× / 6× / 8× by market strength)" : best + "× ADR"}</b>.
+      ${bA ? `$10,000 → <b>${usd(bA.return_pct)}</b> (${pct(bA.return_pct)}, ${fmt(bA.cagr_pct, 0)}% a year), worst drawdown ${fmt(bA.max_dd_pct, 0)}%.` : ""}
+      ${fmt(bP.n, 0)} trades, ${fmt(bP.win_rate, 0)}% winners, ${rfmt(bP.avg_r)} a trade.${!same(best, band) ? ` You're on ${bl()}.` : ""} ${autoNow}</div>`;
+    const tag = (k) => `${blk(k)}${same(k, best) ? ' <span class="ern" style="color:var(--green);border-color:rgba(63,185,80,.5)">best</span>' : ""}${same(k, band) ? ' <span class="sub">yours</span>' : ""}`;
+    const xRows = XS.map((k) => { const p = plan(k), a = acc(k) || {};
+      return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td><td>${fmt(p.win_rate, 0)}%</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td>
+        <td class="${pc(a.return_pct)}">${pct(a.return_pct)}</td><td>${a.cagr_pct == null ? "–" : fmt(a.cagr_pct, 0) + "%"}</td><td>${a.max_dd_pct == null ? "–" : "−" + fmt(a.max_dd_pct, 0) + "%"}</td></tr>`; }).join("");
+    // Market conditions: how far the index sat above its 200-day the day before entry (the Auto rule's buckets).
+    // Each cell is the $10k account on just the trades entered in that market when it's been run, else avg R.
+    const SB = bt.strength_buckets || [];
+    const hasAcc = XS.some((k) => B(k).account_by_strength);
+    const cRows = SB.map(({ key, label }) => {
+      const cells = XS.map((k) => ({ s: ((B(k).backtest || {}).by_strength || {})[key] || {}, a: (B(k).account_by_strength || {})[key] }));
+      const val = (c) => hasAcc ? (c.a ? c.a.return_pct : null) : (c.s.n ? c.s.avg_r : null);
+      const top = Math.max(...cells.map((c) => val(c) ?? -1e9));
+      return `<tr><td>${label}<div class="sub">${fmt(cells[0].s.n || 0, 0)} trades</div></td>${cells.map((c) => { const v = val(c);
+        return v == null ? "<td>–</td>" : `<td class="${pc(v)}" style="${v === top ? "font-weight:700" : ""}">${hasAcc ? pct(v) : rfmt(v)}</td>`; }).join("")}</tr>`;
     }).join("");
-    const cyc = bk.by_cycle || {};
-    const cRows = ["A+/A", "B", "C", "D/F"].map((gname) => `<tr><td>${gname}</td>${["bull", "transition", "bear"].map((c) => {
-      const x = (cyc[c] || {})[gname] || {};
-      return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}<div class="sub">${x.n || 0}</div></td>`; }).join("")}</tr>`).join("");
-    const xRows = BAND_KS.map((k) => {
-      const b = bt.bands[String(k)] || {}, p = (b.backtest || {}).plan || {}, a = b.account || {};
-      return `<tr class="${k === band ? "on" : ""}"><td>${k}×</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td><td>${fmt(p.win_rate, 0)}%</td>
-        <td class="${pc(a.all && a.all.return_pct)}">${pct(a.all && a.all.return_pct)}</td><td class="${pc(a.test && a.test.return_pct)}">${pct(a.test && a.test.return_pct)}</td>
-        <td>${a.all ? "−" + fmt(a.all.max_dd_pct, 0) + "%" : "–"}</td></tr>`;
-    }).join("");
-    const bestX = BAND_KS.reduce((best, k) => { const t = ((bt.bands[String(k)] || {}).account || {}).test;
-      return t && (best == null || t.return_pct > ((bt.bands[String(best)].account || {}).test || {}).return_pct) ? k : best; }, null);
+    const gRows = GRADES.map((g) => `<tr class="${GROUPS.top.includes(g) ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>${XS.map((k) => {
+      const x = ((B(k).backtest || {}).by_grade || {})[g] || {}; return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}</td>`; }).join("")}</tr>`).join("");
+    const gN = GRADES.map((g) => `${g} ${fmt((((B(4).backtest || {}).by_grade || {})[g] || {}).n || 0, 0)}`).join(" · ");
+    const fw = B(String(band)).forward || {}, fp = fw.plan || {}, mp = plan(String(band));
+    const live = fp.n ? `<div class="panel"><h3>Live since ${esc(mon(bt.forward.start))} <span class="sub">same rules, your ${bl()} exit</span></h3>
+      <div class="sub" style="margin:0 2px 6px">${fp.n} A+ to B trades, <b class="${pc(fp.avg_r)}">${rfmt(fp.avg_r)}</b> a trade, against <b>${rfmt(mp.avg_r)}</b> in the backtest.
+        ${fp.n < 150 ? "Too few trades yet to judge: a handful of big winners or losers swings it." : ""}</div>
+      <table class="st fit"><thead><tr><th style="width:18%">Entry</th><th>Setup</th><th style="width:24%">R</th></tr></thead><tbody>${(fw.recent || []).slice(0, 8).map((t) =>
+        `<tr><td>${esc(t.entry_date.slice(5))}</td><td><span class="grade sm inl ${gcls(t.grade)}">${esc(t.grade)}</span><b>${esc(t.ticker)}</b> <span class="sub">${esc(t.strategy || "")}${t.band ? " · " + t.band + "×" : ""}</span></td>
+        <td class="${pc(t.r)}">${rfmt(t.r)}${t.open ? '<div class="sub">open</div>' : ""}</td></tr>`).join("")}</tbody></table></div>` : "";
     const E = bt.earnings;
     const ePanel = E ? `<div class="panel"><h3>Earnings <span class="sub">A+ to B, 4× exit</span></h3>
       <div class="sub" style="margin:0 2px 6px">Entered within 2 trading days of a report: <b class="${pc(E.near_entry.avg_r)}">${rfmt(E.near_entry.avg_r)}</b> a trade
-        (${E.near_entry.n} trades) vs <b class="${pc(E.not_near_entry.avg_r)}">${rfmt(E.not_near_entry.avg_r)}</b> otherwise. No reason to skip a setup for a report.</div>
+        (${E.near_entry.n} trades) vs <b class="${pc(E.not_near_entry.avg_r)}">${rfmt(E.not_near_entry.avg_r)}</b> otherwise.
+        ${E.near_entry.avg_r >= E.not_near_entry.avg_r - 0.2 ? "No reason to skip a setup for a report." : "Entries just before a report have done worse."}</div>
       <table class="st fit"><thead><tr><th>Cushion</th><th>Holding added</th><th>Typical</th><th>Worst</th></tr></thead><tbody>
       ${E.held_through.map((h) => `<tr><td>${h.from < -50 ? "below 0R" : h.to > 50 ? h.from + "R +" : h.from + " to " + h.to + "R"}</td>
-        <td class="${pc(h.adds)}">${rfmt(h.adds)}</td><td class="${pc(h.median)}">${rfmt(h.median)}</td><td class="neg">${rfmt(h.worst)}</td></tr>`).join("")}</tbody></table>
-      <div class="sub" style="margin:6px 2px 2px">Holding through paid on average at every cushion, but over a wide range: size for the bad end.</div></div>` : "";
-    const recent = (fw.recent || []).map((t) => `<tr class="${GROUPS.top.includes(t.grade) ? "" : "out"}"><td>${esc(t.entry_date.slice(5))}</td>
-      <td><span class="grade sm inl ${gcls(t.grade)}">${esc(t.grade)}</span><b>${esc(t.ticker)}</b> <span class="sub">${esc(t.strategy || "")}</span></td>
-      <td class="${pc(t.r)}">${rfmt(t.r)}${t.open ? '<div class="sub">open</div>' : ""}</td></tr>`).join("");
+        <td class="${pc(h.adds)}">${rfmt(h.adds)}</td><td class="${pc(h.median)}">${rfmt(h.median)}</td><td class="neg">${rfmt(h.worst)}</td></tr>`).join("")}</tbody></table></div>` : "";
+    const f = bt.backtest.fill_checks || {};
     el.innerHTML = `
-      <h2>Backtest <span class="sub" style="font-weight:400">does the system work? · ${band}× ADR exit</span></h2>
+      <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
+      <div class="openr" style="margin-top:-2px">A+ to B setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.</div>
       ${verdict}
-      <div class="rowlab">Backtest <span>A+ to B · ${yr(bt.backtest.start)}–${yr(bt.backtest.end)}</span></div>
-      <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${row1}</div>
-      <div class="openr">Unseen yrs = ${yr(bt.backtest.train_end)} on, after the rules were picked. $10k acct = every grade, 1% risk, cash-limited.</div>
-      <div class="rowlab">Live forward test <span>A+ to B · since ${esc(bt.forward.start)}</span></div>
-      <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${row2}</div>
-      <div class="openr">Every setup ‘Today’ armed, filled at the buy-stop with the same rules, as of ${esc(bt.forward.as_of)} (open trades at their last price).</div>
-      <div class="panel"><h3>Cumulative R <span class="sub">backtest, by exit month</span></h3><div id="bt-cv" style="height:190px"></div>
-        <div class="legend"><span><i style="border-color:#3fb950;border-top-style:solid"></i>A+ to B</span><span><i style="border-color:#8b949e"></i>Every grade</span></div></div>
-      <div class="panel"><h3>Live cumulative R <span class="sub">A+ to B, by entry date</span></h3><div id="fw-cv" style="height:150px"></div></div>
-      <div class="panel"><h3>By grade <span class="sub">avg R a trade</span></h3>
-        <table class="st fit bt-g"><thead><tr><th>Grade</th><th>Backtest</th><th>Unseen yrs</th><th>Live</th></tr></thead><tbody>${gRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">The grades work if each row beats the one below it. C and lower are greyed: off plan.</div></div>
-      <div class="panel"><h3>By market cycle <span class="sub">backtest avg R · the cycle at entry</span></h3>
-        <table class="st fit bt-c"><thead><tr><th></th><th>Bull</th><th>Transition</th><th>Bear</th></tr></thead><tbody>${cRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">Why the market line limits grades: in a bear only A+/A still pay well, so trade those at half size.</div></div>
-      <div class="panel"><h3>Exits compared <span class="sub">A+ to B avg R · $10k account</span></h3>
-        <table class="st fit bt-x"><thead><tr><th>Exit</th><th>Avg R</th><th>Win</th><th>$10k</th><th>Unseen</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">Avg R counts trades still open at their last price, which flatters the wide exits. The $10k account on unseen years is the fair test${bestX ? `, and ${bestX}× wins it` : ""}.</div></div>
+      <div class="panel"><h3>$10k account <span class="sub">${scope}, 1% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
+        <div class="legend">${XS.map((k) => `<span><i class="${same(k, best) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, best) ? "border-top-style:solid" : ""}"></i>${blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
+      <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ to B trades</span></h3>
+        <table class="st fit bt-x"><thead><tr><th style="width:26%">Exit</th><th>Win</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Wider exits win less often but keep the big runs. Avg R counts trades still open at their last price; the account is the real comparison.</div></div>
+      <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ to B entered in each market" : "A+ to B avg R a trade"}</span></h3>
+        <table class="st fit bt-c"><thead><tr><th style="width:26%">Market</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${cRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.</div></div>
+      <div class="panel"><h3>By grade <span class="sub">avg R a trade · why A+ to B</span></h3>
+        <table class="st fit bt-g"><thead><tr><th style="width:20%">Grade</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${gRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Trades: ${gN}. C and lower are greyed: off plan.</div></div>
+      ${live}
       ${ePanel}
-      <div class="panel"><h3>Latest live trades <span class="sub">A+ to B · ${band}× exit</span></h3>
-        <table class="st fit"><thead><tr><th style="width:18%">Entry</th><th>Setup</th><th style="width:24%">R</th></tr></thead><tbody>${recent}</tbody></table></div>
       ${moreList()}
-      <div class="sub" style="margin:4px 2px 14px">Backtest: ${fmt(bt.backtest.n, 0)} trades, 20-day-highest-close breakouts graded the way ‘Today’ grades.
-        ${fmt(bt.backtest.ambiguous_pct, 0)}% of fills were on days the daily bar can't say whether the stop was hit first; they count as surviving.</div>`;
-    drawBtCharts(bk, fw);
+      <div class="sub" style="margin:4px 2px 14px">Counted the way the live test counts: one position per stock at a time; fill days the daily bar can't settle checked on hourly bars
+        ${f.intraday_survived != null ? `(${f.intraday_survived} survived, ${f.intraday_stopped} stopped; ${f.unresolved_stopped} couldn't be checked, counted as stopped)` : ""}.
+        Stocks are today's index members, so names that fell out of the index aren't in the test: results lean optimistic.</div>`;
+    drawBtCharts();
   }
   function moreList() {
     return `<h2 style="margin-top:16px">More</h2><div class="list">${MORE.map(([f, t, d]) =>
       `<a href="#backtest/${f}"><div><div class="t">${t}</div><div class="d">${d}</div></div></a>`).join("")}</div>`;
   }
-  function drawBtCharts(bk, fw) {
+  const BAND_COL = { 2: "#d29922", 4: "#58a6ff", 6: "#f778ba", 8: "#a371f7", auto: "#3fb950" };
+  function drawBtCharts() {
     loadLib().then((L) => {
-      const mk = (box, h) => L.createChart(box, { autoSize: true, height: h, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
+      const box = $("#bt-cv"); if (!box) return;
+      if (btChart) { try { btChart.remove(); } catch (e) {} }
+      btChart = L.createChart(box, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b949e", fontSize: 11 },
         grid: { vertLines: { visible: false }, horzLines: { color: "rgba(48,54,61,.45)" } },
         rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
-      const R0 = { type: "price", precision: 0, minMove: 1 };
-      const opts = (color, w, last) => ({ color, lineWidth: w, priceLineVisible: false, lastValueVisible: last, crosshairMarkerVisible: false, priceFormat: R0 });
-      const a = $("#bt-cv"), b = $("#fw-cv");
-      if (a && bk.curve && bk.curve.length) {
-        if (btChart) { try { btChart.remove(); } catch (e) {} }
-        btChart = mk(a, 190);
-        btChart.addLineSeries(opts("#8b949e", 1, false)).setData(bk.curve.map((p) => ({ time: p.m + "-01", value: p.all })));
-        btChart.addLineSeries(opts("#3fb950", 2, true)).setData(bk.curve.map((p) => ({ time: p.m + "-01", value: p.plan })));
-        btChart.timeScale().fitContent();
-      }
-      if (b && fw.curve && fw.curve.length) {
-        if (fwChart) { try { fwChart.remove(); } catch (e) {} }
-        fwChart = mk(b, 150);
-        const last = fw.curve[fw.curve.length - 1].plan;
-        fwChart.addBaselineSeries({ baseValue: { type: "price", price: 0 }, topLineColor: "#3fb950", bottomLineColor: "#f85149",
-          topFillColor1: "rgba(63,185,80,.18)", topFillColor2: "rgba(63,185,80,.02)", bottomFillColor1: "rgba(248,81,73,.02)", bottomFillColor2: "rgba(248,81,73,.18)",
-          lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: "price", precision: 1, minMove: 0.1 } }).setData(fw.curve.map((p) => ({ time: p.d, value: p.plan })));
-        fwChart.timeScale().fitContent();
-      }
+      ["2", "4", "6", "8", "auto"].forEach((k) => {
+        const a = (bt.bands[k] || {}).account; if (!a || !a.curve || !a.curve.length) return;
+        const best = k === String(bt.best);
+        btChart.addLineSeries({ color: BAND_COL[k], lineWidth: best ? 2.5 : 1, lineStyle: best ? 0 : 2, priceLineVisible: false,
+          lastValueVisible: best, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
+          .setData(a.curve.map((p) => ({ time: p.m + "-01", value: p.pct })));
+      });
+      btChart.timeScale().fitContent();
     }).catch(() => {});
   }
-
   // ---------- Account (IBKR, from account.json) ----------
   let acct = null, acctLoading = false, acctWin = load("md.acctwin", "90d"), showAllClosed = false;
   // Live strip (live.json, every 15 min in market hours): refetched when Account opens and every 2 min while it's shown.
@@ -939,7 +934,7 @@
         <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${sgn(p.pct_day)}</div></td>
         <td>${vchip(r)}</td>
         <td class="${pc(p.r_now)}">${rfmt(p.r_now)}</td>
-        <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${band}× ${fmt(s)}</div></td></tr>` +
+        <td>${hit ? '<b class="neg">stop hit</b>' : gap == null ? "–" : fmt(gap, 1) + "%"}<div class="sub">${bl()} ${fmt(s)}</div></td></tr>` +
         (open ? `<tr class="relrow"><td colspan="5"><div class="gtip">${p.earnings ? esc(p.earnings.advice) + (r ? "<br><br>" : "") : ""}${r ? esc(r.text) : ""}</div></td></tr>` : "");
     }).join("");
     const b = src.book;
@@ -1028,7 +1023,7 @@
       const bw = brs.filter((r) => r > 0).length, btot = brs.reduce((a, b) => a + b, 0);
       const bar = rs.length ? `<div class="wl"><i style="width:${100 * w / rs.length}%"></i><b style="width:${100 * l / rs.length}%"></b></div><div class="sub">${w} won · ${l} lost</div>` : "–";
       return `<tr style="${gOk({ grade: { grade: gr } }) ? "" : "opacity:.4"}"><td><span class="grade sm ${gcls(gr)}">${gr}</span></td><td>${bar}</td>
-        <td>${rs.length ? Math.round(100 * w / rs.length) + "%" : "–"}<div class="sub">${band}× ${brs.length ? Math.round(100 * bw / brs.length) + "%" : "–"}</div></td>
+        <td>${rs.length ? Math.round(100 * w / rs.length) + "%" : "–"}<div class="sub">${bl()} ${brs.length ? Math.round(100 * bw / brs.length) + "%" : "–"}</div></td>
         <td class="${pc(tot)}">${rfmt(Math.round(tot * 10) / 10)}</td><td class="${pc(btot)}">${rfmt(Math.round(btot * 10) / 10)}</td></tr>`;
     }).join("");
     const PLAN = ["A+", "A", "B"];
@@ -1056,13 +1051,13 @@
       <div class="score" style="color:${dOk / dTot >= 0.8 ? "var(--green)" : dOk / dTot >= 0.6 ? "var(--amber)" : "var(--red)"}">${Math.round(100 * dOk / dTot)}%</div>
       ${dRow("On-plan grade", disc.plan, "A+ to B only")}
       ${dRow("Entered at the buy-stop", disc.entry, "within 1% of the ‘Today’ buy-stop")}
-      ${dRow(`Exited by the ${band}× rule`, disc.exit, disc.early ? `${disc.early} sold before the band · that cost ${fmt(Math.abs(disc.earlyR), 1)}R vs holding to the band` : "no early exits")}
+      ${dRow(`Exited by the ${bl()} rule`, disc.exit, disc.early ? `${disc.early} sold before the band · that cost ${fmt(Math.abs(disc.earlyR), 1)}R vs holding to the band` : "no early exits")}
     </div>` : "";
-    const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${band}× exit on the same trades</span></h3>
-      <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${band}× total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
+    const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${bl()} exit on the same trades</span></h3>
+      <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${bl()} total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
     const byGrade = gRows ? `<div class="panel"><h3>By grade <span class="sub">what ‘Today’ would have graded each entry · dashed = wasn't on the screen that day</span></h3>
-      <table class="st fit"><thead><tr><th>Grade</th><th>Trades</th><th>Win</th><th>Avg R</th><th>${band}× avg R</th></tr></thead><tbody>${gRows}</tbody></table>
+      <table class="st fit"><thead><tr><th>Grade</th><th>Trades</th><th>Win</th><th>Avg R</th><th>${bl()} avg R</th></tr></thead><tbody>${gRows}</tbody></table>
       ${ungraded ? `<div class="sub" style="margin-top:6px">${ungraded} trade${ungraded > 1 ? "s" : ""} not graded (not enough price history).</div>` : ""}</div>` : "";
     const bandCards = statRow(bst) + (bst.n ? gstat(growthPct(gi < 0 ? -1 : 2 + gi)) : "");
     const cards = statRow(st) + (st.n ? gstat(growthPct(1)) : "");
@@ -1077,15 +1072,15 @@
       const s = p.stops || {};
       const box = (k, l, cls) => `<div class="${cls}"><div class="k">${l}</div><div class="v">${s[k] == null ? "–" : fmt(s[k])}</div></div>`;
       const mine = (p.hit || []).find((h) => h.k === band);
-      const hit = mine ? `⚠ ${band}× band stop hit ${esc(mine.date)} at ${fmt(mine.price)}` : "";
-      const also = (p.hit || []).filter((h) => h.k !== band).map((h) => `${h.k}× out ${esc(h.date)} at ${fmt(h.price)}`).join(" · ");
+      const hit = mine ? `⚠ ${bl()} band stop hit ${esc(mine.date)} at ${fmt(mine.price)}` : "";
+      const also = (p.hit || []).filter((h) => h.k !== band && h.k !== "auto").map((h) => `${h.k}× out ${esc(h.date)} at ${fmt(h.price)}`).join(" · ");
       return `<div class="posn ${hit ? "alert" : ""}">
         <div class="top">${gchip(p.grade)}<a class="tk tkl" data-ticker="${esc(p.symbol)}">${esc(p.symbol)}</a>
           <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>${offPlan(p) ? '<span class="offplan">off plan</span>' : ""}
           <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%${p.risk_pct != null ? " · " + riskTxt(p.risk_pct) : ""}</div>
         ${p.earnings ? `<div class="sub" style="margin-top:4px">${ernTag(p.earnings)} ${esc(p.earnings.advice)}</div>` : ""}
-        <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === band ? "on" : "dim")).join("")}</div>
+        <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === posBand(p) ? "on" : "dim")).join("")}</div>
         ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
     }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
     const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
@@ -1104,18 +1099,18 @@
       <div class="rowlab">Your exits</div>
       <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${cards}</div>
       ${openR != null ? `<div class="openr">R boxes are closed trades only (open positions add ${rfmt(openR)}); Growth includes open positions.</div>` : ""}
-      <div class="rowlab">${band}× ADR exit <span>same trades</span></div>
+      <div class="rowlab">${bl()} ADR exit <span>same trades</span></div>
       <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${bandCards}</div>
-      <div class="panel"><h3>Growth <span class="sub">IBKR's return (open positions, real sizes) vs the same account on each ADR exit · ${band}× solid, others dotted</span></h3>
+      <div class="panel"><h3>Growth <span class="sub">IBKR's return (open positions, real sizes) vs the same account on each ADR exit · ${bl()} solid, others dotted</span></h3>
         <div id="growth-cv" style="height:200px"></div><div class="legend" id="growth-leg"></div></div>
-      <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · your ${band}× exit is outlined</span></h2>
+      <h2 style="margin-top:16px">Open positions <span class="sub" style="font-weight:400">tonight's stops · your ${bl()} exit is outlined</span></h2>
       ${pos}
       ${byGrade}
       ${wlTable}
       ${discPanel}
       <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
-      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${band}× ADR exit would have made</span></h3>
-        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${cl}</tbody></table>
+      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${bl()} ADR exit would have made</span></h3>
+        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${bl()}</th></tr></thead><tbody>${cl}</tbody></table>
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     el.querySelectorAll("[data-ag]").forEach((b) => b.onclick = () => { acctGrade = b.dataset.ag; save("md.acctgrade", acctGrade); renderAccount(); });
@@ -1163,15 +1158,15 @@
     const base = since ? 0 : g.pre_history_pct || 0;
     const actual = navSeries(g.days, 1, since, base);
     if (!actual.length) { box.innerHTML = '<div class="msg">No data in this window.</div>'; leg.innerHTML = ""; return; }
-    const lines = g.bands.map((k, i) => ({ k, color: (BANDS.find((b) => b[0] === k) || [0, "#d29922"])[1].replace(/[\d.]+\)$/, "1)"),
+    const lines = g.bands.map((k, i) => ({ k, color: k === "auto" ? AUTO_COL : (BANDS.find((b) => b[0] === k) || [0, "#d29922"])[1].replace(/[\d.]+\)$/, "1)"),
       pts: navSeries(g.days, 2 + i, since, base) }));
     const start = new Date(new Date(actual[0].time).getTime() - 864e5).toISOString().slice(0, 10);
     [actual, ...lines.map((l) => l.pts)].forEach((p) => p.unshift({ time: start, value: base }));
     const last = (p) => p.length ? p[p.length - 1].value : 0;
     const pctS = (v) => (v > 0 ? "+" : "") + fmt(v, 1) + "%";
     leg.innerHTML = `<span><i class="pv"></i><b>IBKR ${pctS(last(actual))}</b></span>` + lines.map((l) => l.k === band
-      ? `<span><i class="sel" style="border-color:${l.color}"></i><b>${l.k}× ${pctS(last(l.pts))}</b></span>`
-      : `<span><i style="border-color:${l.color}"></i>${l.k}× ${pctS(last(l.pts))}</span>`).join("");
+      ? `<span><i class="sel" style="border-color:${l.color}"></i><b>${blk(l.k)} ${pctS(last(l.pts))}</b></span>`
+      : `<span><i style="border-color:${l.color}"></i>${blk(l.k)} ${pctS(last(l.pts))}</span>`).join("");
     loadLib().then((L) => {
       if (growthChart) { try { growthChart.remove(); } catch (e) {} }
       box.innerHTML = "";
@@ -1213,10 +1208,10 @@
       return `<tr><td>${esc(t.entry_date || "")}<div class="sub">→ ${esc(t.exit_date || "")}</div></td><td>${t.grade ? `<span class="grade sm ${gcls(t.grade.grade)}">${esc(t.grade.grade)}</span>` : "–"}</td>
         <td class="${pc(t.r)}">${rfmt(t.r)}</td><td class="${pc(b && b.r)}">${b ? rfmt(b.r) : "–"}</td></tr>`; }).join("");
     $("#ts-body").innerHTML = `<div class="panel"><div id="ts-chart"><div class="msg">Loading chart…</div></div><div class="legend" id="ts-leg"></div></div>
-      ${pos ? `<div class="panel"><h3>Open position <span class="sub">since ${esc(pos.entry_date)} · ${rfmt(pos.r_now)} · ${band}× stop ${fmt((pos.stops || {})[band])}</span></h3>
+      ${pos ? `<div class="panel"><h3>Open position <span class="sub">since ${esc(pos.entry_date)} · ${rfmt(pos.r_now)} · ${bl()} stop ${fmt((pos.stops || {})[band])}</span></h3>
         ${pos.grade ? `<div class="sub">${esc(gtipText(pos.grade))}</div>` : ""}</div>` : ""}
-      <div class="panel"><h3>Your trades in ${esc(sym)} <span class="sub">actual vs ${band}× exit</span></h3>
-        ${rows ? `<table class="st fit"><thead><tr><th>Dates</th><th>Grade</th><th>Actual</th><th>${band}×</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="sub">No closed trades yet.</div>'}</div>`;
+      <div class="panel"><h3>Your trades in ${esc(sym)} <span class="sub">actual vs ${bl()} exit</span></h3>
+        ${rows ? `<table class="st fit"><thead><tr><th>Dates</th><th>Grade</th><th>Actual</th><th>${bl()}</th></tr></thead><tbody>${rows}</tbody></table>` : '<div class="sub">No closed trades yet.</div>'}</div>`;
     Promise.all([loadLib(), loadBars(sym)]).then(([L, b]) => {
       const box = $("#ts-chart"); if (!box || !$("#tsheet").classList.contains("open")) return;
       box.innerHTML = "";
@@ -1229,7 +1224,7 @@
       cs.setData(b.t.map((d, i) => ({ time: d, open: b.o[i], high: b.h[i], low: b.l[i], close: b.c[i] })));
       const adr = sma(b.h.map((h, i) => h - b.l[i]), 20);
       BANDS.forEach(([k, color]) => {
-        const sel = k === band;
+        const sel = k === posBand(pos);
         tsChart.addLineSeries({ color: sel ? color.replace(/[\d.]+\)$/, ".55)") : color, lineWidth: 1, lineStyle: sel ? 0 : 1,
           priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, autoscaleInfoProvider: () => null })
           .setData(b.t.map((d, i) => adr[i] == null ? { time: d } : { time: d, value: b.c[i] - k * adr[i] }));
@@ -1245,8 +1240,8 @@
       cs.setMarkers(mk);
       if (pos && (pos.stops || {})[band] != null) cs.createPriceLine({ price: pos.stops[band], color: "#f85149", lineWidth: 1, lineStyle: 2, title: "", axisLabelVisible: true });
       tsChart.timeScale().fitContent();
-      $("#ts-leg").innerHTML = `<span><i class="pv"></i>B = your buy</span><span>S = your sell</span>` + BANDS.map(([k, c]) => k === band
-        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit</b></span>` : `<span><i style="border-color:${c.replace(/[\d.]+\)$/, ".6)")}"></i>${k}×</span>`).join("");
+      $("#ts-leg").innerHTML = `<span><i class="pv"></i>B = your buy</span><span>S = your sell</span>` + BANDS.map(([k, c]) => k === posBand(pos)
+        ? `<span><i class="sel" style="border-color:${c.replace(/[\d.]+\)$/, ".95)")}"></i><b>${k}× exit${band === "auto" ? " (Auto)" : ""}</b></span>` : `<span><i style="border-color:${c.replace(/[\d.]+\)$/, ".6)")}"></i>${k}×</span>`).join("");
     }).catch(() => { const box = $("#ts-chart"); if (box) box.innerHTML = '<div class="msg">No chart data for this ticker yet (it appears after the next IBKR sync).</div>'; });
   }
   function closeTicker() { $("#tsheet").classList.remove("open"); if (tsChart) { try { tsChart.remove(); } catch (e) {} tsChart = null; } }
@@ -1259,9 +1254,9 @@
 
   function renderBandPick() {
     const seg = $("#bandpick .seg");
-    seg.innerHTML = BAND_KS.map((k) => `<button class="${k === band ? "on" : ""}" data-band="${k}">${k}×</button>`).join("");
+    seg.innerHTML = EXIT_KS.map((k) => `<button class="${k === band ? "on" : ""}" data-band="${k}">${k === "auto" ? `Auto<span class="ak">${todayBand()}×</span>` : k + "×"}</button>`).join("");
     seg.querySelectorAll("button").forEach((b) => b.onclick = () => {
-      band = +b.dataset.band; save("md.band", band); renderBandPick();
+      band = b.dataset.band === "auto" ? "auto" : +b.dataset.band; save("md.band", band); renderBandPick();
       if (data) renderToday();
       document.querySelectorAll(".card.open[data-t]").forEach(drawChart);
       if (acct) renderAccount();
@@ -1275,7 +1270,7 @@
   route(); sizeTop();
   fetch("today.json", { cache: "no-cache" })
     .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then((d) => { data = d; renderMarket(d); renderToday(); })
+    .then((d) => { data = d; renderMarket(d); renderToday(); renderBandPick(); })
     .catch(() => { $("#advice").textContent = "Market state unavailable -- today.json appears after the next nightly run."; renderToday(); });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js").catch(() => {});
 })();
