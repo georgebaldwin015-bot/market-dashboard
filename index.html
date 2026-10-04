@@ -329,7 +329,8 @@
   const blk = (k) => k === "auto" ? "Auto" : k + "×";             // a band's label
   const bl = () => blk(band);
   // The band new entries get today (Auto follows today.json's market reading), and a position's own band.
-  const todayBand = () => band === "auto" ? ((typeof data !== "undefined" && data && data.auto && data.auto.band) || 4) : band;
+  const autoToday = () => (typeof data !== "undefined" && data && data.auto && data.auto.band) || 4;   // Auto's band for entries today
+  const todayBand = () => band === "auto" ? autoToday() : band;
   const posBand = (p) => band === "auto" ? ((p && p.auto_band) || todayBand()) : band;
   const bandText = (k) => k === "auto"
     ? `Auto: trail the stop at close − k× ADR once that's above your entry, k set by the market the day before entry — 4× while the index is under 5% above its 200-day, 6× at 5–10%, 8× above (today: ${todayBand()}×). Until then the 1× ADR stop.`
@@ -856,7 +857,7 @@
       <div class="openr" style="margin-top:-2px">A+ to B setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.</div>
       ${verdict}
       <div class="panel"><h3>$10k account <span class="sub">${scope}, 1% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
-        <div class="legend">${XS.map((k) => `<span><i class="${same(k, best) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, best) ? "border-top-style:solid" : ""}"></i>${blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
+        <div class="legend">${XS.map((k) => `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)}</b>` : blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
       <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ to B trades</span></h3>
         <table class="st fit bt-x"><thead><tr><th style="width:26%">Exit</th><th>Win</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">Wider exits win less often but keep the big runs. Avg R counts trades still open at their last price; the account is the real comparison.</div></div>
@@ -888,9 +889,9 @@
         rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
       ["2", "4", "6", "8", "auto"].forEach((k) => {
         const a = (bt.bands[k] || {}).account; if (!a || !a.curve || !a.curve.length) return;
-        const best = k === String(bt.best);
-        btChart.addLineSeries({ color: BAND_COL[k], lineWidth: best ? 2.5 : 1, lineStyle: best ? 0 : 2, priceLineVisible: false,
-          lastValueVisible: best, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
+        const sel = k === String(band);   // your Exit pick is the solid line; the others dotted
+        btChart.addLineSeries({ color: BAND_COL[k], lineWidth: sel ? 2.5 : 1, lineStyle: sel ? 0 : 2, priceLineVisible: false,
+          lastValueVisible: sel, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
           .setData(a.curve.map((p) => ({ time: p.m + "-01", value: p.pct })));
       });
       btChart.timeScale().fitContent();
@@ -1254,7 +1255,7 @@
 
   function renderBandPick() {
     const seg = $("#bandpick .seg");
-    seg.innerHTML = EXIT_KS.map((k) => `<button class="${k === band ? "on" : ""}" data-band="${k}">${k === "auto" ? `Auto<span class="ak">${todayBand()}×</span>` : k + "×"}</button>`).join("");
+    seg.innerHTML = EXIT_KS.map((k) => `<button class="${k === band ? "on" : ""}" data-band="${k}">${k === "auto" ? `Auto<span class="ak">${autoToday()}×</span>` : k + "×"}</button>`).join("");
     seg.querySelectorAll("button").forEach((b) => b.onclick = () => {
       band = b.dataset.band === "auto" ? "auto" : +b.dataset.band; save("md.band", band); renderBandPick();
       if (data) renderToday();
