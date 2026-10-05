@@ -813,11 +813,12 @@
     const plan = (k) => (B(k).backtest || {}).plan || {}, acc = (k) => B(k).account;
     const scope = bt.account_scope === "plan" ? "A+ to B" : "every grade";
     const bA = acc(best), bP = plan(best);
-    const AU = bt.auto || {};
+    const AU = bt.auto || {}, BM = bt.benchmark, PIT = bt.point_in_time;
     const autoNow = AU.band_now ? `Auto today: <b>${AU.band_now}×</b> (index ${AU.strength_now > 0 ? "+" : ""}${fmt(AU.strength_now, 1)}% vs its 200-day).` : "";
     const verdict = best == null ? "" : `<div class="verdict ahead">Best exit on your rules: <b>${best === "auto" ? "Auto (4× / 6× / 8× by market strength)" : best + "× ADR"}</b>.
       ${bA ? `$10,000 → <b>${usd(bA.return_pct)}</b> (${pct(bA.return_pct)}, ${fmt(bA.cagr_pct, 0)}% a year), worst drawdown ${fmt(bA.max_dd_pct, 0)}%.` : ""}
-      ${fmt(bP.n, 0)} trades, ${fmt(bP.win_rate, 0)}% winners, ${rfmt(bP.avg_r)} a trade.${!same(best, band) ? ` You're on ${bl()}.` : ""} ${autoNow}</div>`;
+      ${fmt(bP.n, 0)} trades, ${fmt(bP.win_rate, 0)}% winners, ${rfmt(bP.avg_r)} a trade.${!same(best, band) ? ` You're on ${bl()}.` : ""} ${autoNow}
+      ${BM ? `<div style="margin-top:4px">Holding the S&P 500 instead: $10,000 → <b>${usd(BM.return_pct)}</b> (${fmt(BM.cagr_pct, 0)}% a year, worst drawdown ${fmt(BM.max_dd_pct, 0)}%)${bA && bA.return_pct < BM.return_pct ? " — <b>ahead of the rules</b>." : "."}</div>` : ""}</div>`;
     const tag = (k) => `${blk(k)}${same(k, best) ? ' <span class="ern" style="color:var(--green);border-color:rgba(63,185,80,.5)">best</span>' : ""}${same(k, band) ? ' <span class="sub">yours</span>' : ""}`;
     const xRows = XS.map((k) => { const p = plan(k), a = acc(k) || {};
       return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td><td>${fmt(p.win_rate, 0)}%</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td>
@@ -836,6 +837,17 @@
     const gRows = GRADES.map((g) => `<tr class="${GROUPS.top.includes(g) ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>${XS.map((k) => {
       const x = ((B(k).backtest || {}).by_grade || {})[g] || {}; return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}</td>`; }).join("")}</tr>`).join("");
     const gN = GRADES.map((g) => `${g} ${fmt((((B(4).backtest || {}).by_grade || {})[g] || {}).n || 0, 0)}`).join(" · ");
+    // QM vs Minervini: the point-in-time study's clearest split (QM made money in both halves of the history, Minervini lost in both).
+    const hasSAcc = XS.some((k) => B(k).account_by_strategy);
+    const sRows = ["QM", "Minervini"].map((s) => {
+      const st = ((B(4).backtest || {}).by_strategy || {})[s] || {};
+      return `<tr><td>${s}<div class="sub">${fmt(st.n || 0, 0)} trades</div></td>${XS.map((k) => {
+        const a = (B(k).account_by_strategy || {})[s], x = ((B(k).backtest || {}).by_strategy || {})[s] || {};
+        const v = hasSAcc ? (a ? a.return_pct : null) : (x.n ? x.avg_r : null);
+        return v == null ? "<td>–</td>" : `<td class="${pc(v)}">${hasSAcc ? pct(v) : rfmt(v)}</td>`; }).join("")}</tr>`; }).join("");
+    const sPanel = XS.some((k) => (B(k).backtest || {}).by_strategy) ? `<div class="panel"><h3>By strategy <span class="sub">${hasSAcc ? "$10k account, A+ to B" : "A+ to B avg R a trade"}</span></h3>
+        <table class="st fit bt-c"><thead><tr><th style="width:26%">Setup</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${sRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">QM = momentum flags and pullbacks after a big move; Minervini = trend-template breakouts.</div></div>` : "";
     const fw = B(String(band)).forward || {}, fp = fw.plan || {}, mp = plan(String(band));
     const live = fp.n ? `<div class="panel"><h3>Live since ${esc(mon(bt.forward.start))} <span class="sub">same rules, your ${bl()} exit</span></h3>
       <div class="sub" style="margin:0 2px 6px">${fp.n} A+ to B trades, <b class="${pc(fp.avg_r)}">${rfmt(fp.avg_r)}</b> a trade, against <b>${rfmt(mp.avg_r)}</b> in the backtest.
@@ -854,7 +866,8 @@
     const f = bt.backtest.fill_checks || {};
     el.innerHTML = `
       <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
-      <div class="openr" style="margin-top:-2px">A+ to B setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.</div>
+      <div class="openr" style="margin-top:-2px">A+ to B setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.
+        ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
       <div class="panel"><h3>$10k account <span class="sub">${scope}, 1% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
         <div class="legend">${XS.map((k) => `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)}</b>` : blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
@@ -864,6 +877,7 @@
       <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ to B entered in each market" : "A+ to B avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Market</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${cRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.</div></div>
+      ${sPanel}
       <div class="panel"><h3>By grade <span class="sub">avg R a trade · why A+ to B</span></h3>
         <table class="st fit bt-g"><thead><tr><th style="width:20%">Grade</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${gRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">Trades: ${gN}. C and lower are greyed: off plan.</div></div>
@@ -872,7 +886,8 @@
       ${moreList()}
       <div class="sub" style="margin:4px 2px 14px">Counted the way the live test counts: one position per stock at a time; fill days the daily bar can't settle checked on hourly bars
         ${f.intraday_survived != null ? `(${f.intraday_survived} survived, ${f.intraday_stopped} stopped; ${f.unresolved_stopped} couldn't be checked, counted as stopped)` : ""}.
-        Stocks are today's index members, so names that fell out of the index aren't in the test: results lean optimistic.</div>`;
+        ${PIT ? "Index membership as it was on each day (free S&P 500 / Nasdaq-100 change lists); stocks since delisted or taken over have no price history and are missing."
+              : "Stocks are today's index members, so names that joined because they went up are tested before they joined: results lean optimistic."}</div>`;
     drawBtCharts();
   }
   function moreList() {
