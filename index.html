@@ -824,16 +824,22 @@
     const AU = bt.auto || {}, BM = bt.benchmark, PIT = bt.point_in_time;
     const autoNow = AU.band_now ? `Auto today: <b>${AU.band_now}×</b> (index ${AU.strength_now > 0 ? "+" : ""}${fmt(AU.strength_now, 1)}% vs its 200-day).` : "";
     const H = (k) => B(k).account_halves || null, hv = H(best);
-    const halfTxt = hv ? Object.entries(hv).map(([lab, a]) => `${lab} ${pct(a.return_pct)}`).join(", ") : "";
-    const verdict = best == null ? "" : `<div class="verdict ahead">Best exit on your rules: <b>${best === "auto" ? "Auto (4× / 6× / 8× by market strength)" : best + "× ADR"}</b>${hv ? ` — the strongest in its weaker half of the history (${halfTxt})` : ""}.
-      ${bA ? `$10,000 → <b>${usd(bA.return_pct)}</b> (${pct(bA.return_pct)}, ${fmt(bA.cagr_pct, 0)}% a year), worst drawdown ${fmt(bA.max_dd_pct, 0)}%.` : ""}
-      ${fmt(bP.n, 0)} trades, ${fmt(bP.win_rate, 0)}% winners, ${rfmt(bP.avg_r)} a trade.${!same(best, band) ? ` You're on ${bl()}.` : ""} ${autoNow}
-      ${BM ? `<div style="margin-top:4px">Holding the S&P 500 instead: $10,000 → <b>${usd(BM.return_pct)}</b> (${fmt(BM.cagr_pct, 0)}% a year, worst drawdown ${fmt(BM.max_dd_pct, 0)}%)${bA && bA.return_pct < BM.return_pct ? " — <b>ahead of the rules</b>." : "."}</div>` : ""}</div>`;
-    const tag = (k) => `${blk(k)}${same(k, best) ? ' <span class="ern" style="color:var(--green);border-color:rgba(63,185,80,.5)">best</span>' : ""}${same(k, band) ? ' <span class="sub">yours</span>' : ""}`;
-    const xRows = XS.map((k) => { const p = plan(k), a = acc(k) || {};
-      const h = H(k) || {}, hc = (lab) => h[lab] ? `<td class="${pc(h[lab].return_pct)}">${pct(h[lab].return_pct)}</td>` : "<td>–</td>";
-      return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td>
-        <td class="${pc(a.return_pct)}">${pct(a.return_pct)}</td><td>${a.cagr_pct == null ? "–" : fmt(a.cagr_pct, 0) + "%"}</td><td>${a.max_dd_pct == null ? "–" : "−" + fmt(a.max_dd_pct, 0) + "%"}</td>${XS.some(H) ? hc("2017-22") + hc("2023-26") : ""}</tr>`; }).join("");
+    const halfTxt = hv ? Object.entries(hv).map(([lab, a]) => `${lab.replace("20", "").replace("-", "–")} ${pct(a.return_pct)}`).join(", ") : "";
+    // Headline first, the why underneath, the S&P last: three short lines, not a paragraph.
+    const exitName = best === "auto" ? "Auto" : best + "×";
+    const verdict = best == null || !bA ? "" : `<div class="verdict ahead">
+      <div style="font-size:1.05em">$10,000 → <b>${usd(bA.return_pct)}</b> <span class="sub">(${fmt(bA.cagr_pct, 0)}% a year, worst drop ${fmt(bA.max_dd_pct, 0)}%)</span></div>
+      <div class="sub" style="margin-top:3px"><b style="color:var(--text)">${exitName}</b> is the best exit: it held up in both halves (${halfTxt || "–"}).
+        ${fmt(bP.n, 0)} trades, ${rfmt(bP.avg_r)} each.${AU.band_now ? ` Auto uses ${AU.band_now}× today.` : ""}${!same(best, band) ? ` You're on ${bl()}.` : ""}</div>
+      ${BM ? `<div class="sub" style="margin-top:3px">S&amp;P 500 instead: ${usd(BM.return_pct)} (${fmt(BM.cagr_pct, 0)}% a year, worst drop ${fmt(BM.max_dd_pct, 0)}%)</div>` : ""}</div>`;
+    const tag = (k) => `<b>${blk(k)}</b>${same(k, best) ? '<div class="sub" style="color:var(--green)">★ best</div>' : same(k, band) ? '<div class="sub">your exit</div>' : ""}`;
+    // Four columns that fit a phone: the result (and a year), the worst drop, and each half of the history.
+    const xRows = XS.map((k) => { const a = acc(k) || {}, h = H(k) || {};
+      const half = (lab, short) => h[lab] ? `<div><span class="sub">${short}</span> <span class="${pc(h[lab].return_pct)}">${pct(h[lab].return_pct)}</span></div>` : "";
+      return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td>
+        <td><span class="${pc(a.return_pct)}">${pct(a.return_pct)}</span><div class="sub">${a.cagr_pct == null ? "" : fmt(a.cagr_pct, 0) + "% a year"}</div></td>
+        <td>${a.max_dd_pct == null ? "–" : "−" + fmt(a.max_dd_pct, 0) + "%"}</td>
+        ${XS.some(H) ? `<td>${half("2017-22", "17–22")}${half("2023-26", "23–26")}</td>` : ""}</tr>`; }).join("");
     // Market conditions: how far the index sat above its 200-day the day before entry (the Auto rule's buckets).
     // Each cell is the $10k account on just the trades entered in that market when it's been run, else avg R.
     const SB = bt.strength_buckets || [];
@@ -891,9 +897,10 @@
         ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
       <div class="panel"><h3>$10k account <span class="sub">${scope}, 0.75% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
-        <div class="legend">${XS.map((k) => `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)}</b>` : blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
+        <div class="legend">${XS.map((k) => { const a = acc(k) || {}; return `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)} ${pct(a.return_pct)}</b>` : `${blk(k)} ${pct(a.return_pct)}`}</span>`; }).join("")}</div>
+        <div class="sub" style="margin:4px 2px 0">One typical run of each; the % is the typical result over 20 shuffles of which same-day setups got taken.</div></div>
       <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ and A trades</span></h3>
-        <table class="st fit bt-x"><thead><tr><th style="width:22%">Exit</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th>${XS.some(H) ? "<th>2017–22</th><th>2023–26</th>" : ""}</tr></thead><tbody>${xRows}</tbody></table>
+        <table class="st fit bt-x"><thead><tr><th style="width:22%">Exit</th><th>$10k</th><th>Worst drop</th>${XS.some(H) ? "<th>Each half</th>" : ""}</tr></thead><tbody>${xRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The halves are each exit's $10k account on 2017–22 and 2023–26 alone. "Best" has to hold up in both: one exit topping the whole period can be one lucky stretch.</div></div>
       ${mPanel}
       <div class="panel"><h3>By market condition <span class="sub">A+ and A, avg R a trade by where the market was at entry</span></h3>
@@ -931,7 +938,7 @@
         const a = (bt.bands[k] || {}).account; if (!a || !a.curve || !a.curve.length) return;
         const sel = k === String(band);   // your Exit pick is the solid line; the others dotted
         btChart.addLineSeries({ color: BAND_COL[k], lineWidth: sel ? 2.5 : 1, lineStyle: sel ? 0 : 2, priceLineVisible: false,
-          lastValueVisible: sel, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
+          lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
           .setData(a.curve.map((p) => ({ time: p.m + "-01", value: p.pct })));
       });
       btChart.timeScale().fitContent();
@@ -1147,11 +1154,22 @@
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
     let closed = acct.closed.filter(gOk); const closedTotal = closed.length;
     if (!showAllClosed) closed = closed.slice(0, 15);
-    const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td>${gchip(t.grade)}<a class="tkl" data-ticker="${esc(t.symbol)}"><b>${esc(t.symbol)}</b></a><div class="sub">${t.days ?? "–"}d${t.risk_pct != null ? " · " + fmt(t.risk_pct, 1) + "%" : ""}${offPlan(t) ? ' · <span class="offplan sm">off plan</span>' : ""}</div></td>
-      <td class="${pc(t.r)}">${rfmt(t.r)}</td>${(() => { const b = (t.bands || {})[band];
-        const e = earlyExit(t), gap = e ? (e.r || 0) - t.r : 0;
-        return b ? `<td class="${pc(b.r)}">${rfmt(b.r)}${b.exit ? "" : '<div class="sub">still holding</div>'}${e && gap > 0.3
-          ? `<div class="sub warnc">sold early · ${rfmt(Math.round(gap * 10) / 10)} left</div>` : ""}</td>` : "<td>–</td>"; })()}</tr>`).join("");
+    // You vs the rule, trade by trade: what you took, what the chosen exit made (or is making), and the gap.
+    const dshort = (d) => d ? new Date(d + "T12:00:00").toLocaleDateString([], { day: "numeric", month: "short" }) : "";
+    let youSum = 0, ruleSum = 0;
+    const cl = closed.map((t) => {
+      const b = (t.bands || {})[band], gap = b && t.r != null && b.r != null ? b.r - t.r : null;
+      if (gap != null) { youSum += t.r; ruleSum += b.r; }
+      const gapCell = gap == null ? "<td>–</td>" : Math.abs(gap) < 0.15 ? '<td class="sub">same</td>'
+        : `<td class="${gap > 0 ? "warnc" : "pos"}">${gap > 0 ? "−" + fmt(gap, 1) + "R" : "+" + fmt(-gap, 1) + "R"}<div class="sub">${gap > 0 ? "sold early" : "you did better"}</div></td>`;
+      return `<tr><td>${gchip(t.grade)}<a class="tkl" data-ticker="${esc(t.symbol)}"><b>${esc(t.symbol)}</b></a>
+          <div class="sub">out ${esc(dshort(t.exit_date))}${t.risk_pct != null ? " · risked " + fmt(t.risk_pct, 1) + "%" : ""}${offPlan(t) ? ' · <span class="neg">off plan</span>' : ""}</div></td>
+        <td class="${pc(t.r)}">${rfmt(t.r)}</td>
+        <td>${b ? `<span class="${pc(b.r)}">${rfmt(b.r)}</span><div class="sub">${b.exit ? "out " + esc(dshort(b.exit)) : "still in"}</div>` : "–"}</td>
+        ${gapCell}</tr>`; }).join("");
+    const clTotal = closed.length ? `<div class="sub" style="margin:0 2px 8px">These ${closed.length}: you <b class="${pc(youSum)}">${rfmt(Math.round(youSum * 10) / 10)}</b>,
+      the ${bl()} rule <b class="${pc(ruleSum)}">${rfmt(Math.round(ruleSum * 10) / 10)}</b>${Math.abs(ruleSum - youSum) >= 0.15
+        ? ` → ${ruleSum > youSum ? "the rule did <b>" + fmt(ruleSum - youSum, 1) + "R</b> better" : "you did <b>" + fmt(youSum - ruleSum, 1) + "R</b> better"}` : ""}.</div>` : "";
     el.innerHTML = `
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       ${liveStrip()}
@@ -1172,8 +1190,9 @@
       ${wlTable}
       ${discPanel}
       <div class="panel"><h3>Recent activity</h3><table class="st fit"><thead><tr><th>Date</th><th>Side</th><th>Ticker</th><th>Qty</th><th>Price</th></tr></thead><tbody>${act}</tbody></table></div>
-      <div class="panel"><h3>Closed trades <span class="sub">actual vs what the ${bl()} ADR exit would have made</span></h3>
-        <table class="st fit"><thead><tr><th>Exit</th><th>Ticker</th><th>Actual</th><th>${bl()}</th></tr></thead><tbody>${cl}</tbody></table>
+      <div class="panel"><h3>Closed trades <span class="sub">your exit vs the ${bl()} rule on the same entry</span></h3>
+        ${clTotal}
+        <table class="st fit"><thead><tr><th style="width:38%">Trade</th><th>You</th><th>Rule</th><th>Gap</th></tr></thead><tbody>${cl}</tbody></table>
         ${!showAllClosed && closedTotal > 15 ? `<button class="more" id="closed-more" style="margin-top:8px">Show all ${closedTotal}</button>` : ""}</div>`;
     el.querySelectorAll("[data-w]").forEach((b) => b.onclick = () => { acctWin = b.dataset.w; save("md.acctwin", acctWin); renderAccount(); });
     el.querySelectorAll("[data-ag]").forEach((b) => b.onclick = () => { acctGrade = b.dataset.ag; save("md.acctgrade", acctGrade); renderAccount(); });
