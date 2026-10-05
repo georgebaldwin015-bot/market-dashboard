@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Strategy Review</title>
-<!-- momentum_desk/strategy_review.html -- the plain-English review (George, 2026-09-25).
+<!-- momentum_desk/strategy_review.html -- the plain-English review (George, 2026-09-25; rewritten 2026-10-05 on the honest, point-in-time backtest).
      Static page, published as review.html; figures are from the backtest and exit studies
      in backtest/output (percentages and R only -- no balances). -->
 <style>
@@ -20,97 +20,105 @@ ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; }
 .tldr { border-left:3px solid var(--blue); padding:8px 12px; background:var(--panel); border-radius:0 10px 10px 0; }
 </style></head><body><main>
 <h1>Strategy review</h1>
-<div class="sub">How Edge Lab works, what the evidence says, and what your own trades say. Written 25 Sep 2026.</div>
+<div class="sub">How Edge Lab works and what the evidence says. Rewritten 5 Oct 2026 on the honest backtest: a stock only counts while it was really in the S&amp;P 500 or Nasdaq-100.</div>
 
-<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Trade only A+ to B setups, enter on the buy-stop,
-put the stop at 1× ADR, and let the 4× ADR band take you out. In a bear market, trade A+/A only at half size.
-Across 2022–26 that system made money in every test, including the years it wasn't tuned on. Your own year was about flat (+1%) not because the entries
-were wrong, but because good trades were sold early and C-grade trades were taken anyway. On the same entries,
-the 4× exit would have made about +12%.</div>
+<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the five points below), enter on the buy-stop,
+stop at 1× ADR, and let the <b>Auto</b> exit take you out. In every kind of market, same plan, same size. Tested honestly over 2017–26, that made
+about <b>18% a year with a worst drop of about 26%</b>, against 15% a year and a 34% drop for simply holding the S&amp;P 500. It comes in bursts:
+excellent in 2020, 2023, 2025 and 2026, flat in 2018, 2019, 2022 and 2024. The biggest gain left on the table is your exits: selling before the rule.</div>
 
-<h2>1 · What happens every night <span class="sub">(UK time is UTC+1 in summer)</span></h2>
+<h2>1 · Why the numbers changed</h2>
 <div class="panel"><ul>
-<li><b>21:30 UTC (after the US close):</b> the screener scans ~520 US stocks, finds the ones armed for tomorrow, grades them A+ to F and publishes the ‘Today’ tab, the Market tab and the email.</li>
-<li><b>22:00 UTC:</b> IBKR sync: your fills, open positions and IBKR's own daily return come in; stops are worked out for every ADR band.</li>
-<li><b>22:45 UTC:</b> the forward test checks the live track record, and every one of your trades is graded the way ‘Today’ would have graded it.</li>
-<li><b>23:10 UTC:</b> a second IBKR sync picks up those grades and sends the stop email: tomorrow's 4× stops, what moved, what was hit, what's off plan. Nothing is ever sent to IBKR.</li>
+<li><b>The old backtest had hindsight.</b> It tested today's S&amp;P 500 / Nasdaq-100 list back to 2017, so it traded stocks like AppLovin, Lumentum and
+Super Micro before they joined the index (often <i>because</i> they had soared), when the scanner couldn't have seen them. 72% of the old profit came from those trades.</li>
+<li><b>Now:</b> every stock that was in either index since 2016 (770, including ~250 that have since dropped out) is tested, each only while it was a member.
+Stocks since delisted or taken over (Abiomed, Marathon Oil, Hess) have no price history and are the one gap left.</li>
+<li><b>Two over-harsh assumptions were fixed:</b> fill days too old to check on hourly bars count as surviving at the measured rate (77%) instead of all as
+losses, and open trades count at their latest price.</li>
+<li><b>Every result is shown in both halves</b> (2017–22 and 2023–26) and, for accounts, with bad / typical / good luck in which same-day setups got taken
+(60 shuffles). A rule only counts if it holds in both halves.</li>
 </ul></div>
 
-<h2>2 · The setups</h2>
+<h2>2 · What happens every night (UK time is UTC+1 in summer)</h2>
 <div class="panel"><ul>
-<li><b>Two strategies:</b> <i>Minervini</i> (the trend template: a stock in a confirmed Stage 2 uptrend above its rising averages) and <i>QM</i> (Qullamaggie-style momentum: a strong mover with high relative strength and a fast ADR). A stock can qualify for both.</li>
-<li><b>Entry:</b> a buy-stop at the 20-day highest close. It only fills if the stock opens <i>below</i> it and trades up through it; a gap straight over is no trade.</li>
+<li><b>21:30 UTC</b> (after the US close): the screener scans ~520 US stocks, finds the ones armed for tomorrow, grades them and publishes the ‘Today’ tab, the Market tab and the email.</li>
+<li><b>22:00 UTC</b>: IBKR sync: fills, open positions and IBKR's daily return; stops for every ADR band and the Auto exit.</li>
+<li><b>22:45 UTC</b>: the forward test updates the live record and grades each of your trades the way ‘Today’ would have.</li>
+<li><b>23:10 UTC</b>: the stop email: tomorrow's Auto stops, what moved, what was hit, what's off plan. Nothing is ever sent to IBKR.</li>
+</ul></div>
+
+<h2>3 · The setups</h2>
+<div class="panel"><ul>
+<li>Two strategies: <b>Minervini</b> (trend template: Stage 2 uptrend above rising averages) and <b>QM</b> (Qullamaggie-style momentum: ADR 3%+, RS 80+, above the 10/20-day EMA).</li>
+<li><b>Entry:</b> a buy-stop at the 20-day highest close. It only fills if the stock opens below it and trades up through it; a gap straight over is no trade.</li>
 <li><b>Stop:</b> 1× ADR below the buy-stop. That distance is "1R".</li>
-<li><b>Size:</b> shares = 1% of the account ÷ (buy-stop − stop), halved in a bear market.</li>
+<li><b>Size:</b> shares = 1% of the account ÷ (buy-stop − stop). With a 1× ADR stop that ties up 20–30% of a cash account per position, so 4–5 positions at a time.</li>
 </ul></div>
 
-<h2>3 · Grades</h2>
-<div class="panel">Each setup scores points; the score sets the grade (+3 or more A+, +2 A, +1 B, 0 C, −1 D, below F).
-<table><thead><tr><th style="width:62%">Factor</th><th>Points</th></tr></thead><tbody>
-<tr><td>ADR 5–7% (the sweet spot)</td><td class="g">+2</td></tr>
-<tr><td>ADR 4–5%</td><td class="g">+1</td></tr>
-<tr><td>RS 95 or higher</td><td class="g">+1</td></tr>
-<tr><td>QM only: 10–20% below the 52-week high (room to run)</td><td class="g">+1</td></tr>
-<tr><td>Minervini only: ADR under 3% (too slow)</td><td class="r">−1</td></tr>
-<tr><td>Market regime "caution"</td><td class="r">−1</td></tr>
-<tr><td>Market up 5%+ in 20 days (chasing)</td><td class="r">−1</td></tr>
-<tr><td>Stage 1 (no uptrend yet)</td><td class="r">−2</td></tr>
+<h2>4 · The grade (the gold standard since 5 Oct 2026)</h2>
+<div class="panel">One point for each. Every point was found on 2017–22 and held on 2023–26:
+<table><thead><tr><th style="width:52%">Point</th><th>Avg R with / without, 2017–22</th><th>2023–26</th></tr></thead><tbody>
+<tr><td>QM setup (not Minervini)</td><td class="g">+0.67 / −0.05</td><td class="g">+0.65 / +0.04</td></tr>
+<tr><td>Stage 1: breaking out of a base</td><td class="g">+0.61 / +0.01</td><td class="g">+0.61 / +0.08</td></tr>
+<tr><td>5%+ below the 52-week high (a real pullback)</td><td class="g">+0.45</td><td class="g">+0.38</td></tr>
+<tr><td>ADR 3.3% or more (fast)</td><td class="g">+0.31</td><td class="g">+0.59</td></tr>
+<tr><td>Share price under $41</td><td class="g">+0.34</td><td class="g">+0.44</td></tr>
 </tbody></table>
-<div class="sub" style="margin-top:6px">Across 7,469 backtest trades A+ did best in both halves of the history and F lost money, so the grades carry real information.</div></div>
+<div class="sub" style="margin-top:6px">A+ = 4–5 points, A = 3, B = 2, C = 1, D = 0. Avg R a trade by grade (Auto exit): A+ +1.25, A +0.59, B +0.44, C +0.13, D +0.02.
+The plan, A+ and A, is almost all QM setups (about 150 a year): a Minervini setup only gets there as a Stage 1 or a fast, cheap pullback.</div>
+<div class="sub" style="margin-top:6px"><b>No longer scored</b> (no consistent edge on the honest data): RS 95+, the market regime, the market's 20-day move, base tightness, earnings timing.
+The old grade took 2 points <i>off</i> for Stage 1, the opposite of what the history shows. ‘Today’ and Account show the old grade alongside while the new one proves itself live.</div></div>
 
-<h2>4 · Market confidence</h2>
-<div class="panel">Average R per trade on the 4× exit, 2022–26, by where the market stood the day before:
-<table><thead><tr><th style="width:40%">Market</th><th>A+/A</th><th>B</th><th>C</th><th>D/F</th></tr></thead><tbody>
-<tr><td>Index 0–5% above 200-day (early trend)</td><td class="g">+2.39</td><td class="g">+1.62</td><td class="g">+0.65</td><td class="g">+0.66</td></tr>
-<tr><td>5–10% above</td><td class="g">+1.31</td><td class="g">+0.46</td><td class="g">+0.25</td><td>+0.06</td></tr>
-<tr><td>10%+ above (stretched)</td><td class="g">+1.47</td><td class="g">+0.81</td><td class="r">−0.42</td><td>+0.19</td></tr>
-<tr><td>Bear market</td><td class="g">+0.70</td><td class="g">+0.39</td><td class="g">+0.44</td><td class="r">−0.42</td></tr>
+<h2>5 · The market</h2>
+<div class="panel">Avg R a trade (Auto exit) by where the market stood the day before entry:
+<table><thead><tr><th style="width:40%">Market</th><th>A+/A</th><th>B</th><th>C</th><th>D</th></tr></thead><tbody>
+<tr><td>Index 0–5% above its 200-day</td><td class="g">+0.75</td><td>+0.37</td><td>+0.34</td><td>+0.19</td></tr>
+<tr><td>5–10% above</td><td class="g">+0.38</td><td>+0.24</td><td class="r">−0.06</td><td class="r">−0.06</td></tr>
+<tr><td>10%+ above (stretched)</td><td class="g">+0.48</td><td>+0.12</td><td>−0.01</td><td class="r">−0.20</td></tr>
+<tr><td>Bear market</td><td class="g">+0.99</td><td>+0.78</td><td class="r">−0.41</td><td class="r">−0.42</td></tr>
 </tbody></table>
-<div class="sub" style="margin-top:6px">So the market decides <i>which grades</i> are in play (A+ to B normally, A+/A in a bear) and half size in a bear.
-Other sizing tweaks moved a $10k account only about ±5 points; picking A+ to B instead of everything was worth about +50 points a year.</div></div>
+<div class="sub" style="margin-top:6px">A+/A setups paid in every market, and best in a bear: fewer pass, but the ones that do are often the next leaders.
+Skipping bear-market entries cut the account's return in both halves, so the plan and size never change with the market.</div></div>
 
-<h2>5 · Exits</h2>
-<div class="panel">The stop trails at <b>close − 4× ADR</b>, but only once that is above your entry, so it never drops back below breakeven. Until then the 1× ADR stop stands.
-<table><thead><tr><th style="width:44%">$10k account, 1% risk, cash-limited</th><th>Whole period</th><th>Unseen years</th></tr></thead><tbody>
-<tr><td>Old live rule (breakeven at +2R, then 2× ADR / 7%)</td><td>+53%</td><td>+20%</td></tr>
-<tr><td>2× band</td><td>+50%</td><td>+13%</td></tr>
-<tr><td><b>4× band</b></td><td><b>+135%</b></td><td class="g"><b>+28%</b></td></tr>
-<tr><td>6× band</td><td>+147%</td><td>+17%</td></tr>
-<tr><td>8× band</td><td>+137%</td><td class="r">−28%</td></tr>
+<h2>6 · The exit</h2>
+<div class="panel">The stop trails at close − k × ADR once that's above your entry; until then the 1× ADR stop stands. <b>Auto</b> picks k from how far the
+market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×.
+<table><thead><tr><th style="width:22%">Exit</th><th>2017–22</th><th>2023–26</th><th>2017–26</th></tr></thead><tbody>
+<tr><td><b>Auto</b></td><td class="g">+87 / +143 / +223%</td><td class="g">+64 / +121 / +173%</td><td class="g">+238 / +388 / +618%</td></tr>
+<tr><td>2×</td><td>+40 / +59 / +92%</td><td>+103 / +159 / +232%</td><td>+220 / +320 / +440%</td></tr>
+<tr><td>4×</td><td>+112 / +185 / +282%</td><td>+56 / +87 / +123%</td><td>+311 / +442 / +618%</td></tr>
+<tr><td>6×</td><td>+47 / +88 / +114%</td><td>+44 / +109 / +152%</td><td>+180 / +293 / +421%</td></tr>
+<tr><td>8×</td><td>+72 / +110 / +169%</td><td>+51 / +136 / +187%</td><td>+131 / +290 / +457%</td></tr>
 </tbody></table>
-<div class="sub" style="margin-top:8px">Unseen years = rules picked on 2022–24, judged on 2025–26.</div>
-<p style="margin:10px 0 4px"><b>Should the best grades run wider?</b> Tested on A+ to B trades only (what you take), three shuffles each:</p>
-<table><thead><tr><th style="width:44%">Exit</th><th>Whole period</th><th>Unseen years</th></tr></thead><tbody>
-<tr><td><b>4× for all</b></td><td><b>+750%</b></td><td>+110%</td></tr>
-<tr><td>6× for all</td><td>+666%</td><td>+119%</td></tr>
-<tr><td>A+/A at 6×, B at 4×</td><td>+667%</td><td>+110%</td></tr>
-<tr><td>A+/A at 8×, B at 4×</td><td>+444%</td><td class="r">+6%</td></tr>
-</tbody></table>
-<div class="sub" style="margin-top:6px">No: wider exits on the top grades tie 4× at best and collapse at 8×. Tailoring the exit by grade, strategy or market cycle
-also looked great on the years it was picked on and then did worse than one rule on new years. <b>One exit, 4×, for everything.</b></div></div>
+<div class="sub" style="margin-top:6px">$10k on A+ and A, 1% risk, cash-limited: bad / typical / good luck. 4× topped 2017–22 and 2× topped 2023–26, but each was near the
+bottom in the other half. Auto was near the top in both, so Auto is the exit. The Backtest tab picks "best" the same way: the exit whose weaker half did best.</div></div>
 
-<h2>6 · What your own trades say</h2>
+<h2>7 · Margin (with caution)</h2>
+<div class="panel">With 1.5× buying power the same trades made about 33% a year (worst drop ~29%); at 2×, about 38% (~34%). Bigger drops, and margin
+interest isn't included. 1.5× is the cautious step; the With margin panel on the Backtest tab keeps the current figures.</div>
+
+<h2>8 · Your trades</h2>
 <div class="panel"><ul>
-<li><b>Last year:</b> IBKR +1.0%. The same entries and share counts on the 4× exit: <span class="g">+12.0%</span>. The exit alone was worth about 11 points.</li>
-<li><b>A+ trades:</b> the entries were right; the exits weren't. 8 trades: <span class="r">−4.2R</span> as sold, <span class="g">+11.0R</span> on the 4× exit.</li>
-<li><b>C trades:</b> 12 trades, 1 winner, <span class="r">−11.7R</span>, and no exit rescues them (−12.0R on 4×). These are the trades to stop taking.</li>
-<li><b>Open positions</b> are about +8.6R, so closed plus open is roughly breakeven, which matches IBKR being about flat.</li>
-</ul>
-<div class="sub">Your trades are a small sample (39), so they point at habits, not at a better rule. The rules come from the 7,469-trade backtest.</div></div>
+<li><b>The exits are the gap.</b> On your 16 closed trades graded A+ to B (old grade), selling before the rule made −12.3R; the same trades held to the Auto exit
+made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Account tab now flags each one and keeps a monthly score.</li>
+<li>The backtest assumes every exit follows the rule. That's the single biggest thing between it and the account.</li>
+</ul></div>
 
-<h2>7 · The checklist</h2>
-<div class="panel"><ol style="padding-left:20px;margin:6px 0">
-<li>Only A+ to B, or A+/A in a bear market. The ‘Today’ tab greys out the rest.</li>
-<li>Enter on the buy-stop, not before and not chasing more than about 1% above.</li>
-<li>Stop at 1× ADR. Size so that stop is 1% of the account (½% in a bear).</li>
-<li>Don't sell a winner by feel. Move the stop up to the 4× band each night (the stop email tells you the level) and let it take you out.</li>
-<li>Check the Discipline panel in Account weekly: grade, entry and exit should all be close to 100%.</li>
-</ol></div>
-
-<h2>8 · Caveats</h2>
+<h2>9 · The checklist</h2>
 <div class="panel"><ul>
-<li>About a quarter of backtest entry days are "ambiguous": the daily bar can't say whether the dip under the stop came before or after the fill. Counting all of them as losses lowers every result but doesn't change the ranking of the exits.</li>
-<li>The backtest is 2022–26: one bear market, one strong bull, and a choppy 2025–26. A different regime could shift the numbers.</li>
-<li>Results use 1% risk and a cash limit on a $10k account; a much larger or margin account would behave differently.</li>
+<li><b>Only A+ and A.</b> The ‘Today’ tab shows the grade and why; B and below are off plan.</li>
+<li>Enter on the buy-stop, not before and not chasing more than ~1% above.</li>
+<li>Stop at 1× ADR; size so that stop is 1% of the account. Same in every market.</li>
+<li><b>Don't sell a winner by feel.</b> Move the stop to the Auto level each night (the stop email has it) and let it take you out.</li>
+<li>Check the Discipline panel in Account weekly.</li>
+</ul></div>
+
+<h2>10 · Caveats</h2>
+<div class="panel"><ul>
+<li>The five points were chosen after seeing both halves of the history; their cut-offs come from 2017–22 only and they held on two data sets, but live
+trading is the real test. The forward test records the new grade and the old one side by side.</li>
+<li>Delisted and taken-over stocks are missing (no free price history).</li>
+<li>Results use 1% risk and a cash limit on a $10k account; a larger or margin account behaves differently.</li>
+<li>Account results swing a lot on which same-day setups get taken, so read them as ranges, not single numbers.</li>
 </ul></div>
 </main></body></html>
