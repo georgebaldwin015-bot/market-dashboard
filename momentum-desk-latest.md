@@ -13,7 +13,7 @@ Market cycle: **Bull** -- equal-weight universe index +3.2% vs its 200-day MA, 5
 
 SPY close: 769.64 | 10-day MA: 767.93 | 20-day MA: 763.98
 
-**Constructive** — 10-day MA above the 20-day and rising. Long setups get the benefit of the doubt.
+**Constructive** — 10-day MA above the 20-day and rising.
 
 - Breadth: 25% of the scanned universe above its 50-day MA, 45% above its 200-day MA.
 - 52-week breakouts vs breakdowns today: 12 breakouts / 27 breakdowns (out of 518 names evaluated).
@@ -1922,4 +1922,4 @@ No prior leaders showing a clear technical breakdown flagged today.
 - VCP/staging flags are rule-based approximations of a visual pattern — confirm on the linked TradingView chart.
 - Leading Themes is ranked by breadth of RS strength, not raw average price change, so it isn't skewed by one outlier name in an otherwise quiet sector.
 - Breadth, distribution-day, and follow-through-day stats are simplified approximations of IBD's own methodology, computed from the same price history already pulled for this run — directional signal, not an exact replica.
-- If the Market Pulse section above reads "Defensive," treat every long breakout here as lower-probability.
+- A "Defensive" Market Pulse read doesn't rule a setup out: in the backtest, skipping those entries cut the return.

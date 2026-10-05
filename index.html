@@ -848,6 +848,13 @@
     const sPanel = XS.some((k) => (B(k).backtest || {}).by_strategy) ? `<div class="panel"><h3>By strategy <span class="sub">${hasSAcc ? "$10k account, A+ to B" : "A+ to B avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Setup</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${sRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">QM = momentum flags and pullbacks after a big move; Minervini = trend-template breakouts.</div></div>` : "";
+    // Margin (George, 2026-10-05: "keen to explore with caution"): the Auto account with more buying power than cash.
+    const MG = bt.margin || {}, aA = acc("auto");
+    const mPanel = Object.keys(MG).length && aA ? `<div class="panel"><h3>With margin <span class="sub">Auto exit, same trades, more buying power than cash</span></h3>
+        <table class="st fit"><thead><tr><th style="width:30%">Buying power</th><th>$10k</th><th>A year</th><th>Max DD</th></tr></thead><tbody>
+        ${[["1", aA, "Cash only"], ...Object.entries(MG).map(([k, a]) => [k, a, k + "×"])].map(([k, a, lab]) =>
+          `<tr><td>${lab}</td><td class="${pc(a.return_pct)}">${usd(a.return_pct)}</td><td>${fmt(a.cagr_pct, 0)}%</td><td>−${fmt(a.max_dd_pct, 0)}%</td></tr>`).join("")}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Bigger gains and deeper drops; margin interest isn't included. 1.5× is the cautious step.</div></div>` : "";
     const fw = B(String(band)).forward || {}, fp = fw.plan || {}, mp = plan(String(band));
     const live = fp.n ? `<div class="panel"><h3>Live since ${esc(mon(bt.forward.start))} <span class="sub">same rules, your ${bl()} exit</span></h3>
       <div class="sub" style="margin:0 2px 6px">${fp.n} A+ to B trades, <b class="${pc(fp.avg_r)}">${rfmt(fp.avg_r)}</b> a trade, against <b>${rfmt(mp.avg_r)}</b> in the backtest.
@@ -874,6 +881,7 @@
       <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ to B trades</span></h3>
         <table class="st fit bt-x"><thead><tr><th style="width:26%">Exit</th><th>Win</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">Wider exits win less often but keep the big runs. Avg R counts trades still open at their last price; the account is the real comparison.</div></div>
+      ${mPanel}
       <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ to B entered in each market" : "A+ to B avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Market</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${cRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.</div></div>
@@ -885,8 +893,10 @@
       ${ePanel}
       ${moreList()}
       <div class="sub" style="margin:4px 2px 14px">Counted the way the live test counts: one position per stock at a time; fill days the daily bar can't settle checked on hourly bars
-        ${f.intraday_survived != null ? `(${f.intraday_survived} survived, ${f.intraday_stopped} stopped; ${f.unresolved_stopped} couldn't be checked, counted as stopped)` : ""}.
-        ${PIT ? "Index membership as it was on each day (free S&P 500 / Nasdaq-100 change lists); stocks since delisted or taken over have no price history and are missing."
+        ${f.intraday_survived != null ? `(${f.intraday_survived} survived, ${f.intraday_stopped} stopped${f.unresolved_survived != null
+          ? `; ${f.unresolved_survived + f.unresolved_stopped} too old to check, counted at the same survival rate` : `; ${f.unresolved_stopped} couldn't be checked, counted as stopped`})` : ""}.
+        Trades still open count at their latest price.
+        ${PIT ? "Every stock that was in the S&P 500 or Nasdaq-100 at the time, including ones that have since dropped out (free change lists); stocks since delisted or taken over (e.g. Abiomed, Marathon Oil, Hess) have no price history and are missing."
               : "Stocks are today's index members, so names that joined because they went up are tested before they joined: results lean optimistic."}</div>`;
     drawBtCharts();
   }
