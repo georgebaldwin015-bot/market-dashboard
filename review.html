@@ -22,10 +22,10 @@ ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; }
 <h1>Strategy review</h1>
 <div class="sub">How Edge Lab works and what the evidence says. Rewritten 5 Oct 2026 on the honest backtest: a stock only counts while it was really in the S&amp;P 500 or Nasdaq-100.</div>
 
-<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the five points below), enter on the buy-stop,
-stop at 1× ADR, and let the <b>Auto</b> exit take you out. In every kind of market, same plan, same size. Tested honestly over 2017–26, that made
-about <b>18% a year with a worst drop of about 26%</b>, against 15% a year and a 34% drop for simply holding the S&amp;P 500. It comes in bursts:
-excellent in 2020, 2023, 2025 and 2026, flat in 2018, 2019, 2022 and 2024. The biggest gain left on the table is your exits: selling before the rule.</div>
+<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the five points below) &mdash; but <b>A+ only
+while recent setups are failing</b> &mdash; risk <b>0.75%</b> a trade, enter on the buy-stop, stop at 1× ADR, and let the <b>Auto</b> exit take you out.
+Tested honestly over 2017–26, that made about <b>26% a year with a worst drop of about 19%</b>, against 15% a year and a 34% drop for simply holding
+the S&amp;P 500. It comes in bursts, strong in 2020, 2023 and 2025–26. The biggest gain left on the table is your exits: selling before the rule.</div>
 
 <h2>1 · Why the numbers changed</h2>
 <div class="panel"><ul>
@@ -52,7 +52,8 @@ losses, and open trades count at their latest price.</li>
 <li>Two strategies: <b>Minervini</b> (trend template: Stage 2 uptrend above rising averages) and <b>QM</b> (Qullamaggie-style momentum: ADR 3%+, RS 80+, above the 10/20-day EMA).</li>
 <li><b>Entry:</b> a buy-stop at the 20-day highest close. It only fills if the stock opens below it and trades up through it; a gap straight over is no trade.</li>
 <li><b>Stop:</b> 1× ADR below the buy-stop. That distance is "1R".</li>
-<li><b>Size:</b> shares = 1% of the account ÷ (buy-stop − stop). With a 1× ADR stop that ties up 20–30% of a cash account per position, so 4–5 positions at a time.</li>
+<li><b>Size:</b> shares = 0.75% of the account ÷ (buy-stop − stop). With a 1× ADR stop that ties up 15–25% of a cash account per position, so about 6 at a time.
+At 1% you could hold only 4–5 and missed more of the rare big runners: 0.75% did better in every period tested, with smaller drops.</li>
 </ul></div>
 
 <h2>4 · The grade (the gold standard since 5 Oct 2026)</h2>
@@ -69,7 +70,21 @@ The plan, A+ and A, is almost all QM setups (about 150 a year): a Minervini setu
 <div class="sub" style="margin-top:6px"><b>No longer scored</b> (no consistent edge on the honest data): RS 95+, the market regime, the market's 20-day move, base tightness, earnings timing.
 The old grade took 2 points <i>off</i> for Stage 1, the opposite of what the history shows. ‘Today’ and Account show the old grade alongside while the new one proves itself live.</div></div>
 
-<h2>5 · The market</h2>
+<h2>5 · When setups are failing: A+ only</h2>
+<div class="panel">The one market reading that held up: <b>are the strategy's own recent trades working?</b> It's the average R (Auto exit) of the last 30
+closed plan trades. When it's below 0R, breakouts are failing, so take <b>A+ only</b>; otherwise A+ and A. ‘Today’ shows the reading and tonight's plan.
+<table><thead><tr><th style="width:22%">$10k</th><th>1% risk, A+ and A</th><th>0.75% risk + this rule</th></tr></thead><tbody>
+<tr><td>2017–19</td><td>+7 / +18 / +47%</td><td class="g">+34 / +37 / +41%</td></tr>
+<tr><td>2020–22</td><td>+59 / +100 / +154%</td><td class="g">+99 / +130 / +166%</td></tr>
+<tr><td>2023–24</td><td>+30 / +44 / +63%</td><td class="g">+52 / +56 / +63%</td></tr>
+<tr><td>2025–26</td><td>+9 / +41 / +82%</td><td class="g">+61 / +80 / +95%</td></tr>
+<tr><td><b>2017–26</b></td><td>+238 / +388 / +618%, worst drop 27%</td><td class="g"><b>+616 / +735 / +895%, worst drop 19%</b></td></tr>
+</tbody></table>
+<div class="sub" style="margin-top:6px">Bad / typical / good luck in which same-day setups got taken. About 30 condition rules were tried (index vs 200-day, breadth,
+volatility, 20-day trend, stocks near highs, setups working; for exit width, grades, size and risk); only these two held in every period. Changing the exit
+width by market, adding B in good markets and sizing by market all failed somewhere (backtest/conditions_study.py).</div></div>
+
+<h2>6 · The market</h2>
 <div class="panel">Avg R a trade (Auto exit) by where the market stood the day before entry:
 <table><thead><tr><th style="width:40%">Market</th><th>A+/A</th><th>B</th><th>C</th><th>D</th></tr></thead><tbody>
 <tr><td>Index 0–5% above its 200-day</td><td class="g">+0.75</td><td>+0.37</td><td>+0.34</td><td>+0.19</td></tr>
@@ -80,45 +95,47 @@ The old grade took 2 points <i>off</i> for Stage 1, the opposite of what the his
 <div class="sub" style="margin-top:6px">A+/A setups paid in every market, and best in a bear: fewer pass, but the ones that do are often the next leaders.
 Skipping bear-market entries cut the account's return in both halves, so the plan and size never change with the market.</div></div>
 
-<h2>6 · The exit</h2>
+<h2>7 · The exit</h2>
 <div class="panel">The stop trails at close − k × ADR once that's above your entry; until then the 1× ADR stop stands. <b>Auto</b> picks k from how far the
 market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×.
-<table><thead><tr><th style="width:22%">Exit</th><th>2017–22</th><th>2023–26</th><th>2017–26</th></tr></thead><tbody>
-<tr><td><b>Auto</b></td><td class="g">+87 / +143 / +223%</td><td class="g">+64 / +121 / +173%</td><td class="g">+238 / +388 / +618%</td></tr>
-<tr><td>2×</td><td>+40 / +59 / +92%</td><td>+103 / +159 / +232%</td><td>+220 / +320 / +440%</td></tr>
-<tr><td>4×</td><td>+112 / +185 / +282%</td><td>+56 / +87 / +123%</td><td>+311 / +442 / +618%</td></tr>
-<tr><td>6×</td><td>+47 / +88 / +114%</td><td>+44 / +109 / +152%</td><td>+180 / +293 / +421%</td></tr>
-<tr><td>8×</td><td>+72 / +110 / +169%</td><td>+51 / +136 / +187%</td><td>+131 / +290 / +457%</td></tr>
+<table><thead><tr><th style="width:16%">Exit</th><th>2017–19</th><th>2020–22</th><th>2023–24</th><th>2025–26</th><th>2017–26</th></tr></thead><tbody>
+<tr><td><b>Auto</b></td><td>+37%</td><td class="g">+130%</td><td>+56%</td><td class="g">+80%</td><td class="g"><b>+735%</b></td></tr>
+<tr><td>4×</td><td class="g">+59%</td><td>+104%</td><td class="g">+75%</td><td>+57%</td><td>+698%</td></tr>
+<tr><td>2×</td><td>+4%</td><td>+98%</td><td>+18%</td><td>+65%</td><td>+278%</td></tr>
+<tr><td>6×</td><td>+21%</td><td>+87%</td><td>+63%</td><td>+41%</td><td>+344%</td></tr>
+<tr><td>8×</td><td>+8%</td><td>+141%</td><td>+131%</td><td>+4%</td><td>+280%</td></tr>
 </tbody></table>
-<div class="sub" style="margin-top:6px">$10k on A+ and A, 1% risk, cash-limited: bad / typical / good luck. 4× topped 2017–22 and 2× topped 2023–26, but each was near the
-bottom in the other half. Auto was near the top in both, so Auto is the exit. The Backtest tab picks "best" the same way: the exit whose weaker half did best.</div></div>
+<div class="sub" style="margin-top:6px">$10k typical result on the full plan (0.75% risk, A+ only while setups are failing). Auto wins over the whole period and has the best
+bad-luck case (+616% vs 4×'s +574%); 4× wins two of the four stretches and Auto the other two. The Backtest tab picks "best" as the exit whose weaker half
+of the history did best, which is also Auto.</div></div>
 
-<h2>7 · Margin (with caution)</h2>
-<div class="panel">With 1.5× buying power the same trades made about 33% a year (worst drop ~29%); at 2×, about 38% (~34%). Bigger drops, and margin
+<h2>8 · Margin (with caution)</h2>
+<div class="panel">With 1.5× buying power the same plan made about 30% a year (worst drop ~27%); at 2×, about 32% (~29%). Bigger drops, and margin
 interest isn't included. 1.5× is the cautious step; the With margin panel on the Backtest tab keeps the current figures.</div>
 
-<h2>8 · Your trades</h2>
+<h2>9 · Your trades</h2>
 <div class="panel"><ul>
 <li><b>The exits are the gap.</b> On your 16 closed trades graded A+ to B (old grade), selling before the rule made −12.3R; the same trades held to the Auto exit
 made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Account tab now flags each one and keeps a monthly score.</li>
 <li>The backtest assumes every exit follows the rule. That's the single biggest thing between it and the account.</li>
 </ul></div>
 
-<h2>9 · The checklist</h2>
+<h2>10 · The checklist</h2>
 <div class="panel"><ul>
-<li><b>Only A+ and A.</b> The ‘Today’ tab shows the grade and why; B and below are off plan.</li>
+<li><b>Only the plan:</b> A+ and A, or A+ only when ‘Today’ says setups are failing. B and below are off plan.</li>
 <li>Enter on the buy-stop, not before and not chasing more than ~1% above.</li>
-<li>Stop at 1× ADR; size so that stop is 1% of the account. Same in every market.</li>
+<li>Stop at 1× ADR; size so that stop is 0.75% of the account. Same in every market.</li>
 <li><b>Don't sell a winner by feel.</b> Move the stop to the Auto level each night (the stop email has it) and let it take you out.</li>
 <li>Check the Discipline panel in Account weekly.</li>
 </ul></div>
 
-<h2>10 · Caveats</h2>
+<h2>11 · Caveats</h2>
 <div class="panel"><ul>
 <li>The five points were chosen after seeing both halves of the history; their cut-offs come from 2017–22 only and they held on two data sets, but live
 trading is the real test. The forward test records the new grade and the old one side by side.</li>
 <li>Delisted and taken-over stocks are missing (no free price history).</li>
-<li>Results use 1% risk and a cash limit on a $10k account; a larger or margin account behaves differently.</li>
+<li>Results use 0.75% risk and a cash limit on a $10k account; a larger or margin account behaves differently. Many rules were tested to find these;
+the ones kept held in every period, but live results are the final word.</li>
 <li>Account results swing a lot on which same-day setups get taken, so read them as ranges, not single numbers.</li>
 </ul></div>
 </main></body></html>

@@ -313,10 +313,11 @@
 <script>
 (function () {
   // ---------- settings (this device only) ----------
-  const DEF = { acct: 10000, risk: 1 };
+  const DEF = { acct: 10000, risk: 0.75 };   // 0.75% a trade since 2026-10-05 (more, smaller positions tested better)
   function load(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   let settings = Object.assign({}, DEF, load("md.settings", {}));
+  if (load("md.settings.v", 0) < 2) { if (settings.risk === 1) settings.risk = 0.75; save("md.settings", settings); save("md.settings.v", 2); }
   // The exit everywhere: trail at close - k x ADR once that is above the entry. "auto" (the default
   // since 2026-10-03, exit_rule.py) picks k from the market the day before entry: 4x while the index is
   // under 5% above its 200-day, 6x at 5-10%, 8x above. A trade keeps the band it entered with. The pick
@@ -453,19 +454,26 @@
   function renderToday() {
     const el = $("#today");
     if (!data) { el.innerHTML = '<div class="empty">No data yet -- it appears after the next nightly run.</div>'; return; }
+    // Tonight's plan: A+ and A, or A+ only while recent plan trades are failing (setups_working.py).
+    const SW = data.setups_working || null, PLAN_TONIGHT = (SW && SW.plan_today) || GROUPS.top;
+    GROUPS.tonight = PLAN_TONIGHT;
+    const swLine = SW && SW.value != null ? `<div class="openr" style="margin:-4px 0 8px">Setups working: <b class="${SW.value >= SW.failing_below ? "pos" : "neg"}">${rfmt(SW.value)}</b>
+      a trade over the last ${SW.n} closed plan trades → <b>${PLAN_TONIGHT.length === 1 ? "A+ only tonight" : "A+ and A"}</b>${PLAN_TONIGHT.length === 1
+        ? ". Breakouts are failing, so A setups wait until it's back above " + rfmt(SW.failing_below) + "." : "."}</div>` : "";
     const c = data.counts || {};
-    const n = (g) => g === "All" ? data.setups.length : GROUPS[g].reduce((a, x) => a + (c[x] || 0), 0);
+    const n = (g) => g === "All" ? data.setups.length : GROUPS[g === "top" ? "tonight" : g].reduce((a, x) => a + (c[x] || 0), 0);
     const gradeChip = (g, label) => `<button class="chip ${filters.grade === g ? "on" : ""}" data-g="${g}">${label}<span class="n">${n(g)}</span></button>`;
     const stratChip = (s) => `<button class="chip ${filters.strategy === s ? "on" : ""}" data-s="${s}">${s}</button>`;
     let rows = data.setups.filter((s) =>
-      GROUPS[filters.grade].includes(s.grade) &&
+      GROUPS[filters.grade === "top" ? "tonight" : filters.grade].includes(s.grade) &&
       (filters.strategy === "All" || s.strategies.includes(filters.strategy)) &&
       (!filters.q || (s.ticker + " " + s.sector).toLowerCase().includes(filters.q.toLowerCase())));
     const all = rows, LIMIT = 40, total = rows.length, tableView = filters.view === "table";
     if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      <div class="chips">${gradeChip("top", "A+ & A")}${GRADES.map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
+      ${swLine}
+      <div class="chips">${gradeChip("top", PLAN_TONIGHT.length === 1 ? "Plan (A+)" : "Plan (A+ & A)")}${GRADES.filter((g) => g !== "F" || c.F).map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
       <div class="toolbar">
@@ -526,7 +534,7 @@
   function exportWatchlist(rows, how) {
     const order = GRADES.filter((g) => rows.some((s) => s.grade === g));
     const txt = order.map((g) => ["###" + g + " setups"].concat(rows.filter((s) => s.grade === g).map((s) => s.ticker)).join(",")).join(",");
-    const label = filters.grade === "top" ? "A+-B" : filters.grade;
+    const label = filters.grade === "top" ? "plan" : filters.grade;
     const name = `watchlist-${data.date}-${label}${filters.strategy !== "All" ? "-" + filters.strategy : ""}.txt`;
     if (how === "copy") {
       const done = () => toast(`Copied ${rows.length} tickers`);
@@ -829,7 +837,9 @@
     // Market conditions: how far the index sat above its 200-day the day before entry (the Auto rule's buckets).
     // Each cell is the $10k account on just the trades entered in that market when it's been run, else avg R.
     const SB = bt.strength_buckets || [];
-    const hasAcc = XS.some((k) => B(k).account_by_strength);
+    // Avg R a trade, not a separate $10k account per market: separate accounts flattered a wide trail in weak
+    // markets (8x below the 200-day looked best) that cost the real, single account dearly (2026-10-05 test).
+    const hasAcc = false;
     const cRows = SB.map(({ key, label }) => {
       const cells = XS.map((k) => ({ s: ((B(k).backtest || {}).by_strength || {})[key] || {}, a: (B(k).account_by_strength || {})[key] }));
       const val = (c) => hasAcc ? (c.a ? c.a.return_pct : null) : (c.s.n ? c.s.avg_r : null);
@@ -837,9 +847,10 @@
       return `<tr><td>${label}<div class="sub">${fmt(cells[0].s.n || 0, 0)} trades</div></td>${cells.map((c) => { const v = val(c);
         return v == null ? "<td>–</td>" : `<td class="${pc(v)}" style="${v === top ? "font-weight:700" : ""}">${hasAcc ? pct(v) : rfmt(v)}</td>`; }).join("")}</tr>`;
     }).join("");
-    const gRows = GRADES.map((g) => `<tr class="${GROUPS.top.includes(g) ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>${XS.map((k) => {
+    const shownGrades = GRADES.filter((g) => XS.some((k) => ((((B(k).backtest || {}).by_grade || {})[g]) || {}).n));
+    const gRows = shownGrades.map((g) => `<tr class="${GROUPS.top.includes(g) ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>${XS.map((k) => {
       const x = ((B(k).backtest || {}).by_grade || {})[g] || {}; return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}</td>`; }).join("")}</tr>`).join("");
-    const gN = GRADES.map((g) => `${g} ${fmt((((B(4).backtest || {}).by_grade || {})[g] || {}).n || 0, 0)}`).join(" · ");
+    const gN = shownGrades.map((g) => `${g} ${fmt((((B(4).backtest || {}).by_grade || {})[g] || {}).n || 0, 0)}`).join(" · ");
     // QM vs Minervini: the point-in-time study's clearest split (QM made money in both halves of the history, Minervini lost in both).
     const hasSAcc = XS.some((k) => B(k).account_by_strategy);
     const sRows = ["QM", "Minervini"].map((s) => {
@@ -876,18 +887,19 @@
     const f = bt.backtest.fill_checks || {};
     el.innerHTML = `
       <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
-      <div class="openr" style="margin-top:-2px">A+ and A setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.
+      <div class="openr" style="margin-top:-2px">A+ and A setups (A only while recent setups are working), buy-stop at the 20-day highest close, stop 1× ADR below, 0.75% risk a trade. Then each exit: trail at close − k × ADR once above entry.
         ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
-      <div class="panel"><h3>$10k account <span class="sub">${scope}, 1% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
+      <div class="panel"><h3>$10k account <span class="sub">${scope}, 0.75% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
         <div class="legend">${XS.map((k) => `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)}</b>` : blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
       <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ and A trades</span></h3>
         <table class="st fit bt-x"><thead><tr><th style="width:22%">Exit</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th>${XS.some(H) ? "<th>2017–22</th><th>2023–26</th>" : ""}</tr></thead><tbody>${xRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The halves are each exit's $10k account on 2017–22 and 2023–26 alone. "Best" has to hold up in both: one exit topping the whole period can be one lucky stretch.</div></div>
       ${mPanel}
-      <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ and A entered in each market" : "A+ and A avg R a trade"}</span></h3>
+      <div class="panel"><h3>By market condition <span class="sub">A+ and A, avg R a trade by where the market was at entry</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Market</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${cRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.</div></div>
+        <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.
+          Picking a different exit per market from this table doesn't carry over to one account: a wide trail ties up cash and blocks the next setups. Tested: Auto stays best.</div></div>
       ${sPanel}
       <div class="panel"><h3>By grade <span class="sub">avg R a trade · why A+ and A</span></h3>
         <table class="st fit bt-g"><thead><tr><th style="width:20%">Grade</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${gRows}</tbody></table>
@@ -1100,7 +1112,7 @@
     </div>` : "";
     // Headline at the top: the exits are where the backtest and the account part ways.
     const exitStrip = disc.early && disc.earlyR > 0.5 ? `<div class="verdict behind">Selling before the ${bl()} rule cost <b>${fmt(disc.earlyR, 1)}R</b>
-      on ${disc.early} trade${disc.early > 1 ? "s" : ""} in this window (about ${fmt(disc.earlyR, 0)}% of the account at 1% risk). ${disc.exit[0]} of ${disc.exit[1]} exits followed the rule.</div>` : "";
+      on ${disc.early} trade${disc.early > 1 ? "s" : ""} in this window (about ${fmt(disc.earlyR * 0.75, 0)}% of the account at 0.75% risk). ${disc.exit[0]} of ${disc.exit[1]} exits followed the rule.</div>` : "";
     const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${bl()} exit on the same trades</span></h3>
       <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${bl()} total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
@@ -1114,7 +1126,7 @@
     const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" role="button" data-gtip="${esc(gtip(g))}">${esc(g.grade)}</span>` : "";
     // Off plan = graded outside A+ and A; risk = % of the account put at risk on the entry.
     const offPlan = (x) => x.grade && !PLAN.includes(x.grade.grade);
-    const riskTxt = (v) => v == null ? "" : `<span class="${v > 2 ? "neg" : v > 1.25 ? "warnc" : ""}">risked ${fmt(v, 1)}%</span>`;
+    const riskTxt = (v) => v == null ? "" : `<span class="${v > 1.5 ? "neg" : v > 1.0 ? "warnc" : ""}">risked ${fmt(v, 1)}%</span>`;   // plan: 0.75%
     const pos = positions.map((p) => {
       // Tonight's stop is the chosen band's (outlined); the other bands are shown dimmed for comparison.
       const s = p.stops || {};
