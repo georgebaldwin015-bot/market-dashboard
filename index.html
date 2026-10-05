@@ -336,7 +336,7 @@
     ? `Auto: trail the stop at close − k× ADR once that's above your entry, k set by the market the day before entry — 4× while the index is under 5% above its 200-day, 6× at 5–10%, 8× above (today: ${todayBand()}×). Until then the 1× ADR stop.`
     : `Trail the stop at close − ${k}× ADR once that's above your entry (so it never drops back below breakeven); until then the 1× ADR stop.`;
   const GRADES = ["A+", "A", "B", "C", "D", "F"];
-  const GROUPS = { top: ["A+", "A", "B"], All: GRADES };
+  const GROUPS = { top: ["A+", "A"], All: GRADES };   // the plan: A+ and A (3+ points) since 2026-10-05
   GRADES.forEach((g) => GROUPS[g] = [g]);
   let filters = Object.assign({ grade: "top", strategy: "All", q: "", view: "cards", sort: "" }, load("md.filters", {}));
   if (!GROUPS[filters.grade]) filters.grade = "top";   // e.g. the old "AB" setting
@@ -435,7 +435,7 @@
         <div class="grade ${gcls(s.grade)}">${esc(s.grade)}</div>
         <div class="grow">
           <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
-          <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%</div>
+          <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%${s.grade_v1 && s.grade_v1 !== s.grade ? ` · <span title="the grade before 2026-10-05">old grade ${esc(s.grade_v1)}</span>` : ""}</div>
         </div>
         ${ernTag(s.earnings)}<span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
         <span class="caret" aria-hidden="true">▾</span>
@@ -465,7 +465,7 @@
     if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      <div class="chips">${gradeChip("top", "A+ – B")}${GRADES.map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
+      <div class="chips">${gradeChip("top", "A+ & A")}${GRADES.map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
       <div class="toolbar">
@@ -786,10 +786,10 @@
   let bt = null, btLoading = false, btChart = null;
   const MORE = [
     ["review.html", "Strategy review", "The whole system in plain English: setups, grades, market confidence, exits"],
-    ["setup-grades.html", "Setup grades", "What A+ to F setups look like, with the ADR bands"],
+    ["setup-grades.html", "Setup grades", "What A+ to D setups look like on the five-point grade, with the ADR bands"],
     ["setup-gallery.html", "Setup gallery", "Best historical trades by category"],
     ["industry.html", "Full market report", "Heatmap, sector and industry trend charts"],
-    ["backtest.html", "Detailed backtest report", "The long-form report: every system, entry and exit variant"]];
+    ["backtest.html", "Old detailed report", "Superseded: built on today's index list (with hindsight) and the old grades"]];
   function renderBacktest() {
     const el = $("#backtest-view");
     if (!bt) {
@@ -802,7 +802,7 @@
       }
       return;
     }
-    // One question: on the rules we've set (A+ to B, buy-stop, 1× ADR stop), which exit would have done best,
+    // One question: on the rules we've set (A+ and A, buy-stop, 1× ADR stop), which exit would have done best,
     // overall and in each market condition? Every exit side by side; the Exit picker's band is marked "yours".
     const B = (k) => bt.bands[String(k)] || {};
     const XS = ["2", "4", "6", "8", "auto"].filter((k) => bt.bands[k]);   // every fixed band, then Auto
@@ -811,18 +811,21 @@
     const pct = (v) => v == null ? "–" : (v > 0 ? "+" : "") + fmt(v, 0) + "%";
     const usd = (v) => v == null ? "–" : "$" + Math.round(10000 * (1 + v / 100)).toLocaleString();
     const plan = (k) => (B(k).backtest || {}).plan || {}, acc = (k) => B(k).account;
-    const scope = bt.account_scope === "plan" ? "A+ to B" : "every grade";
+    const scope = bt.account_scope === "plan" ? "A+ and A" : "every grade";
     const bA = acc(best), bP = plan(best);
     const AU = bt.auto || {}, BM = bt.benchmark, PIT = bt.point_in_time;
     const autoNow = AU.band_now ? `Auto today: <b>${AU.band_now}×</b> (index ${AU.strength_now > 0 ? "+" : ""}${fmt(AU.strength_now, 1)}% vs its 200-day).` : "";
-    const verdict = best == null ? "" : `<div class="verdict ahead">Best exit on your rules: <b>${best === "auto" ? "Auto (4× / 6× / 8× by market strength)" : best + "× ADR"}</b>.
+    const H = (k) => B(k).account_halves || null, hv = H(best);
+    const halfTxt = hv ? Object.entries(hv).map(([lab, a]) => `${lab} ${pct(a.return_pct)}`).join(", ") : "";
+    const verdict = best == null ? "" : `<div class="verdict ahead">Best exit on your rules: <b>${best === "auto" ? "Auto (4× / 6× / 8× by market strength)" : best + "× ADR"}</b>${hv ? ` — the strongest in its weaker half of the history (${halfTxt})` : ""}.
       ${bA ? `$10,000 → <b>${usd(bA.return_pct)}</b> (${pct(bA.return_pct)}, ${fmt(bA.cagr_pct, 0)}% a year), worst drawdown ${fmt(bA.max_dd_pct, 0)}%.` : ""}
       ${fmt(bP.n, 0)} trades, ${fmt(bP.win_rate, 0)}% winners, ${rfmt(bP.avg_r)} a trade.${!same(best, band) ? ` You're on ${bl()}.` : ""} ${autoNow}
       ${BM ? `<div style="margin-top:4px">Holding the S&P 500 instead: $10,000 → <b>${usd(BM.return_pct)}</b> (${fmt(BM.cagr_pct, 0)}% a year, worst drawdown ${fmt(BM.max_dd_pct, 0)}%)${bA && bA.return_pct < BM.return_pct ? " — <b>ahead of the rules</b>." : "."}</div>` : ""}</div>`;
     const tag = (k) => `${blk(k)}${same(k, best) ? ' <span class="ern" style="color:var(--green);border-color:rgba(63,185,80,.5)">best</span>' : ""}${same(k, band) ? ' <span class="sub">yours</span>' : ""}`;
     const xRows = XS.map((k) => { const p = plan(k), a = acc(k) || {};
-      return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td><td>${fmt(p.win_rate, 0)}%</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td>
-        <td class="${pc(a.return_pct)}">${pct(a.return_pct)}</td><td>${a.cagr_pct == null ? "–" : fmt(a.cagr_pct, 0) + "%"}</td><td>${a.max_dd_pct == null ? "–" : "−" + fmt(a.max_dd_pct, 0) + "%"}</td></tr>`; }).join("");
+      const h = H(k) || {}, hc = (lab) => h[lab] ? `<td class="${pc(h[lab].return_pct)}">${pct(h[lab].return_pct)}</td>` : "<td>–</td>";
+      return `<tr class="${same(k, best) ? "on" : ""}"><td>${tag(k)}</td><td class="${pc(p.avg_r)}">${rfmt(p.avg_r)}</td>
+        <td class="${pc(a.return_pct)}">${pct(a.return_pct)}</td><td>${a.cagr_pct == null ? "–" : fmt(a.cagr_pct, 0) + "%"}</td><td>${a.max_dd_pct == null ? "–" : "−" + fmt(a.max_dd_pct, 0) + "%"}</td>${XS.some(H) ? hc("2017-22") + hc("2023-26") : ""}</tr>`; }).join("");
     // Market conditions: how far the index sat above its 200-day the day before entry (the Auto rule's buckets).
     // Each cell is the $10k account on just the trades entered in that market when it's been run, else avg R.
     const SB = bt.strength_buckets || [];
@@ -845,7 +848,7 @@
         const a = (B(k).account_by_strategy || {})[s], x = ((B(k).backtest || {}).by_strategy || {})[s] || {};
         const v = hasSAcc ? (a ? a.return_pct : null) : (x.n ? x.avg_r : null);
         return v == null ? "<td>–</td>" : `<td class="${pc(v)}">${hasSAcc ? pct(v) : rfmt(v)}</td>`; }).join("")}</tr>`; }).join("");
-    const sPanel = XS.some((k) => (B(k).backtest || {}).by_strategy) ? `<div class="panel"><h3>By strategy <span class="sub">${hasSAcc ? "$10k account, A+ to B" : "A+ to B avg R a trade"}</span></h3>
+    const sPanel = XS.some((k) => (B(k).backtest || {}).by_strategy) ? `<div class="panel"><h3>By strategy <span class="sub">${hasSAcc ? "$10k account, A+ and A" : "A+ and A avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Setup</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${sRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">QM = momentum flags and pullbacks after a big move; Minervini = trend-template breakouts.</div></div>` : "";
     // Margin (George, 2026-10-05: "keen to explore with caution"): the Auto account with more buying power than cash.
@@ -857,13 +860,13 @@
         <div class="sub" style="margin:6px 2px 2px">Bigger gains and deeper drops; margin interest isn't included. 1.5× is the cautious step.</div></div>` : "";
     const fw = B(String(band)).forward || {}, fp = fw.plan || {}, mp = plan(String(band));
     const live = fp.n ? `<div class="panel"><h3>Live since ${esc(mon(bt.forward.start))} <span class="sub">same rules, your ${bl()} exit</span></h3>
-      <div class="sub" style="margin:0 2px 6px">${fp.n} A+ to B trades, <b class="${pc(fp.avg_r)}">${rfmt(fp.avg_r)}</b> a trade, against <b>${rfmt(mp.avg_r)}</b> in the backtest.
+      <div class="sub" style="margin:0 2px 6px">${fp.n} A+ and A trades, <b class="${pc(fp.avg_r)}">${rfmt(fp.avg_r)}</b> a trade, against <b>${rfmt(mp.avg_r)}</b> in the backtest.
         ${fp.n < 150 ? "Too few trades yet to judge: a handful of big winners or losers swings it." : ""}</div>
       <table class="st fit"><thead><tr><th style="width:18%">Entry</th><th>Setup</th><th style="width:24%">R</th></tr></thead><tbody>${(fw.recent || []).slice(0, 8).map((t) =>
         `<tr><td>${esc(t.entry_date.slice(5))}</td><td><span class="grade sm inl ${gcls(t.grade)}">${esc(t.grade)}</span><b>${esc(t.ticker)}</b> <span class="sub">${esc(t.strategy || "")}${t.band ? " · " + t.band + "×" : ""}</span></td>
         <td class="${pc(t.r)}">${rfmt(t.r)}${t.open ? '<div class="sub">open</div>' : ""}</td></tr>`).join("")}</tbody></table></div>` : "";
     const E = bt.earnings;
-    const ePanel = E ? `<div class="panel"><h3>Earnings <span class="sub">A+ to B, 4× exit</span></h3>
+    const ePanel = E ? `<div class="panel"><h3>Earnings <span class="sub">A+ and A, 4× exit</span></h3>
       <div class="sub" style="margin:0 2px 6px">Entered within 2 trading days of a report: <b class="${pc(E.near_entry.avg_r)}">${rfmt(E.near_entry.avg_r)}</b> a trade
         (${E.near_entry.n} trades) vs <b class="${pc(E.not_near_entry.avg_r)}">${rfmt(E.not_near_entry.avg_r)}</b> otherwise.
         ${E.near_entry.avg_r >= E.not_near_entry.avg_r - 0.2 ? "No reason to skip a setup for a report." : "Entries just before a report have done worse."}</div>
@@ -873,20 +876,20 @@
     const f = bt.backtest.fill_checks || {};
     el.innerHTML = `
       <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
-      <div class="openr" style="margin-top:-2px">A+ to B setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.
+      <div class="openr" style="margin-top:-2px">A+ and A setups, buy-stop at the 20-day highest close, stop 1× ADR below. Then each exit: trail at close − k × ADR once above entry.
         ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
       <div class="panel"><h3>$10k account <span class="sub">${scope}, 1% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
         <div class="legend">${XS.map((k) => `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)}</b>` : blk(k)}${same(k, best) ? " (best)" : ""}</span>`).join("")}</div></div>
-      <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ to B trades</span></h3>
-        <table class="st fit bt-x"><thead><tr><th style="width:26%">Exit</th><th>Win</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th></tr></thead><tbody>${xRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">Wider exits win less often but keep the big runs. Avg R counts trades still open at their last price; the account is the real comparison.</div></div>
+      <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ and A trades</span></h3>
+        <table class="st fit bt-x"><thead><tr><th style="width:22%">Exit</th><th>Avg R</th><th>$10k</th><th>A year</th><th>Max DD</th>${XS.some(H) ? "<th>2017–22</th><th>2023–26</th>" : ""}</tr></thead><tbody>${xRows}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">The halves are each exit's $10k account on 2017–22 and 2023–26 alone. "Best" has to hold up in both: one exit topping the whole period can be one lucky stretch.</div></div>
       ${mPanel}
-      <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ to B entered in each market" : "A+ to B avg R a trade"}</span></h3>
+      <div class="panel"><h3>By market condition <span class="sub">${hasAcc ? "$10k account, A+ and A entered in each market" : "A+ and A avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Market</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${cRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The market = every stock scanned, equal-weighted, read the day before entry. Bold = the best exit in that market. Auto uses 4× under +5%, 6× at +5–10%, 8× above.</div></div>
       ${sPanel}
-      <div class="panel"><h3>By grade <span class="sub">avg R a trade · why A+ to B</span></h3>
+      <div class="panel"><h3>By grade <span class="sub">avg R a trade · why A+ and A</span></h3>
         <table class="st fit bt-g"><thead><tr><th style="width:20%">Grade</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${gRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">Trades: ${gN}. C and lower are greyed: off plan.</div></div>
       ${live}
@@ -1052,11 +1055,15 @@
         <td>${rs.length ? Math.round(100 * w / rs.length) + "%" : "–"}<div class="sub">${bl()} ${brs.length ? Math.round(100 * bw / brs.length) + "%" : "–"}</div></td>
         <td class="${pc(tot)}">${rfmt(Math.round(tot * 10) / 10)}</td><td class="${pc(btot)}">${rfmt(Math.round(btot * 10) / 10)}</td></tr>`;
     }).join("");
-    const PLAN = ["A+", "A", "B"];
-    // Discipline: did each trade follow the rules? Plan grade (A+ to B), entry at the
+    const PLAN = GROUPS.top;
+    // Discipline: did each trade follow the rules? Plan grade (A+ and A), entry at the
     // 'Today' buy-stop (within 1%), exit no earlier than the chosen band (a stop-out counts
     // as following it; holding far past the stop doesn't).
     const disc = { plan: [0, 0], entry: [0, 0], exit: [0, 0], early: 0, earlyR: 0 };
+    // Sold before the chosen band's rule did (a stop-out isn't early). George, 2026-10-05: on his 16 closed
+    // A+ to B trades this cost ~21R, the biggest proven gain available, so it's flagged trade by trade.
+    const earlyExit = (t) => { const b = (t.bands || {})[band];
+      return !!(b && t.r != null && t.r > -0.8 && (b.exit == null || b.exit > (t.exit_date || ""))) ? b : null; };
     sel.forEach((t) => {
       const g = t.grade;
       if (g) { disc.plan[1]++; if (PLAN.includes(g.grade)) disc.plan[0]++; }
@@ -1073,12 +1080,27 @@
     const dTot = disc.plan[1] + disc.entry[1] + disc.exit[1], dOk = disc.plan[0] + disc.entry[0] + disc.exit[0];
     const dRow = (label, [ok, n], note) => n ? `<div class="row"><div>${label}<div class="sub">${note}</div>
       <div class="wl"><i style="width:${100 * ok / n}%"></i><b style="width:${100 * (n - ok) / n}%"></b></div></div><b>${ok}/${n}</b></div>` : "";
+    const exMonths = {};
+    acct.closed.filter(gOk).forEach((t) => {
+      const b = (t.bands || {})[band]; if (t.r == null || !b || !t.exit_date) return;
+      const m = (exMonths[t.exit_date.slice(0, 7)] ||= { n: 0, ok: 0, left: 0 });
+      m.n++; const e = earlyExit(t);
+      if (e) m.left += (e.r || 0) - t.r; else if (t.r >= -1.3) m.ok++;
+    });
+    const mRows = Object.keys(exMonths).sort().reverse().slice(0, 6).map((k) => { const m = exMonths[k];
+      return `<tr><td>${esc(new Date(k + "-15T12:00:00").toLocaleDateString([], { month: "short", year: "2-digit" }))}</td><td>${m.ok}/${m.n}</td>
+        <td class="${m.left > 0.05 ? "neg" : m.left < -0.05 ? "pos" : ""}">${Math.abs(m.left) < 0.05 ? "–" : (m.left > 0 ? "−" : "+") + fmt(Math.abs(m.left), 1) + "R"}</td></tr>`; }).join("");
     const discPanel = dTot ? `<div class="panel disc"><h3>Discipline <span class="sub">did each trade follow the rules</span></h3>
       <div class="score" style="color:${dOk / dTot >= 0.8 ? "var(--green)" : dOk / dTot >= 0.6 ? "var(--amber)" : "var(--red)"}">${Math.round(100 * dOk / dTot)}%</div>
-      ${dRow("On-plan grade", disc.plan, "A+ to B only")}
+      ${dRow("On-plan grade", disc.plan, "A+ and A only")}
       ${dRow("Entered at the buy-stop", disc.entry, "within 1% of the ‘Today’ buy-stop")}
-      ${dRow(`Exited by the ${bl()} rule`, disc.exit, disc.early ? `${disc.early} sold before the band · that cost ${fmt(Math.abs(disc.earlyR), 1)}R vs holding to the band` : "no early exits")}
+      ${dRow(`Exited by the ${bl()} rule`, disc.exit, disc.early ? `${disc.early} sold before the band · that ${disc.earlyR >= 0 ? "cost" : "saved"} ${fmt(Math.abs(disc.earlyR), 1)}R vs holding to the band` : "no early exits")}
+      ${mRows ? `<table class="st fit" style="margin-top:8px"><thead><tr><th>Month</th><th>Exits by the rule</th><th>Selling early cost</th></tr></thead><tbody>${mRows}</tbody></table>
+        <div class="sub" style="margin-top:4px">Cost = what the ${bl()} rule made (or is making, if it would still be holding) minus what you took.</div>` : ""}
     </div>` : "";
+    // Headline at the top: the exits are where the backtest and the account part ways.
+    const exitStrip = disc.early && disc.earlyR > 0.5 ? `<div class="verdict behind">Selling before the ${bl()} rule cost <b>${fmt(disc.earlyR, 1)}R</b>
+      on ${disc.early} trade${disc.early > 1 ? "s" : ""} in this window (about ${fmt(disc.earlyR, 0)}% of the account at 1% risk). ${disc.exit[0]} of ${disc.exit[1]} exits followed the rule.</div>` : "";
     const wlTable = wlRows ? `<div class="panel"><h3>Wins &amp; losses by grade <span class="sub">your exits vs the ${bl()} exit on the same trades</span></h3>
       <table class="st fit"><thead><tr><th style="width:17%">Grade</th><th style="width:33%">Won / lost</th><th>Win %</th><th>Total R</th><th>${bl()} total</th></tr></thead><tbody>${wlRows}</tbody></table></div>` : "";
     const ungraded = inWin.filter((t) => !t.grade).length;
@@ -1088,9 +1110,9 @@
     const bandCards = statRow(bst) + (bst.n ? gstat(growthPct(gi < 0 ? -1 : 2 + gi)) : "");
     const cards = statRow(st) + (st.n ? gstat(growthPct(1)) : "");
     // Tap a grade badge for the one-line why (on/off 'Today' that day + the scoring points).
-    const gtip = (g) => `${g.on_screen ? "On ‘Today’ that day" : "Not on ‘Today’ that day"}${g.on_screen && g.strategy ? " (" + g.strategy + ")" : ""} · ${(g.reasons || []).join(", ") || "no points either way"}`;
+    const gtip = (g) => `${g.on_screen ? "On ‘Today’ that day" : "Not on ‘Today’ that day"}${g.on_screen && g.strategy ? " (" + g.strategy + ")" : ""} · ${(g.reasons || []).join(", ") || "no points"}${g.grade_v1 && g.grade_v1 !== g.grade ? ` · old grade ${g.grade_v1}` : ""}`;
     const gchip = (g) => g ? `<span class="grade sm inl ${gcls(g.grade)} ${g.on_screen ? "" : "off"}" role="button" data-gtip="${esc(gtip(g))}">${esc(g.grade)}</span>` : "";
-    // Off plan = graded outside A+ to B; risk = % of the account put at risk on the entry.
+    // Off plan = graded outside A+ and A; risk = % of the account put at risk on the entry.
     const offPlan = (x) => x.grade && !PLAN.includes(x.grade.grade);
     const riskTxt = (v) => v == null ? "" : `<span class="${v > 2 ? "neg" : v > 1.25 ? "warnc" : ""}">risked ${fmt(v, 1)}%</span>`;
     const pos = positions.map((p) => {
@@ -1115,13 +1137,16 @@
     if (!showAllClosed) closed = closed.slice(0, 15);
     const cl = closed.map((t) => `<tr><td>${esc(t.exit_date || "")}</td><td>${gchip(t.grade)}<a class="tkl" data-ticker="${esc(t.symbol)}"><b>${esc(t.symbol)}</b></a><div class="sub">${t.days ?? "–"}d${t.risk_pct != null ? " · " + fmt(t.risk_pct, 1) + "%" : ""}${offPlan(t) ? ' · <span class="offplan sm">off plan</span>' : ""}</div></td>
       <td class="${pc(t.r)}">${rfmt(t.r)}</td>${(() => { const b = (t.bands || {})[band];
-        return b ? `<td class="${pc(b.r)}">${rfmt(b.r)}${b.exit ? "" : '<div class="sub">holding</div>'}</td>` : "<td>–</td>"; })()}</tr>`).join("");
+        const e = earlyExit(t), gap = e ? (e.r || 0) - t.r : 0;
+        return b ? `<td class="${pc(b.r)}">${rfmt(b.r)}${b.exit ? "" : '<div class="sub">still holding</div>'}${e && gap > 0.3
+          ? `<div class="sub warnc">sold early · ${rfmt(Math.round(gap * 10) / 10)} left</div>` : ""}</td>` : "<td>–</td>"; })()}</tr>`).join("");
     el.innerHTML = `
       <h2>Account <span class="sub" style="font-weight:400">IBKR · ${esc(acct.as_of)}</span></h2>
       ${liveStrip()}
       <div class="toolbar"><div class="seg">${win("30d", "30d")}${win("90d", "90d")}${win("365d", "1y")}${win("all", "All")}</div></div>
-      <div class="chips">${gchipF("top", "A+ – B")}${GRADES.map((gr) => gchipF(gr, gr)).join("")}${gchipF("All", "All")}</div>
+      <div class="chips">${gchipF("top", "A+ & A")}${GRADES.map((gr) => gchipF(gr, gr)).join("")}${gchipF("All", "All")}</div>
       ${acctGrade === "All" ? "" : '<div class="openr">Filtered by the grade ‘Today’ would have given each entry. Growth is the whole account (it can\'t be split by grade).</div>'}
+      ${exitStrip}
       <div class="rowlab">Your exits</div>
       <div class="mk-cards even" style="grid-template-columns:repeat(5,minmax(0,1fr))">${cards}</div>
       ${openR != null ? `<div class="openr">R boxes are closed trades only (open positions add ${rfmt(openR)}); Growth includes open positions.</div>` : ""}
