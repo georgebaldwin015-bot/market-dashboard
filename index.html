@@ -436,7 +436,7 @@
         <div class="grade ${gcls(s.grade)}">${esc(s.grade)}</div>
         <div class="grow">
           <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
-          <div class="sub">${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%${s.grade_v1 && s.grade_v1 !== s.grade ? ` · <span title="the grade before 2026-10-05">old grade ${esc(s.grade_v1)}</span>` : ""}</div>
+          <div class="sub">${s._pick ? `<b>Pick #${s._pick}</b> · ` : ""}${esc(s.strategies.join(" + "))} · ${esc(s.sector)} · RS ${s.rs == null ? "–" : Math.round(s.rs)} · ADR ${fmt(s.adr_pct, 1)}%${s.grade_v1 && s.grade_v1 !== s.grade ? ` · <span title="the grade before 2026-10-05">old grade ${esc(s.grade_v1)}</span>` : ""}</div>
         </div>
         ${ernTag(s.earnings)}<span class="near ${s.pct_to_pivot <= 1 ? "hot" : ""}">${at ? "at pivot" : fmt(s.pct_to_pivot, 1) + "% below"}</span>
         <span class="caret" aria-hidden="true">▾</span>
@@ -457,9 +457,13 @@
     // Tonight's plan: A+ and A, or A+ only while recent plan trades are failing (setups_working.py).
     const SW = data.setups_working || null, PLAN_TONIGHT = (SW && SW.plan_today) || GROUPS.top;
     GROUPS.tonight = PLAN_TONIGHT;
+    // Pick order: the setups come sorted higher score first, then the cheaper stock (selection_study.py).
+    let pk = 0;
+    data.setups.forEach((s) => { s._pick = PLAN_TONIGHT.includes(s.grade) ? ++pk : 0; });
     const swLine = SW && SW.value != null ? `<div class="openr" style="margin:-4px 0 8px">Setups working: <b class="${SW.value >= SW.failing_below ? "pos" : "neg"}">${rfmt(SW.value)}</b>
       a trade over the last ${SW.n} closed plan trades → <b>${PLAN_TONIGHT.length === 1 ? "A+ only tonight" : "A+ and A"}</b>${PLAN_TONIGHT.length === 1
-        ? ". Breakouts are failing, so A setups wait until it's back above " + rfmt(SW.failing_below) + "." : "."}</div>` : "";
+        ? ". Breakouts are failing, so A setups wait until it's back above " + rfmt(SW.failing_below) + "." : "."}
+      Not enough cash for all of them? Take them in pick order (higher score, then the cheaper stock).</div>` : "";
     const c = data.counts || {};
     const n = (g) => g === "All" ? data.setups.length : GROUPS[g === "top" ? "tonight" : g].reduce((a, x) => a + (c[x] || 0), 0);
     const gradeChip = (g, label) => `<button class="chip ${filters.grade === g ? "on" : ""}" data-g="${g}">${label}<span class="n">${n(g)}</span></button>`;
@@ -886,6 +890,22 @@
       <table class="st fit"><thead><tr><th style="width:18%">Entry</th><th>Setup</th><th style="width:24%">R</th></tr></thead><tbody>${(fw.recent || []).slice(0, 8).map((t) =>
         `<tr><td>${esc(t.entry_date.slice(5))}</td><td><span class="grade sm inl ${gcls(t.grade)}">${esc(t.grade)}</span><b>${esc(t.ticker)}</b> <span class="sub">${esc(t.strategy || "")}${t.band ? " · " + t.band + "×" : ""}</span></td>
         <td class="${pc(t.r)}">${rfmt(t.r)}${t.open ? '<div class="sub">open</div>' : ""}</td></tr>`).join("")}</tbody></table></div>` : "";
+    // New grade vs old grade, live (George, 2026-10-06): the same forward-test trades scored both ways, Auto exit.
+    const SC = bt.scorecard;
+    const scCell = (x) => x && x.n ? `<td class="${pc(x.avg_r)}">${rfmt(x.avg_r)}<div class="sub">${x.n} trades</div></td>` : "<td>–</td>";
+    const scPanel = SC ? (() => {
+      const A = SC.all, C = SC.clean, oldPlan = SC.old_plan_grades.join(", ");
+      const gr = ["A+", "A", "B", "C", "D"].filter((g) => (A.new[g] || {}).n || (A.old[g] || {}).n).map((g) =>
+        `<tr><td><span class="grade sm ${gcls(g)}">${g}</span></td>${scCell(A.new[g])}${scCell(A.old[g])}</tr>`).join("");
+      const cn = C.new_plan.n || 0, co = C.old_plan.n || 0;
+      return `<div class="panel"><h3>New grade vs old, live <span class="sub">Auto exit, R a trade (open trades at today's price)</span></h3>
+        <table class="st fit"><thead><tr><th style="width:26%"></th><th>New grade</th><th>Old grade</th></tr></thead><tbody>
+        <tr><td><b>The plan</b><div class="sub">new A+, A · old ${esc(oldPlan)}</div></td>${scCell(A.new_plan)}${scCell(A.old_plan)}</tr>${gr}</tbody></table>
+        <div class="sub" style="margin:6px 2px 2px">Every live setup since ${esc(mon(SC.since))}, graded both ways. The new grade was set on 5 Oct using data
+        that included these weeks, so the clean test is trades from ${parseInt(SC.clean_from.slice(8), 10)} Oct on: ${cn || co
+          ? `new plan <b class="${pc(C.new_plan.avg_r)}">${rfmt(C.new_plan.avg_r)}</b> (${cn}) vs old plan <b class="${pc(C.old_plan.avg_r)}">${rfmt(C.old_plan.avg_r)}</b> (${co}).`
+          : "none yet."} Give it a few months before reading much into it.</div></div>`;
+    })() : "";
     const E = bt.earnings;
     const ePanel = E ? `<div class="panel"><h3>Earnings <span class="sub">A+ and A, 4× exit</span></h3>
       <div class="sub" style="margin:0 2px 6px">Entered within 2 trading days of a report: <b class="${pc(E.near_entry.avg_r)}">${rfmt(E.near_entry.avg_r)}</b> a trade
@@ -916,6 +936,7 @@
         <table class="st fit bt-g"><thead><tr><th style="width:20%">Grade</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${gRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">Trades: ${gN}. C and lower are greyed: off plan.</div></div>
       ${live}
+      ${scPanel}
       ${ePanel}
       ${moreList()}
       <div class="sub" style="margin:4px 2px 14px">Counted the way the live test counts: one position per stock at a time; fill days the daily bar can't settle checked on hourly bars

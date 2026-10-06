@@ -84,7 +84,28 @@ closed plan trades. When it's below 0R, breakouts are failing, so take <b>A+ onl
 volatility, 20-day trend, stocks near highs, setups working; for exit width, grades, size and risk); only these two held in every period. Changing the exit
 width by market, adding B in good markets and sizing by market all failed somewhere (backtest/conditions_study.py).</div></div>
 
-<h2>6 · The market</h2>
+<h2>6 · Which setups to take, how to enter, sectors (tested 6 Oct 2026)</h2>
+<div class="panel">Two out of three plan setups share their day with another, and the cash often can't take them all.
+<table><thead><tr><th style="width:30%">$10k, typical</th><th>2017–19</th><th>2020–22</th><th>2023–24</th><th>2025–26</th><th>2017–26</th></tr></thead><tbody>
+<tr><td>Random order (today's backtest)</td><td>+37%</td><td>+130%</td><td>+55%</td><td>+76%</td><td>+770%</td></tr>
+<tr><td><b>Higher score, then cheaper stock</b></td><td class="g">+37%</td><td class="g">+167%</td><td class="g">+63%</td><td class="g">+82%</td><td class="g"><b>+970%</b></td></tr>
+<tr><td>Cheapest stock first</td><td class="g">+42%</td><td class="g">+167%</td><td class="g">+63%</td><td class="r">+64%</td><td>+896%</td></tr>
+<tr><td>Highest ADR first</td><td class="r">+34%</td><td class="r">+114%</td><td class="r">+52%</td><td class="r">+70%</td><td>+626%</td></tr>
+</tbody></table>
+<div class="sub" style="margin-top:6px"><b>Pick order:</b> higher score first, then the cheaper stock. It was the only simple rule (with "score, then
+tightest base") to beat random picking in all four periods. Treat the +970% as the best case: re-run on 30 random 80% slices of the trades it beat random
+order in 25, by about +67 points over the whole history. ‘Today’ now lists the plan in pick order (Pick #1, #2...). Also tried and rejected as
+tie-breakers: highest or lowest ADR, deepest pullback, highest RS, least extended, strongest sector.</div>
+<ul style="margin-top:8px">
+<li><b>Entries: keep the buy-stop at the pivot.</b> Buying only on a close above the pivot (+207% vs +837% on the same re-simulated trades), a buy-stop a
+quarter-ADR higher (+314%), skipping the most extended third (+260% vs +770%) and skipping loose bases (+484%) all did worse. Waiting for confirmation
+costs more in missed and dearer entries than it saves in false breakouts.</li>
+<li><b>Sector strength: no edge.</b> Setups in the strongest third of sectors (3-month move) averaged less per trade than the rest in three of four
+periods. Skipping weak sectors (+405%) or adding a point for strong ones (+247%) both cut the return.</li>
+</ul>
+<div class="sub">backtest/selection_study.py. Same rules as above: point-in-time stocks, the plan, Auto exit, 0.75% risk, each period its own $10k account.</div></div>
+
+<h2>7 · The market</h2>
 <div class="panel">Avg R a trade (Auto exit) by where the market stood the day before entry:
 <table><thead><tr><th style="width:40%">Market</th><th>A+/A</th><th>B</th><th>C</th><th>D</th></tr></thead><tbody>
 <tr><td>Index 0–5% above its 200-day</td><td class="g">+0.75</td><td>+0.37</td><td>+0.34</td><td>+0.19</td></tr>
@@ -95,7 +116,7 @@ width by market, adding B in good markets and sizing by market all failed somewh
 <div class="sub" style="margin-top:6px">A+/A setups paid in every market, and best in a bear: fewer pass, but the ones that do are often the next leaders.
 Skipping bear-market entries cut the account's return in both halves, so the plan and size never change with the market.</div></div>
 
-<h2>7 · The exit</h2>
+<h2>8 · The exit</h2>
 <div class="panel">The stop trails at close − k × ADR once that's above your entry; until then the 1× ADR stop stands. <b>Auto</b> picks k from how far the
 market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×.
 <table><thead><tr><th style="width:16%">Exit</th><th>2017–19</th><th>2020–22</th><th>2023–24</th><th>2025–26</th><th>2017–26</th></tr></thead><tbody>
@@ -109,30 +130,31 @@ market was above its 200-day the day before entry: under +5% → 4×, +5–10% �
 bad-luck case (+616% vs 4×'s +574%); 4× wins two of the four stretches and Auto the other two. The Backtest tab picks "best" as the exit whose weaker half
 of the history did best, which is also Auto.</div></div>
 
-<h2>8 · Margin (with caution)</h2>
+<h2>9 · Margin (with caution)</h2>
 <div class="panel">With 1.5× buying power the same plan made about 30% a year (worst drop ~27%); at 2×, about 32% (~29%). Bigger drops, and margin
 interest isn't included. 1.5× is the cautious step; the With margin panel on the Backtest tab keeps the current figures.</div>
 
-<h2>9 · Your trades</h2>
+<h2>10 · Your trades</h2>
 <div class="panel"><ul>
 <li><b>The exits are the gap.</b> On your 16 closed trades graded A+ to B (old grade), selling before the rule made −12.3R; the same trades held to the Auto exit
 made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Account tab now flags each one and keeps a monthly score.</li>
 <li>The backtest assumes every exit follows the rule. That's the single biggest thing between it and the account.</li>
 </ul></div>
 
-<h2>10 · The checklist</h2>
+<h2>11 · The checklist</h2>
 <div class="panel"><ul>
 <li><b>Only the plan:</b> A+ and A, or A+ only when ‘Today’ says setups are failing. B and below are off plan.</li>
 <li>Enter on the buy-stop, not before and not chasing more than ~1% above.</li>
 <li>Stop at 1× ADR; size so that stop is 0.75% of the account. Same in every market.</li>
+<li><b>More setups than cash?</b> Take them in pick order: higher score first, then the cheaper stock.</li>
 <li><b>Don't sell a winner by feel.</b> Move the stop to the Auto level each night (the stop email has it) and let it take you out.</li>
 <li>Check the Discipline panel in Account weekly.</li>
 </ul></div>
 
-<h2>11 · Caveats</h2>
+<h2>12 · Caveats</h2>
 <div class="panel"><ul>
 <li>The five points were chosen after seeing both halves of the history; their cut-offs come from 2017–22 only and they held on two data sets, but live
-trading is the real test. The forward test records the new grade and the old one side by side.</li>
+trading is the real test. The forward test records the new grade and the old one side by side; the Backtest tab's "New grade vs old, live" panel scores them.</li>
 <li>Delisted and taken-over stocks are missing (no free price history).</li>
 <li>Results use 0.75% risk and a cash limit on a $10k account; a larger or margin account behaves differently. Many rules were tested to find these;
 the ones kept held in every period, but live results are the final word.</li>
