@@ -857,17 +857,21 @@
     const gRows = shownGrades.map((g) => `<tr class="${GROUPS.top.includes(g) ? "" : "out"}"><td><span class="grade sm ${gcls(g)}">${g}</span></td>${XS.map((k) => {
       const x = ((B(k).backtest || {}).by_grade || {})[g] || {}; return `<td class="${pc(x.avg_r)}">${x.n ? rfmt(x.avg_r) : "–"}</td>`; }).join("")}</tr>`).join("");
     const gN = shownGrades.map((g) => `${g} ${fmt((((B(4).backtest || {}).by_grade || {})[g] || {}).n || 0, 0)}`).join(" · ");
-    // QM vs Minervini: the point-in-time study's clearest split (QM made money in both halves of the history, Minervini lost in both).
+    // QM vs Minervini. A strategy with too few plan trades for its own $10k account (under 30 -- Minervini, which
+    // can't reach A+: it gets no QM point and its scan is Stage 2 by design, so no Stage 1 point) shows avg R a trade.
     const hasSAcc = XS.some((k) => B(k).account_by_strategy);
+    const noAcc = (s) => hasSAcc && !XS.some((k) => (B(k).account_by_strategy || {})[s]);
     const sRows = ["QM", "Minervini"].map((s) => {
-      const st = ((B(4).backtest || {}).by_strategy || {})[s] || {};
-      return `<tr><td>${s}<div class="sub">${fmt(st.n || 0, 0)} trades</div></td>${XS.map((k) => {
+      const st = ((B(4).backtest || {}).by_strategy || {})[s] || {}, byR = !hasSAcc || noAcc(s);
+      return `<tr><td>${s}<div class="sub">${fmt(st.n || 0, 0)} trades${byR && hasSAcc ? " · R a trade" : ""}</div></td>${XS.map((k) => {
         const a = (B(k).account_by_strategy || {})[s], x = ((B(k).backtest || {}).by_strategy || {})[s] || {};
-        const v = hasSAcc ? (a ? a.return_pct : null) : (x.n ? x.avg_r : null);
-        return v == null ? "<td>–</td>" : `<td class="${pc(v)}">${hasSAcc ? pct(v) : rfmt(v)}</td>`; }).join("")}</tr>`; }).join("");
+        const v = byR ? (x.n ? x.avg_r : null) : (a ? a.return_pct : null);
+        return v == null ? "<td>–</td>" : `<td class="${pc(v)}">${byR ? rfmt(v) : pct(v)}</td>`; }).join("")}</tr>`; }).join("");
+    const fewNote = ["QM", "Minervini"].filter(noAcc).map((s) => `${s} had only ${fmt((((B(4).backtest || {}).by_strategy || {})[s] || {}).n || 0, 0)} plan trades in the whole backtest -- too few for its own $10k account, so its row shows the average R a trade.`
+      + (s === "Minervini" ? " Minervini setups top out at A: they get no QM point and are already in an uptrend, so never Stage 1." : "")).join(" ");
     const sPanel = XS.some((k) => (B(k).backtest || {}).by_strategy) ? `<div class="panel"><h3>By strategy <span class="sub">${hasSAcc ? "$10k account, A+ and A" : "A+ and A avg R a trade"}</span></h3>
         <table class="st fit bt-c"><thead><tr><th style="width:26%">Setup</th>${XS.map((k) => `<th>${blk(k)}</th>`).join("")}</tr></thead><tbody>${sRows}</tbody></table>
-        <div class="sub" style="margin:6px 2px 2px">QM = momentum flags and pullbacks after a big move; Minervini = trend-template breakouts.</div></div>` : "";
+        <div class="sub" style="margin:6px 2px 2px">QM = momentum flags and pullbacks after a big move; Minervini = trend-template breakouts.${fewNote ? " " + fewNote : ""}</div></div>` : "";
     // Margin (George, 2026-10-05: "keen to explore with caution"): the Auto account with more buying power than cash.
     const MG = bt.margin || {}, aA = acc("auto");
     const mPanel = Object.keys(MG).length && aA ? `<div class="panel"><h3>With margin <span class="sub">Auto exit, same trades, more buying power than cash</span></h3>
