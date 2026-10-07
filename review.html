@@ -22,7 +22,7 @@ ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; }
 <h1>Strategy review</h1>
 <div class="sub">How Edge Lab works and what the evidence says. Rewritten 5 Oct 2026 on the honest backtest: a stock only counts while it was really in the S&amp;P 500 or Nasdaq-100.</div>
 
-<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the five points below) &mdash; but <b>A+ only
+<div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the six points below) &mdash; but <b>A+ only
 while recent setups are failing</b> &mdash; risk <b>0.75%</b> a trade, enter on the buy-stop, stop at 1× ADR, and let the <b>Auto</b> exit take you out.
 Tested honestly over 2017–26, that made about <b>26% a year with a worst drop of about 19%</b>, against 15% a year and a 34% drop for simply holding
 the S&amp;P 500. It comes in bursts, strong in 2020, 2023 and 2025–26. The biggest gain left on the table is your exits: selling before the rule.</div>
@@ -64,8 +64,14 @@ At 1% you could hold only 4–5 and missed more of the rare big runners: 0.75% d
 <tr><td>5%+ below the 52-week high (a real pullback)</td><td class="g">+0.45</td><td class="g">+0.38</td></tr>
 <tr><td>ADR 3.3% or more (fast)</td><td class="g">+0.31</td><td class="g">+0.59</td></tr>
 <tr><td>Share price under $41</td><td class="g">+0.34</td><td class="g">+0.44</td></tr>
+<tr><td>Shakeout in the last 10 days, market above its 200-day <span class="sub">(added 7 Oct)</span></td><td colspan="2">see below</td></tr>
 </tbody></table>
-<div class="sub" style="margin-top:6px">A+ = 4–5 points, A = 3, B = 2, C = 1, D = 0. Avg R a trade by grade (Auto exit): A+ +1.25, A +0.59, B +0.44, C +0.13, D +0.02.
+<div class="sub" style="margin-top:6px"><b>The shakeout point</b> (your idea, 7 Oct): in the 10 days before the setup the stock dipped under its 20-day low
+and closed back above it, in the top half of the day, as if taking out stops. It counts only while the market is above its 200-day average: in a falling
+market a dip under the lows is usually real selling. On the full monthly backtest it lifted 2017–26 from about +752% to +1,207% (typical $10k) and beat the
+five-point grade in 29 of 30 re-runs that left out a fifth of the stocks, but it was slightly worse in 2020–22 (about 6 points). We took it on the whole
+history, knowingly bending the every-period rule; the monthly test keeps checking it.</div>
+<div class="sub" style="margin-top:6px">A+ = 4–6 points, A = 3, B = 2, C = 1, D = 0. Avg R a trade by grade (Auto exit): A+ +1.25, A +0.59, B +0.44, C +0.13, D +0.02.
 The plan, A+ and A, is almost all QM setups (about 150 a year): a Minervini setup only gets there as a Stage 1 or a fast, cheap pullback.</div>
 <div class="sub" style="margin-top:6px"><b>No longer scored</b> (no consistent edge on the honest data): RS 95+, the market regime, the market's 20-day move, base tightness, earnings timing.
 The old grade took 2 points <i>off</i> for Stage 1, the opposite of what the history shows. ‘Today’ and Account show the old grade alongside while the new one proves itself live.</div></div>
@@ -153,7 +159,7 @@ made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Accou
 
 <h2>12 · Caveats</h2>
 <div class="panel"><ul>
-<li>The five points were chosen after seeing both halves of the history; their cut-offs come from 2017–22 only and they held on two data sets, but live
+<li>The first five points were chosen after seeing both halves of the history; their cut-offs come from 2017–22 only and they held on two data sets, but live
 trading is the real test. The forward test records the new grade and the old one side by side; the Backtest tab's "New grade vs old, live" panel scores them.</li>
 <li>Delisted and taken-over stocks are missing (no free price history).</li>
 <li>Results use 0.75% risk and a cash limit on a $10k account; a larger or margin account behaves differently. Many rules were tested to find these;
