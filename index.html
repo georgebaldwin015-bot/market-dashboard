@@ -446,7 +446,7 @@
         <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">1x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
-      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
+      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout ? `<span class="rz" title="Dipped under its 20-day low and closed back above it -- tracked, not graded yet">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"}</span>` : ""}${out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
     </div>`;
