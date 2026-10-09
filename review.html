@@ -123,8 +123,14 @@ periods. Skipping weak sectors (+405%) or adding a point for strong ones (+247%)
 Skipping bear-market entries cut the account's return in both halves, so the plan and size never change with the market.</div></div>
 
 <h2>8 · The exit</h2>
-<div class="panel">The stop trails at close − k × ADR once that's above your entry; until then the 1× ADR stop stands. <b>Auto</b> picks k from how far the
-market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×.
+<div class="panel"><b>Your exit since 9 Oct:</b> start with the 1× ADR stop; once close − k × ADR is above your entry, trail the stop there, never down.
+<b>Auto</b> picks k from how far the market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×. <b>Give-back rule:</b> once a
+trade has been +10R up, a close 25% below its best close switches it to a tight 2× band.
+<div class="sub" style="margin:6px 0">Tested on the full data (every plan trade, real opens, stocks that left the index): \$10k 2017–26 +997% → +1,039%, never worse in any
+period, 13 of 1,052 trades better and none worse, ahead with each exit's best 5–40 trades removed, 29 of 30 resamples. It leaves the monster runs alone
+(the band already takes them out before a 25% fall) and banks more of the mid-sized winners that reverse hard (FCX 2020 +44R instead of +33R, ARM 2026
++23R instead of +13R). A 15% or 20% fall did worse than no rule: it cut runs short. Breakeven at +4R was tested alongside and rejected: +769%, because
+it cuts runs like DVN 2021 (+54R) and INTC 2026 (+26R) that dip back to the entry before taking off. The table below is the band without the give-back rule.</div>
 <table><thead><tr><th style="width:16%">Exit</th><th>2017–19</th><th>2020–22</th><th>2023–24</th><th>2025–26</th><th>2017–26</th></tr></thead><tbody>
 <tr><td><b>Auto</b></td><td>+37%</td><td class="g">+130%</td><td>+56%</td><td class="g">+80%</td><td class="g"><b>+735%</b></td></tr>
 <tr><td>4×</td><td class="g">+59%</td><td>+104%</td><td class="g">+75%</td><td>+57%</td><td>+698%</td></tr>
@@ -153,7 +159,7 @@ made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Accou
 <li>Enter on the buy-stop, not before and not chasing more than ~1% above.</li>
 <li>Stop at 1× ADR; size so that stop is 0.75% of the account. Same in every market.</li>
 <li><b>More setups than cash?</b> Take them in pick order: higher score first, then the cheaper stock.</li>
-<li><b>Don't sell a winner by feel.</b> Move the stop to the Auto level each night (the stop email has it) and let it take you out.</li>
+<li><b>Don't sell a winner by feel.</b> Move the stop each night as the stop email says: the Auto band, or the tight 2× band once the give-back rule fires.</li>
 <li>Check the Discipline panel in Account weekly.</li>
 </ul></div>
 
