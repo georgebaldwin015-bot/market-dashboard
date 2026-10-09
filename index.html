@@ -334,8 +334,8 @@
   const todayBand = () => band === "auto" ? autoToday() : band;
   const posBand = (p) => band === "auto" ? ((p && p.auto_band) || todayBand()) : band;
   const bandText = (k) => k === "auto"
-    ? `Auto: trail the stop at close − k× ADR once that's above your entry, k set by the market the day before entry — 4× while the index is under 5% above its 200-day, 6× at 5–10%, 8× above (today: ${todayBand()}×). Until then the 1× ADR stop.`
-    : `Trail the stop at close − ${k}× ADR once that's above your entry (so it never drops back below breakeven); until then the 1× ADR stop.`;
+    ? `Auto: trail the stop at close − k× ADR once that's above your entry (never down); until then the 1× ADR stop. k is set by the market the day before entry — 4× while the index is under 5% above its 200-day, 6× at 5–10%, 8× above (today: ${todayBand()}×). Once a trade has been +10R up, a close 25% below its best close switches it to a tight 2× band.`
+    : `Trail the stop at close − ${k}× ADR once that's above your entry (never down); until then the 1× ADR stop. Once a trade has been +10R up, a close 25% below its best close switches it to a tight 2× band.`;
   const GRADES = ["A+", "A", "B", "C", "D", "F"];
   const GROUPS = { top: ["A+", "A"], All: GRADES };   // the plan: A+ and A (3+ points) since 2026-10-05
   GRADES.forEach((g) => GROUPS[g] = [g]);
