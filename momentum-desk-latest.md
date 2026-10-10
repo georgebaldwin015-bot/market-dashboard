@@ -1,15 +1,15 @@
-# Edge Lab — Daily Report (2026-10-09)
+# Edge Lab — Daily Report (2026-10-10)
 *Educational/informational output modeling Mark Minervini's and Kristjan "Qullamaggie" Kullamägi's publicly
 described methodologies. Not personalized financial advice; this is not a licensed advisor. Confirm every
 setup on an actual chart before acting.*
 *Data source: Yahoo Finance (via yfinance), end-of-day bars. Universe defined in `universe.csv` — edit that file to expand coverage. Sector/industry groupings are derived live from Yahoo Finance and shared with the Daily Market Report tab via `industry_map.py`.*
 ## What's Going On
 
-The market is in a confirmed uptrend, with breadth reading 33% of the scanned universe above its 50-day moving average and 8 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-34.4 pt change in % above the 50-day MA) and improving over the last two weeks (+4.9 pt), while SPY is climbing (+3.3% over 60 sessions, +0.3% over the last two weeks). Momentum under the surface is leaning long -- 9 name(s) hit a fresh 52-week high today against 6 breaking down to a fresh 52-week low. Energy is leading, with 67% of its 21 scanned names carrying an RS score of 70+ and 12 clearing a screen outright today, with Information Technology also showing real strength. It's being driven by names like MPC, VLO and PSX. With 66 name(s) clearing a screen across 9 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
+The market is in a confirmed uptrend, with breadth reading 33% of the scanned universe above its 50-day moving average and 8 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-34.6 pt change in % above the 50-day MA) and improving over the last two weeks (+4.9 pt), while SPY is climbing (+3.3% over 60 sessions, +0.3% over the last two weeks). Momentum under the surface is leaning long -- 9 name(s) hit a fresh 52-week high today against 6 breaking down to a fresh 52-week low. Energy is leading, with 67% of its 21 scanned names carrying an RS score of 70+ and 12 clearing a screen outright today, with Information Technology also showing real strength. It's being driven by names like MPC, VLO and PSX. With 66 name(s) clearing a screen across 9 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
 
 ## 1. Market Pulse
 
-Market cycle: **Bull** -- equal-weight universe index +4.3% vs its 200-day MA, 50-day MA +6.1% vs the 200-day. Trade normally.
+Market cycle: **Bull** -- equal-weight universe index +3.4% vs its 200-day MA, 50-day MA +6.0% vs the 200-day. Trade normally.
 
 SPY close: 773.93 | 10-day MA: 770.25 | 20-day MA: 766.79
 
@@ -456,7 +456,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 649.42
 - Entry: pivot 649.42 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.06x
+- Volume vs 50-day avg: 1.07x
 - ADR%: 3.6% | RS score: 98.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -676,7 +676,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 127.39
 - Entry: pivot 127.39 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 1.15x
+- Volume vs 50-day avg: 1.16x
 - ADR%: 4.7% | RS score: 96.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1322,7 +1322,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 409.8
 - Entry: pivot 409.8 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 2.26x
+- Volume vs 50-day avg: 2.28x
 - ADR%: 3.4% | RS score: 91.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
