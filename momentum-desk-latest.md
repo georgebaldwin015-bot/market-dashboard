@@ -1,15 +1,15 @@
-# Edge Lab — Daily Report (2026-10-13)
+# Edge Lab — Daily Report (2026-10-14)
 *Educational/informational output modeling Mark Minervini's and Kristjan "Qullamaggie" Kullamägi's publicly
 described methodologies. Not personalized financial advice; this is not a licensed advisor. Confirm every
 setup on an actual chart before acting.*
 *Data source: Yahoo Finance (via yfinance), end-of-day bars. Universe defined in `universe.csv` — edit that file to expand coverage. Sector/industry groupings are derived live from Yahoo Finance and shared with the Daily Market Report tab via `industry_map.py`.*
 ## What's Going On
 
-The market is in a confirmed uptrend, with breadth reading 37% of the scanned universe above its 50-day moving average and 7 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-25.3 pt change in % above the 50-day MA) and improving over the last two weeks (+11.1 pt), while SPY is climbing (+5.1% over 60 sessions, +1.8% over the last two weeks). That trend is broadly consistent with today's snapshot, not diverging from it. Momentum under the surface is leaning long -- 16 name(s) hit a fresh 52-week high today against 11 breaking down to a fresh 52-week low. Energy is leading, with 71% of its 21 scanned names carrying an RS score of 70+ and 12 clearing a screen outright today, with Information Technology also showing real strength. It's being driven by names like MPC, VLO and APA. With 74 name(s) clearing a screen across 10 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
+The market is in a confirmed uptrend, with breadth reading 37% of the scanned universe above its 50-day moving average and 7 distribution days in the past month -- an elevated count worth watching. Zooming out, breadth has been deteriorating over the last 60 sessions (-25.2 pt change in % above the 50-day MA) and improving over the last two weeks (+11.3 pt), while SPY is climbing (+5.1% over 60 sessions, +1.8% over the last two weeks). That trend is broadly consistent with today's snapshot, not diverging from it. Momentum under the surface is leaning long -- 16 name(s) hit a fresh 52-week high today against 11 breaking down to a fresh 52-week low. Energy is leading, with 71% of its 21 scanned names carrying an RS score of 70+ and 12 clearing a screen outright today, with Information Technology also showing real strength. It's being driven by names like MPC, VLO and APA. With 74 name(s) clearing a screen across 10 sector(s), there's a workable watchlist below -- see Worth Watching for the shortlist tied to today's regime and themes.
 
 ## 1. Market Pulse
 
-Market cycle: **Bull** -- equal-weight universe index +4.7% vs its 200-day MA, 50-day MA +5.9% vs the 200-day. Trade normally.
+Market cycle: **Bull** -- equal-weight universe index +4.7% vs its 200-day MA, 50-day MA +6.0% vs the 200-day. Trade normally.
 
 SPY close: 778.10 | 10-day MA: 772.22 | 20-day MA: 768.56
 
@@ -34,8 +34,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 | Consumer Staples | 31 | 49 | 23% | 4 |
 | Consumer Discretionary | 53 | 27 | 17% | 6 |
 | Real Estate | 29 | 38 | 10% | 3 |
+| Communication Services | 20 | 47 | 10% | 1 |
 | Financials | 70 | 46 | 10% | 4 |
-| Communication Services | 21 | 43 | 10% | 1 |
 | Utilities | 31 | 28 | 0% | 0 |
 | Unknown | 3 | 5 | 0% | 0 |
 
@@ -521,7 +521,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Setup: VCP contraction (watch for trigger)
 - Pivot (breakout trigger level): 1097.39
 - Entry: pivot 1097.39 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.86x
+- Volume vs 50-day avg: 0.87x
 - ADR%: 3.8% | RS score: 98.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
@@ -1023,8 +1023,8 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pattern tag: VCP-Watch
 - Pivot (breakout trigger level): 341.07
 - Entry: pivot 341.07 (not yet cleared -- still a live trigger level to watch for)
-- Volume vs 50-day avg: 0.62x
-- ADR%: 1.8% | RS score: 85.0
+- Volume vs 50-day avg: 0.63x
+- ADR%: 1.8% | RS score: 84.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -1040,10 +1040,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 85.0 (needs >= 70 for criterion 8)
+  - RS score used: 84.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 1.8% (needs >= 3.0% volatility to qualify)
-  - RS score: 85.0 (needs >= 80 for this screen)
+  - RS score: 84.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 **Pattern tag: VCP-Watch** (VCP/Flag/EP classification, additive to the screens above)
 
@@ -2093,7 +2093,7 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
 - Pivot (breakout trigger level): 31.76
 - Entry: next session's open, only if volume confirms (price is already above pivot 31.76 on light volume)
 - Volume vs 50-day avg: 1.14x
-- ADR%: 2.6% | RS score: 81.0
+- ADR%: 2.6% | RS score: 80.0
 - Stage: Stage 2 (Uptrend)
 - Suggested stop reference: Minervini ~7-8% below pivot, or Qullamaggie ~1x ADR below entry (use the tighter of the two)
 
@@ -2109,10 +2109,10 @@ Ranked by breadth of strength (share of each sector's names with an RS score >= 
   - ✅ Price >= 30% above its 52-week low
   - ✅ Price within 25% of its 52-week high
   - ✅ RS score >= 70
-  - RS score used: 81.0 (needs >= 70 for criterion 8)
+  - RS score used: 80.0 (needs >= 70 for criterion 8)
 **Momentum screen (Qullamaggie-style):**
   - ADR%: 2.6% (needs >= 3.0% volatility to qualify)
-  - RS score: 81.0 (needs >= 80 for this screen)
+  - RS score: 80.0 (needs >= 80 for this screen)
   - Riding the trend: yes, above 10/20-EMA
 
 </details>
