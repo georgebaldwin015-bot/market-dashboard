@@ -824,6 +824,7 @@
     const usd = (v) => v == null ? "–" : "$" + Math.round(10000 * (1 + v / 100)).toLocaleString();
     const plan = (k) => (B(k).backtest || {}).plan || {}, acc = (k) => B(k).account;
     const scope = bt.account_scope === "plan" ? "A+ and A" : "every grade";
+    const hasOpenCurve = Object.values(bt.bands || {}).some((b) => ((b || {}).account || {}).curve_open);
     const bA = acc(best), bP = plan(best);
     const AU = bt.auto || {}, BM = bt.benchmark, PIT = bt.point_in_time;
     const autoNow = AU.band_now ? `Auto today: <b>${AU.band_now}×</b> (index ${AU.strength_now > 0 ? "+" : ""}${fmt(AU.strength_now, 1)}% vs its 200-day).` : "";
@@ -917,12 +918,15 @@
     const f = bt.backtest.fill_checks || {};
     el.innerHTML = `
       <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
-      <div class="openr" style="margin-top:-2px">A+ and A setups (A only while recent setups are working), buy-stop at the 20-day highest close, stop 1× ADR below, 0.75% risk a trade. Then each exit: trail at close − k × ADR once above entry.
+      <div class="openr" style="margin-top:-2px">A+ and A setups (A only while recent setups are working), buy-stop at the 20-day highest close, stop 1× ADR below, 0.75% risk a trade. Then each exit: trail at close − k × ADR once above entry. Grades use the price each stock really traded at (old prices are adjusted for later splits, which made future winners look cheap), and the $10k accounts pay 0.1% each way for slippage and commission.
         ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
-      <div class="panel"><h3>$10k account <span class="sub">${scope}, 0.75% risk a trade, cash-limited</span></h3><div id="bt-cv" style="height:210px"></div>
+      <div class="panel"><h3>$10k account <span class="sub">${scope}, 0.75% risk a trade, cash-limited, after 0.1% costs each way</span></h3>
+        ${hasOpenCurve ? `<div class="seg" id="bt-cvmode" style="margin:2px 0 8px"><button data-cvm="closed" class="${btCurveMode === "closed" ? "on" : ""}">Closed trades</button><button data-cvm="open" class="${btCurveMode === "open" ? "on" : ""}">Incl. open trades</button></div>` : ""}
+        <div id="bt-cv" style="height:210px"></div>
         <div class="legend">${XS.map((k) => { const a = acc(k) || {}; return `<span><i class="${same(k, band) ? "sel" : ""}" style="border-color:${BAND_COL[k]};${same(k, band) ? "border-top-style:solid" : ""}"></i>${same(k, band) ? `<b>${blk(k)} ${pct(a.return_pct)}</b>` : `${blk(k)} ${pct(a.return_pct)}`}</span>`; }).join("")}</div>
-        <div class="sub" style="margin:4px 2px 0">One typical run of each; the % is the typical result over 20 shuffles of which same-day setups got taken.</div></div>
+        <div class="sub" style="margin:4px 2px 0">One typical run of each; the % is the typical result over 20 shuffles of which same-day setups got taken.
+          <span id="bt-cvnote">${hasOpenCurve ? cvNote() : ""}</span></div></div>
       <div class="panel"><h3>By ADR exit <span class="sub">${fmt(bP.n, 0)} A+ and A trades</span></h3>
         <table class="st fit bt-x"><thead><tr><th style="width:22%">Exit</th><th>$10k</th><th>Worst drop</th>${XS.some(H) ? "<th>Each half</th>" : ""}</tr></thead><tbody>${xRows}</tbody></table>
         <div class="sub" style="margin:6px 2px 2px">The halves are each exit's $10k account on 2017–22 and 2023–26 alone. "Best" has to hold up in both: one exit topping the whole period can be one lucky stretch.</div></div>
@@ -952,6 +956,19 @@
       `<a href="#backtest/${f}"><div><div class="t">${t}</div><div class="d">${d}</div></div></a>`).join("")}</div>`;
   }
   const BAND_COL = { 2: "#d29922", 4: "#58a6ff", 6: "#f778ba", 8: "#a371f7", auto: "#3fb950" };
+  // Closed trades only (profit booked on the exit day) or open trades at each month-end's price (George, 2026-10-15).
+  let btCurveMode = load("md.btcurve", "closed");
+  const cvNote = () => btCurveMode === "open"
+    ? "Open trades are valued at each month-end's price, so a long winner shows as a climb, and a give-back before the stop shows as a drop."
+      + (((bt.bands.auto || {}).account || {}).max_dd_open_pct != null ? ` Worst drop seen this way (Auto): ${Math.round(bt.bands.auto.account.max_dd_open_pct)}%.` : "")
+    : "A trade's profit is booked on the day it closes, so a long winner shows as one jump on its exit day.";
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-cvm]"); if (!b) return;
+    btCurveMode = b.dataset.cvm; save("md.btcurve", btCurveMode);
+    document.querySelectorAll("#bt-cvmode button").forEach((x) => x.classList.toggle("on", x.dataset.cvm === btCurveMode));
+    const note = document.querySelector("#bt-cvnote"); if (note) note.textContent = cvNote();
+    drawBtCharts();
+  });
   function drawBtCharts() {
     loadLib().then((L) => {
       const box = $("#bt-cv"); if (!box) return;
@@ -961,10 +978,11 @@
         rightPriceScale: { borderVisible: false }, timeScale: { borderVisible: false }, handleScroll: false, handleScale: false });
       ["2", "4", "6", "8", "auto"].forEach((k) => {
         const a = (bt.bands[k] || {}).account; if (!a || !a.curve || !a.curve.length) return;
+        const pts = btCurveMode === "open" && a.curve_open && a.curve_open.length ? a.curve_open : a.curve;
         const sel = k === String(band);   // your Exit pick is the solid line; the others dotted
         btChart.addLineSeries({ color: BAND_COL[k], lineWidth: sel ? 2.5 : 1, lineStyle: sel ? 0 : 2, priceLineVisible: false,
           lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: { type: "custom", formatter: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%" } })
-          .setData(a.curve.map((p) => ({ time: p.m + "-01", value: p.pct })));
+          .setData(pts.map((p) => ({ time: p.m + "-01", value: p.pct })));
       });
       btChart.timeScale().fitContent();
     }).catch(() => {});
