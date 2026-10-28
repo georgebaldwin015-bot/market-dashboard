@@ -85,6 +85,8 @@
   .gB { background: rgba(88,166,255,.2); color: var(--B); } .gC { background: rgba(210,153,34,.2); color: var(--C); }
   .gD { background: rgba(240,136,62,.2); color: var(--D); } .gF { background: rgba(248,81,73,.2); color: var(--F); }
   .gAp { font-size: 0.85rem; }
+  .grade.ep { background: rgba(163,113,247,.22); color: #c3a6ff; font-size: 0.72rem; }
+  .card.epc { cursor: default; } .card.paper { border-style: dashed; }
   .card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .card.open { border-color: #3a4350; }
   .caret { color: var(--faint); font-size: 0.8rem; transition: transform .15s; margin-left: 2px; }
@@ -422,6 +424,11 @@
     const n = Math.floor(settings.acct * settings.risk * size / 100 / riskPerShare);
     return { n, cost: n * s.pivot, size };
   }
+  // Cool-off (cool_off.py): a stock that closed at a loss in the last 20 sessions sits out until `back`.
+  const dshortT = (d) => new Date(d + "T12:00:00").toLocaleDateString([], { day: "numeric", month: "short" });
+  function coolTag(c) {
+    return `<span class="outtag cool" title="After a stock stops you out, its breakouts are skipped for 20 trading days: in the backtest that made more per trade and cut the worst fall in both periods.">cool-off · ${c.source === "you" ? "stopped you out" : "plan stop-out"} ${esc(dshortT(c.exit_date))} · back ${esc(dshortT(c.back))}</span>`;
+  }
   function card(s) {
     const sh = shares(s);
     const chips = (s.reasons || []).map((r) => `<span class="rz ${r.startsWith("-") ? "n" : "p"}">${esc(r)}</span>`).join("");
@@ -446,10 +453,40 @@
         <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">1x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
-      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout && !(s.reasons || []).some((r) => r.includes("shakeout")) ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. No point while the market is below its 200-day: dips are usually real selling then.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · no point below the 200-day</span>` : ""}${out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
+      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout && !(s.reasons || []).some((r) => r.includes("shakeout")) ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. No point while the market is below its 200-day: dips are usually real selling then.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · no point below the 200-day</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
     </div>`;
+  }
+  // ---------- episodic pivots (setup_rules.episodic_pivots): the second setup ----------
+  function epSection() {
+    const E = data.episodic;
+    if (!E) return "";
+    const F = (E.forward && E.forward.summary) || null, size = (data.confidence && data.confidence.size) || 1;
+    const rec = F && F.taken ? `Forward test: ${F.taken} taken${F.closed ? `, ${F.closed} closed at ${rfmt(F.avg_r)} a trade` : ""}${F.open ? `, ${F.open} open` : ""}${F.skipped ? ` · ${F.skipped} skipped at the open` : ""}.`
+      : "Forward test: none yet.";
+    const cards = E.setups.map((s) => {
+      const risk = s.close - s.stop, n = risk > 0 ? Math.floor(settings.acct * settings.risk * size / 100 / risk) : null;
+      return `<div class="card epc ${E.live ? "" : "paper"}">
+        <div class="chead">
+          <div class="grade ep">EP</div>
+          <div class="grow">
+            <a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
+            <div class="sub">${esc(s.sector)} · gap ${signed(s.gap_pct, 1)} · ${fmt(s.volume_x, 1)}× volume · closed ${fmt(s.close_pos * 100, 0)}% up the day · ADR ${fmt(s.adr_pct, 1)}%</div>
+          </div>
+          ${E.live ? "" : '<span class="outtag">paper</span>'}
+        </div>
+        <div class="levels">
+          <div class="lv"><div class="k">Buy at the open</div><div class="v">≤ $${fmt(s.open_max)}</div><div class="x">skip if above, or ≤ the stop</div></div>
+          <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">today's low</div></div>
+          <div class="lv"><div class="k">Shares</div><div class="v">${n == null ? "–" : n}</div><div class="x">if it opens at $${fmt(s.close)}${size < 1 ? " · ½ size" : ""}</div></div>
+        </div>
+      </div>`;
+    }).join("");
+    return `<h2 style="margin-top:22px">Episodic pivots</h2>
+      <div class="openr" style="margin:-4px 0 8px">${E.live ? "" : "<b>Paper only:</b> these are in the forward test, not the plan, until you switch them on. "}A big gap on heavy volume in a stock that hadn't already run. ${rec}</div>
+      ${cards || '<div class="empty">None tonight. They\'re rare: about 4–8 a year in the index.</div>'}
+      ${E.setups.length ? `<div class="sub" style="margin:4px 2px 0">Recalculate shares at the open: ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (open − stop).</div>` : ""}`;
   }
   function renderToday() {
     const el = $("#today");
@@ -459,24 +496,28 @@
     GROUPS.tonight = PLAN_TONIGHT;
     // Pick order: the setups come sorted higher score first, then the cheaper stock (selection_study.py).
     let pk = 0;
-    data.setups.forEach((s) => { s._pick = PLAN_TONIGHT.includes(s.grade) ? ++pk : 0; });
+    const inPlan = (s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off;
+    data.setups.forEach((s) => { s._pick = inPlan(s) ? ++pk : 0; });
+    const cooled = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && s.cool_off);
+    const coolLine = cooled.length ? `<div class="openr" style="margin:-4px 0 8px">Cool-off: ${cooled.map((s) => `<b>${esc(s.ticker)}</b> (back ${esc(dshortT(s.cool_off.back))})`).join(", ")}
+      ${cooled.length === 1 ? "is" : "are"} skipped tonight: ${cooled.length === 1 ? "it" : "each"} closed at a loss in the last ${data.cool_off ? data.cool_off.days : 20} trading days.</div>` : "";
     const swLine = SW && SW.value != null ? `<div class="openr" style="margin:-4px 0 8px">Setups working: <b class="${SW.value >= SW.failing_below ? "pos" : "neg"}">${rfmt(SW.value)}</b>
       a trade over the last ${SW.n} closed plan trades → <b>${PLAN_TONIGHT.length === 1 ? "A+ only tonight" : "A+ and A"}</b>${PLAN_TONIGHT.length === 1
         ? ". Breakouts are failing, so A setups wait until it's back above " + rfmt(SW.failing_below) + "." : "."}
       Not enough cash for all of them? Take them in pick order (higher score, then the cheaper stock).</div>` : "";
     const c = data.counts || {};
-    const n = (g) => g === "All" ? data.setups.length : GROUPS[g === "top" ? "tonight" : g].reduce((a, x) => a + (c[x] || 0), 0);
+    const n = (g) => g === "All" ? data.setups.length : g === "top" ? data.setups.filter(inPlan).length : GROUPS[g].reduce((a, x) => a + (c[x] || 0), 0);
     const gradeChip = (g, label) => `<button class="chip ${filters.grade === g ? "on" : ""}" data-g="${g}">${label}<span class="n">${n(g)}</span></button>`;
     const stratChip = (s) => `<button class="chip ${filters.strategy === s ? "on" : ""}" data-s="${s}">${s}</button>`;
     let rows = data.setups.filter((s) =>
-      GROUPS[filters.grade === "top" ? "tonight" : filters.grade].includes(s.grade) &&
+      (filters.grade === "top" ? inPlan(s) : GROUPS[filters.grade].includes(s.grade)) &&
       (filters.strategy === "All" || s.strategies.includes(filters.strategy)) &&
       (!filters.q || (s.ticker + " " + s.sector).toLowerCase().includes(filters.q.toLowerCase())));
     const all = rows, LIMIT = 40, total = rows.length, tableView = filters.view === "table";
     if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      ${swLine}
+      ${swLine}${coolLine}
       <div class="chips">${gradeChip("top", PLAN_TONIGHT.length === 1 ? "Plan (A+)" : "Plan (A+ & A)")}${GRADES.filter((g) => g !== "F" || c.F).map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
@@ -488,9 +529,12 @@
       </div>
       ${!rows.length ? '<div class="empty">Nothing matches.</div>' : tableView ? setupTable(rows) : rows.map(card).join("")}
       ${!tableView && !showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
+      ${epSection()}
       <details class="foot"><summary>ⓘ Rules</summary>
         <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
         <b>Exit (${bl()}):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
+        ${data.cool_off ? `<b>Cool-off:</b> ${esc(data.cool_off.rule)}<br>` : ""}
+        ${data.episodic ? `<b>Episodic pivots:</b> ${esc(data.episodic.rules)}<br>` : ""}
         Shares = ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop). Change it in settings (⚙).
       </details>`;
     el.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => { filters.grade = b.dataset.g; save("md.filters", filters); renderToday(); });
