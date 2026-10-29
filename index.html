@@ -410,8 +410,17 @@
       conf.className = c.level; conf.style.display = "flex";
       conf.innerHTML = `<b>${esc(c.label)}</b><span>${esc(c.advice)}</span>`;
     }
+    // Out of date once the session these setups are for has closed (next_session, sessions.py; 21:00 UTC is the
+    // New York close in winter and an hour after it in summer). Older today.json files: after 4 days.
     const age = (Date.now() - new Date(d.date + "T21:00:00Z").getTime()) / 864e5;
-    if (age > 4) { $("#stale").style.display = "block"; $("#stale").textContent = `⚠ Data is from ${d.date} -- the nightly run may have failed.`; }
+    const over = d.next_session ? Date.now() > new Date(d.next_session + "T21:00:00Z").getTime() : age > 4;
+    if (over) {
+      const day = d.next_session ? new Date(d.next_session + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : "";
+      $("#stale").style.display = "block";
+      $("#stale").textContent = d.next_session
+        ? `⚠ These setups were for ${day}, and that session has closed. Tonight's update hasn't arrived yet, so wait for it before placing orders.`
+        : `⚠ Data is from ${d.date} -- the nightly run may have failed.`;
+    } else $("#stale").style.display = "none";
     sizeTop();
   }
 
@@ -777,7 +786,9 @@
     const st = tr.state, label = { bull: "Uptrend", bear: "Downtrend", transition: "Transition", unknown: "Unclear" }[st.label] || "Unclear";
     const cell = (v) => v == null ? "<td>–</td>" : `<td class="${pc(v)}">${v > 0 ? "+" : ""}${fmt(v, 1)}%</td>`;
     const row = (name, key, note) => `<tr><td>${name}${note ? ` <span class="sub">${note}</span>` : ""}</td>${cell(tr.universe[key])}${tr.spy ? cell(tr.spy[key]) : "<td>–</td>"}</tr>`;
-    const since = st.since ? new Date(st.since + "T12:00:00").toLocaleDateString([], { day: "numeric", month: "short" }) : "";
+    // The year too when it isn't this year's ("301 sessions since 18 Aug" was 18 Aug 2025).
+    const since = st.since ? new Date(st.since + "T12:00:00").toLocaleDateString([], { day: "numeric", month: "short",
+      ...(st.since.slice(0, 4) !== String(mkt.date || "").slice(0, 4) ? { year: "numeric" } : {}) }) : "";
     const trendP = `<div class="panel"><h3>Trend <span class="sub"><b class="tone-${st.label}">${label}</b> · ${st.days} sessions${since ? " since " + since : ""}</span></h3>
       <table class="st fit trend-t"><thead><tr><th></th><th>Universe</th><th>S&amp;P 500</th></tr></thead><tbody>
         ${row("Close vs 20-day", "vs20")}${row("Close vs 50-day", "vs50")}${row("Close vs 200-day", "vs200")}
