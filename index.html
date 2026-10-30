@@ -87,6 +87,8 @@
   .gAp { font-size: 0.85rem; }
   .grade.ep { background: rgba(163,113,247,.22); color: #c3a6ff; font-size: 0.72rem; }
   .card.epc { cursor: default; } .card.paper { border-style: dashed; }
+  .farlist { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 4px; font-size: 0.8rem; color: var(--faint); }
+  .farlist b { color: var(--text); }
   .card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .card.open { border-color: #3a4350; }
   .caret { color: var(--faint); font-size: 0.8rem; transition: transform .15s; margin-left: 2px; }
@@ -462,7 +464,7 @@
         <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">1x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
-      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout && !(s.reasons || []).some((r) => r.includes("shakeout")) ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. No point while the market is below its 200-day: dips are usually real selling then.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · no point below the 200-day</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
+      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. Shown for information: it was a grade point until 30 Oct, dropped because it didn't hold up on 2000-16.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · not scored</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : s.reachable === false ? `<span class="outtag">not close yet · ${fmt(s.reach_adr, 1)} ADR below</span>` : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
     </div>`;
@@ -505,7 +507,13 @@
     GROUPS.tonight = PLAN_TONIGHT;
     // Pick order: the setups come sorted higher score first, then the cheaper stock (selection_study.py).
     let pk = 0;
-    const inPlan = (s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off;
+    // Reach (setup_grade.REACH_ADR): a setup more than 2 ADR below its buy-stop can't trigger tomorrow, so no pick.
+    const reach = (s) => s.reachable !== false;
+    const inPlan = (s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off && reach(s);
+    const far = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off && !reach(s));
+    const farBlock = far.length && filters.grade === "top" ? `<details class="foot far"><summary>Not close yet (${far.length}): too far below the buy-stop to trigger tomorrow</summary>
+      <div class="farlist">${far.map((s) => `<span><b>${esc(s.ticker)}</b> ${fmt(s.pct_to_pivot, 1)}% below · ${fmt(s.reach_adr, 1)} ADR</span>`).join("")}</div>
+      <div class="sub">They get a pick once they close within 2 ADR of the buy-stop.</div></details>` : "";
     data.setups.forEach((s) => { s._pick = inPlan(s) ? ++pk : 0; });
     const cooled = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && s.cool_off);
     const coolLine = cooled.length ? `<div class="openr" style="margin:-4px 0 8px">Cool-off: ${cooled.map((s) => `<b>${esc(s.ticker)}</b> (back ${esc(dshortT(s.cool_off.back))})`).join(", ")}
@@ -538,10 +546,12 @@
       </div>
       ${!rows.length ? '<div class="empty">Nothing matches.</div>' : tableView ? setupTable(rows) : rows.map(card).join("")}
       ${!tableView && !showAll && total > LIMIT ? `<button class="more" id="more">Show all ${total}</button>` : ""}
+      ${farBlock}
       ${epSection()}
       <details class="foot"><summary>ⓘ Rules</summary>
         <b>Entry:</b> ${esc(data.rules.entry)}<br><b>Stop:</b> ${esc(data.rules.stop)}<br>
         <b>Exit (${bl()}):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
+        ${data.rules.reach ? `<b>Reach:</b> ${esc(data.rules.reach)}<br>` : ""}
         ${data.cool_off ? `<b>Cool-off:</b> ${esc(data.cool_off.rule)}<br>` : ""}
         ${data.episodic ? `<b>Episodic pivots:</b> ${esc(data.episodic.rules)}<br>` : ""}
         Shares = ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop). Change it in settings (⚙).
@@ -853,7 +863,7 @@
   let bt = null, btLoading = false, btChart = null;
   const MORE = [
     ["review.html", "Strategy review", "The whole system in plain English: setups, grades, market confidence, exits"],
-    ["setup-grades.html", "Setup grades", "What A+ to D setups look like on the six-point grade, with the ADR bands"],
+    ["setup-grades.html", "Setup grades", "What A+ to D setups look like on the five-point grade, with the ADR bands"],
     ["setup-gallery.html", "Setup gallery", "Best historical trades by category"],
     ["industry.html", "Full market report", "Heatmap, sector and industry trend charts"],
     ["backtest.html", "Old detailed report", "Superseded: built on today's index list (with hindsight) and the old grades"]];
