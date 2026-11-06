@@ -474,10 +474,11 @@
     const E = data.episodic;
     if (!E) return "";
     const F = (E.forward && E.forward.summary) || null, size = (data.confidence && data.confidence.size) || 1;
+    const rm = E.risk_mult || 1, epRisk = settings.risk * rm;   // half risk while they prove themselves (setup_rules.EP_RISK_MULT)
     const rec = F && F.taken ? `Forward test: ${F.taken} taken${F.closed ? `, ${F.closed} closed at ${rfmt(F.avg_r)} a trade` : ""}${F.open ? `, ${F.open} open` : ""}${F.skipped ? ` · ${F.skipped} skipped at the open` : ""}.`
       : "Forward test: none yet.";
     const cards = E.setups.map((s) => {
-      const risk = s.close - s.stop, n = risk > 0 ? Math.floor(settings.acct * settings.risk * size / 100 / risk) : null;
+      const risk = s.close - s.stop, n = risk > 0 ? Math.floor(settings.acct * epRisk * size / 100 / risk) : null;
       return `<div class="card epc ${E.live ? "" : "paper"}">
         <div class="chead">
           <div class="grade ep">EP</div>
@@ -490,14 +491,14 @@
         <div class="levels">
           <div class="lv"><div class="k">Buy at the open</div><div class="v">≤ $${fmt(s.open_max)}</div><div class="x">skip if above, or ≤ the stop</div></div>
           <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">today's low</div></div>
-          <div class="lv"><div class="k">Shares</div><div class="v">${n == null ? "–" : n}</div><div class="x">if it opens at $${fmt(s.close)}${size < 1 ? " · ½ size" : ""}</div></div>
+          <div class="lv"><div class="k">Shares</div><div class="v">${n == null ? "–" : n}</div><div class="x">if it opens at $${fmt(s.close)} · ${fmt(epRisk, 2)}% risk${size < 1 ? " · ½ size" : ""}</div></div>
         </div>
       </div>`;
     }).join("");
     return `<h2 style="margin-top:22px">Episodic pivots</h2>
-      <div class="openr" style="margin:-4px 0 8px">${E.live ? "" : "<b>Paper only:</b> these are in the forward test, not the plan, until you switch them on. "}A big gap on heavy volume in a stock that hadn't already run. ${rec}</div>
+      <div class="openr" style="margin:-4px 0 8px">${E.live ? (rm !== 1 ? `<b>Live at ${fmt(epRisk, 2)}% risk</b> (${rm}× the plan's) while they prove themselves. ` : "") : "<b>Paper only:</b> these are in the forward test, not the plan, until you switch them on. "}A big gap on heavy volume in a stock that hadn't already run. ${rec}</div>
       ${cards || '<div class="empty">None tonight. They\'re rare: about 4–8 a year in the index.</div>'}
-      ${E.setups.length ? `<div class="sub" style="margin:4px 2px 0">Recalculate shares at the open: ${fmt(settings.risk, 1)}% of $${fmt(settings.acct, 0)} ÷ (open − stop).</div>` : ""}`;
+      ${E.setups.length ? `<div class="sub" style="margin:4px 2px 0">Recalculate shares at the open: ${fmt(epRisk, 2)}% of $${fmt(settings.acct, 0)} ÷ (open − stop).</div>` : ""}`;
   }
   function renderToday() {
     const el = $("#today");
