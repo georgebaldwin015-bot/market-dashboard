@@ -87,6 +87,7 @@
   .gAp { font-size: 0.85rem; }
   .grade.ep { background: rgba(163,113,247,.22); color: #c3a6ff; font-size: 0.72rem; }
   .card.epc { cursor: default; } .card.paper { border-style: dashed; }
+  .pm { font-size: 0.75rem; color: var(--muted); margin-top: 6px; } .pm.bad { color: var(--red); } .pm.ok { color: var(--green); }
   .farlist { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 4px; font-size: 0.8rem; color: var(--faint); }
   .farlist b { color: var(--text); }
   .card { cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -428,6 +429,39 @@
 
   // ---------- today ----------
   let data = null, showAll = false;
+  // ---------- pre-market (premarket.json, momentum_desk/premarket.py): which orders are already dead before the open ----------
+  // Only when it's for the session these setups are for. Pre-market trading is thin: a heads-up, not a promise.
+  let pm = null;
+  const pmQ = (t) => pm && data && pm.session === data.next_session ? (pm.quotes || {})[t] : null;
+  const pmAt = (q) => `Pre-market $${fmt(q.price)} (${esc(q.time)} New York)`;
+  function pmSetupLine(s) {
+    const q = pmQ(s.ticker);
+    if (!q) return "";
+    return q.price >= s.pivot
+      ? `<div class="pm bad">${pmAt(q)}: above the buy-stop. The rule only buys when it opens below, so cancel the order: no trade today.</div>`
+      : `<div class="pm">${pmAt(q)}: ${fmt((s.pivot / q.price - 1) * 100, 1)}% below the buy-stop, so the order stands.</div>`;
+  }
+  function pmEpLine(s) {
+    const q = pmQ(s.ticker);
+    if (!q) return "";
+    if (q.price <= s.stop) return `<div class="pm bad">${pmAt(q)}: at or under the stop. Skip it unless it opens above $${fmt(s.stop)}.</div>`;
+    if (q.price > s.open_max) return `<div class="pm bad">${pmAt(q)}: above the window. Skip it unless it opens at or below $${fmt(s.open_max)}.</div>`;
+    return `<div class="pm ok">${pmAt(q)}: inside the window ($${fmt(s.stop)}–$${fmt(s.open_max)}).</div>`;
+  }
+  function pmPosLine(p, stop) {
+    const q = pm && pm.session === (data && data.next_session) ? (pm.quotes || {})[p.symbol] : null;
+    if (!q || stop == null) return "";
+    return q.price <= stop
+      ? `<div class="pm bad">${pmAt(q)}: under your $${fmt(stop)} stop. Expect to be sold at the open, near that price rather than at the stop.</div>`
+      : `<div class="pm">${pmAt(q)} · ${fmt((q.price / stop - 1) * 100, 1)}% above your stop.</div>`;
+  }
+  function pmSummary(plan) {
+    if (!pm || !data || pm.session !== data.next_session) return "";
+    const dead = plan.filter((s) => { const q = pmQ(s.ticker); return q && q.price >= s.pivot; });
+    return `<div class="openr" style="margin:-4px 0 8px">Pre-market (${esc(pm.ny_time)} New York): ${dead.length
+      ? `<b>${dead.map((s) => esc(s.ticker)).join(", ")}</b> ${dead.length === 1 ? "is" : "are"} already above the buy-stop, so cancel ${dead.length === 1 ? "that order" : "those orders"}.`
+      : "no plan setup is above its buy-stop yet."} Thin trading: check again near the open.</div>`;
+  }
   function shares(s) {
     const riskPerShare = s.pivot - s.stop;
     if (!(riskPerShare > 0)) return null;
@@ -465,6 +499,7 @@
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
       <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. Shown for information: it was a grade point until 30 Oct, dropped because it didn't hold up on 2000-16.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · not scored</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : s.reachable === false ? `<span class="outtag">not close yet · ${fmt(s.reach_adr, 1)} ADR below</span>` : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
+      ${pmSetupLine(s)}
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
     </div>`;
@@ -493,6 +528,7 @@
           <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">today's low</div></div>
           <div class="lv"><div class="k">Shares</div><div class="v">${n == null ? "–" : n}</div><div class="x">if it opens at $${fmt(s.close)} · ${fmt(epRisk, 2)}% risk${size < 1 ? " · ½ size" : ""}</div></div>
         </div>
+        ${pmEpLine(s)}
       </div>`;
     }).join("");
     return `<h2 style="margin-top:22px">Episodic pivots</h2>
@@ -535,7 +571,7 @@
     if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      ${swLine}${coolLine}
+      ${swLine}${coolLine}${pmSummary(data.setups.filter(inPlan))}
       <div class="chips">${gradeChip("top", PLAN_TONIGHT.length === 1 ? "Plan (A+)" : "Plan (A+ & A)")}${GRADES.filter((g) => g !== "F" || c.F).map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
@@ -1257,7 +1293,7 @@
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%${p.risk_pct != null ? " · " + riskTxt(p.risk_pct) : ""}</div>
         ${p.earnings ? `<div class="sub" style="margin-top:4px">${ernTag(p.earnings)} ${esc(p.earnings.advice)}</div>` : ""}
         <div class="stops">${box("initial", "1× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === posBand(p) ? "on" : "dim")).join("")}</div>
-        ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}</div>`;
+        ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}${pmPosLine(p, s[String(posBand(p))])}</div>`;
     }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
     const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
@@ -1462,7 +1498,10 @@
   fetch("today.json", { cache: "no-cache" })
     .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then((d) => { data = d; renderMarket(d); renderToday(); renderBandPick(); })
-    .catch(() => { $("#advice").textContent = "Market state unavailable -- today.json appears after the next nightly run."; renderToday(); });
+    .then(() => fetch("premarket.json", { cache: "no-cache" }))
+    .then((r) => r && r.ok ? r.json() : null)
+    .then((p) => { if (p) { pm = p; renderToday(); if (acct) renderAccount(); } })
+    .catch(() => { if (!data) { $("#advice").textContent = "Market state unavailable -- today.json appears after the next nightly run."; renderToday(); } });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js").catch(() => {});
 })();
 </script>
