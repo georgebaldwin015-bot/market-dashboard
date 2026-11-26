@@ -20,11 +20,11 @@ ul { padding-left:20px; margin:6px 0; } li { margin:4px 0; }
 .tldr { border-left:3px solid var(--blue); padding:8px 12px; background:var(--panel); border-radius:0 10px 10px 0; }
 </style></head><body><main>
 <h1>Strategy review</h1>
-<div class="sub">How Edge Lab works and what the evidence says. Rewritten 5 Oct 2026 on the honest backtest: a stock only counts while it was really in the S&amp;P 500 or Nasdaq-100.</div>
+<div class="sub">How Edge Lab works and what the evidence says. Rewritten 5 Oct 2026 on the honest backtest: a stock only counts while it was really in the S&amp;P 500 or Nasdaq-100. Updated 25 Nov 2026 for the 2× ADR stop.</div>
 
 <div class="tldr" style="margin-top:14px"><b>In one paragraph:</b> Take <b>A+ and A</b> setups (3+ of the six points below) &mdash; but <b>A+ only
-while recent setups are failing</b> &mdash; risk <b>0.75%</b> a trade, enter on the buy-stop, stop at 1× ADR, and let the <b>Auto</b> exit take you out.
-Tested honestly over 2017–26, that made about <b>26% a year with a worst drop of about 19%</b>, against 15% a year and a 34% drop for simply holding
+while recent setups are failing</b> &mdash; risk <b>0.75%</b> a trade (half that on breakouts while the index is 10%+ under its 200-day), enter on the buy-stop, stop at <b>2× ADR</b>, and let the <b>Auto</b> exit take you out.
+Tested honestly over 2017–26 on the old 1× ADR stop, that made about <b>26% a year with a worst drop of about 19%</b>, against 15% a year and a 34% drop for simply holding
 the S&amp;P 500. It comes in bursts, strong in 2020, 2023 and 2025–26. The biggest gain left on the table is your exits: selling before the rule.</div>
 
 <h2>1 · Why the numbers changed</h2>
@@ -51,8 +51,10 @@ losses, and open trades count at their latest price.</li>
 <div class="panel"><ul>
 <li>Two strategies: <b>Minervini</b> (trend template: Stage 2 uptrend above rising averages) and <b>QM</b> (Qullamaggie-style momentum: ADR 3%+, RS 80+, above the 10/20-day EMA).</li>
 <li><b>Entry:</b> a buy-stop at the 20-day highest close. It only fills if the stock opens below it and trades up through it; a gap straight over is no trade.</li>
-<li><b>Stop:</b> 1× ADR below the buy-stop. That distance is "1R".</li>
-<li><b>Size:</b> shares = 0.75% of the account ÷ (buy-stop − stop). With a 1× ADR stop that ties up 15–25% of a cash account per position, so about 6 at a time.
+<li><b>Stop:</b> 2× ADR below the buy-stop since 26 Nov 2026 (1× before). That distance is "1R". In the strategy lab, on three separate price downloads, the wider stop beat
+1× in both halves of the history ($10k 2000–16: +348% → +956%; 2017–26: +360% → +829%) with smaller worst falls: far fewer trades stopped out on day one and a 39% win rate instead of 25%.</li>
+<li><b>Size:</b> shares = 0.75% of the account ÷ (buy-stop − stop), and half that on new breakouts while the index is 10%+ under its 200-day. With the 2× ADR stop a position is
+typically about 9% of the account, half what the old 1× stop needed (15–25%).
 At 1% you could hold only 4–5 and missed more of the rare big runners: 0.75% did better in every period tested, with smaller drops.</li>
 </ul></div>
 
@@ -120,13 +122,14 @@ periods. Skipping weak sectors (+405%) or adding a point for strong ones (+247%)
 <tr><td>Bear market</td><td class="g">+0.99</td><td>+0.78</td><td class="r">−0.41</td><td class="r">−0.42</td></tr>
 </tbody></table>
 <div class="sub" style="margin-top:6px">A+/A setups paid in every market, and best in a bear: fewer pass, but the ones that do are often the next leaders.
-Skipping bear-market entries cut the account's return in both halves, so the plan and size never change with the market.</div></div>
+Skipping bear-market entries cut the account's return in both halves, so the plan never changes with the market. One size change since 26 Nov 2026: new breakouts go
+half size while the index is 10%+ under its 200-day. On the 2× stop that added a little in both halves ($10k +956% → +1,016% and +829% → +906%) and cut the worst 2000–16 fall from 48% to 40%.</div></div>
 
 <h2>8 · The exit</h2>
-<div class="panel"><b>Your exit since 9 Oct:</b> start with the 1× ADR stop; once close − k × ADR is above your entry, trail the stop there, never down.
+<div class="panel"><b>Your exit since 9 Oct:</b> start with the 2× ADR stop (1× for trades entered before 26 Nov 2026); once close − k × ADR is above your entry, trail the stop there, never down.
 <b>Auto</b> picks k from how far the market was above its 200-day the day before entry: under +5% → 4×, +5–10% → 6×, above → 8×. <b>Give-back rule:</b> once a
 trade has been +10R up, a close 25% below its best close switches it to a tight 2× band.
-<div class="sub" style="margin:6px 0">Tested on the full data (every plan trade, real opens, stocks that left the index): \$10k 2017–26 +997% → +1,039%, never worse in any
+<div class="sub" style="margin:6px 0">Tested on the full data (every plan trade, real opens, stocks that left the index): $10k 2017–26 +997% → +1,039%, never worse in any
 period, 13 of 1,052 trades better and none worse, ahead with each exit's best 5–40 trades removed, 29 of 30 resamples. It leaves the monster runs alone
 (the band already takes them out before a 25% fall) and banks more of the mid-sized winners that reverse hard (FCX 2020 +44R instead of +33R, ARM 2026
 +23R instead of +13R). A 15% or 20% fall did worse than no rule: it cut runs short. Breakeven at +4R was tested alongside and rejected: +769%, because
@@ -157,7 +160,7 @@ made +8.9R. Over the last 30 days, early exits cost 13.2R on 3 trades. The Accou
 <div class="panel"><ul>
 <li><b>Only the plan:</b> A+ and A, or A+ only when ‘Today’ says setups are failing. B and below are off plan.</li>
 <li>Enter on the buy-stop, not before and not chasing more than ~1% above.</li>
-<li>Stop at 1× ADR; size so that stop is 0.75% of the account. Same in every market.</li>
+<li>Stop at 2× ADR; size so that stop is 0.75% of the account, or 0.375% on breakouts while the index is 10%+ under its 200-day (‘Today’ shows ½ size).</li>
 <li><b>More setups than cash?</b> Take them in pick order: higher score first, then the cheaper stock.</li>
 <li><b>Don't sell a winner by feel.</b> Move the stop each night as the stop email says: the Auto band, or the tight 2× band once the give-back rule fires.</li>
 <li>Check the Discipline panel in Account weekly.</li>
