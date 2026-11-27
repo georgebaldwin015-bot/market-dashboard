@@ -47,6 +47,8 @@
   #conf.low b { background: rgba(248,81,73,.18); color: var(--red); }
   .card.out { opacity: .55; }
   .outtag { font-size: 0.68rem; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  .addtag { font-size: 0.68rem; color: var(--green); border: 1px solid var(--green); border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  .posn .lot { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
   #mstats { display: flex; gap: 14px; margin-top: 6px; font-size: 0.75rem; color: var(--muted); overflow-x: auto; white-space: nowrap; }
   #mstats b { color: var(--text); font-weight: 600; }
   #stale { display: none; margin-top: 6px; font-size: 0.75rem; color: var(--amber); }
@@ -476,6 +478,13 @@
   function coolTag(c) {
     return `<span class="outtag cool" title="After a stock stops you out, its breakouts are skipped for 20 trading days: in the backtest that made more per trade and cut the worst fall in both periods.">cool-off · ${c.source === "you" ? "stopped you out" : "plan stop-out"} ${esc(dshortT(c.exit_date))} · back ${esc(dshortT(c.back))}</span>`;
   }
+  // Buying again (exit_rule.BUY_AGAIN_*, since 27 Nov 2026): a setup in a stock you hold is your next position in it,
+  // or waits until 10 trading days after your last buy (none once you hold 3).
+  const nth = (n) => n + (n === 2 ? "nd" : n === 3 ? "rd" : "th");
+  function heldTag(h) {
+    if (h.buy_again) return `<span class="addtag" title="You hold this stock. Buying it again on a new breakout, with its own stop and exit, about doubled the backtest's return with the same worst fall.">buy again · your ${nth(h.nth)} position</span>`;
+    return `<span class="outtag" title="Up to ${h.max} positions in one stock, each at least 10 trading days after your last buy in it.">${h.from ? `you hold it · bought ${esc(dshortT(h.last_buy))} · next buy from ${esc(dshortT(h.from))}` : `you hold ${h.positions} positions · the most in one stock`}</span>`;
+  }
   function card(s) {
     const sh = shares(s);
     const chips = (s.reasons || []).map((r) => `<span class="rz ${r.startsWith("-") ? "n" : "p"}">${esc(r)}</span>`).join("");
@@ -500,7 +509,7 @@
         <div class="lv"><div class="k">Stop</div><div class="v">$${fmt(s.stop)}</div><div class="x">${stopK(s)}x ADR · $${fmt(s.pivot - s.stop)}/sh</div></div>
         <div class="lv"><div class="k">Shares</div><div class="v">${sh ? sh.n : "–"}</div><div class="x">${sh ? "$" + fmt(sh.cost, 0) + (sh.size < 1 ? " · ½ size" : "") + (sh.cost > settings.acct ? " · over acct" : "") : ""}</div></div>
       </div>
-      <div class="reasons">${chips || '<span class="rz">no score factors</span>'}${s.shakeout ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. Shown for information: it was a grade point until 30 Oct, dropped because it didn't hold up on 2000-16.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · not scored</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : s.reachable === false ? `<span class="outtag">not close yet · ${fmt(s.reach_adr, 1)} ADR below</span>` : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
+      <div class="reasons">${s.held && s.held.buy_again ? heldTag(s.held) : ""}${chips || '<span class="rz">no score factors</span>'}${s.shakeout ? `<span class="rz" title="Dipped under its 20-day low and closed back above it. Shown for information: it was a grade point until 30 Oct, dropped because it didn't hold up on 2000-16.">shakeout ${s.shakeout.ago === 0 ? "today" : s.shakeout.ago === 1 ? "yesterday" : s.shakeout.ago + " days ago"} · not scored</span>` : ""}${s.cool_off ? coolTag(s.cool_off) : s.held && !s.held.buy_again ? heldTag(s.held) : s.reachable === false ? `<span class="outtag">not close yet · ${fmt(s.reach_adr, 1)} ADR below</span>` : out ? '<span class="outtag">outside today\'s grades</span>' : ""}</div>
       ${pmSetupLine(s)}
       <details class="why"><summary>Why grade ${esc(s.grade)} (score ${s.score > 0 ? "+" : ""}${s.score})</summary><ul>${why}</ul></details>
       <div class="chartbox"></div>
@@ -548,7 +557,8 @@
     let pk = 0;
     // Reach (setup_grade.REACH_ADR): a setup more than 2 ADR below its buy-stop can't trigger tomorrow, so no pick.
     const reach = (s) => s.reachable !== false;
-    const inPlan = (s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off && reach(s);
+    const waits = (s) => s.held && !s.held.buy_again;   // a stock you hold, too soon (or 3 already) to buy again
+    const inPlan = (s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off && reach(s) && !waits(s);
     const far = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && !s.cool_off && !reach(s));
     const farBlock = far.length && filters.grade === "top" ? `<details class="foot far"><summary>Not close yet (${far.length}): too far below the buy-stop to trigger tomorrow</summary>
       <div class="farlist">${far.map((s) => `<span><b>${esc(s.ticker)}</b> ${fmt(s.pct_to_pivot, 1)}% below · ${fmt(s.reach_adr, 1)} ADR</span>`).join("")}</div>
@@ -557,6 +567,9 @@
     const cooled = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && s.cool_off);
     const coolLine = cooled.length ? `<div class="openr" style="margin:-4px 0 8px">Cool-off: ${cooled.map((s) => `<b>${esc(s.ticker)}</b> (back ${esc(dshortT(s.cool_off.back))})`).join(", ")}
       ${cooled.length === 1 ? "is" : "are"} skipped tonight: ${cooled.length === 1 ? "it" : "each"} closed at a loss in the last ${data.cool_off ? data.cool_off.days : 20} trading days.</div>` : "";
+    const heldPlan = data.setups.filter((s) => PLAN_TONIGHT.includes(s.grade) && s.held && !s.cool_off);
+    const heldLine = heldPlan.length ? `<div class="openr" style="margin:-4px 0 8px">You already hold ${heldPlan.map((s) => `<b>${esc(s.ticker)}</b>${s.held.buy_again ? ` (buy again: your ${nth(s.held.nth)} position)` : s.held.from ? ` (next buy from ${esc(dshortT(s.held.from))})` : ` (${s.held.positions} positions, the most)`}`).join(", ")}.
+      A new breakout in a stock you hold is bought again with its own stop: up to 3 positions, 10+ trading days apart.</div>` : "";
     const swLine = SW && SW.value != null ? `<div class="openr" style="margin:-4px 0 8px">Setups working: <b class="${SW.value >= SW.failing_below ? "pos" : "neg"}">${rfmt(SW.value)}</b>
       a trade over the last ${SW.n} closed plan trades → <b>${PLAN_TONIGHT.length === 1 ? "A+ only tonight" : "A+ and A"}</b>${PLAN_TONIGHT.length === 1
         ? ". Breakouts are failing, so A setups wait until it's back above " + rfmt(SW.failing_below) + "." : "."}
@@ -573,7 +586,7 @@
     if (!showAll && !tableView) rows = rows.slice(0, LIMIT);
     el.innerHTML = `
       <h2>Armed for next session</h2>
-      ${swLine}${coolLine}${pmSummary(data.setups.filter(inPlan))}
+      ${swLine}${coolLine}${heldLine}${pmSummary(data.setups.filter(inPlan))}
       <div class="chips">${gradeChip("top", PLAN_TONIGHT.length === 1 ? "Plan (A+)" : "Plan (A+ & A)")}${GRADES.filter((g) => g !== "F" || c.F).map((g) => gradeChip(g, g)).join("")}${gradeChip("All", "All")}</div>
       <div class="chips">${stratChip("All")}${stratChip("Minervini")}${stratChip("QM")}</div>
       <input class="search" id="q" placeholder="Search ticker or sector" value="${esc(filters.q)}" autocomplete="off">
@@ -593,6 +606,7 @@
         <b>Exit (${bl()}):</b> ${esc(bandText(band))}<br><b>Grades:</b> ${esc(data.rules.grade)}<br>
         ${data.rules.reach ? `<b>Reach:</b> ${esc(data.rules.reach)}<br>` : ""}
         ${data.cool_off ? `<b>Cool-off:</b> ${esc(data.cool_off.rule)}<br>` : ""}
+        ${data.rules.buy_again ? `<b>Buy again:</b> ${esc(data.rules.buy_again)}<br>` : ""}
         ${data.episodic ? `<b>Episodic pivots:</b> ${esc(data.episodic.rules)}<br>` : ""}
         Shares = ${fmt(settings.risk, 2)}% of $${fmt(settings.acct, 0)} ÷ (buy-stop − stop)${((data.confidence && data.confidence.size) || 1) < 1 ? ", halved today for breakouts (the index is 10%+ under its 200-day)" : ""}. Change it in settings (⚙).
       </details>`;
@@ -630,7 +644,7 @@
     const body = rows.map((s) => `<tr class="${s.in_play === false ? "out" : ""}">
       <td><span class="grade sm ${gcls(s.grade)}">${esc(s.grade)}</span></td>
       <td><a class="tk" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(s.ticker)}" target="_blank" rel="noopener">${esc(s.ticker)}</a>
-        <div class="sub">${esc(s.strategies.join("+"))}</div>${ernTag(s.earnings)}</td>
+        <div class="sub">${esc(s.strategies.join("+"))}${s.held ? (s.held.buy_again ? ` · <span class="pos">buy again</span>` : " · held") : ""}</div>${ernTag(s.earnings)}</td>
       <td>${fmt(s.pivot)}</td><td>${fmt(s.stop)}</td>
       <td>${s.pct_to_pivot <= 0.001 ? "at" : fmt(s.pct_to_pivot, 1) + "%"}</td>
       <td>${fmt(s.adr_pct, 1)}%</td><td>${s.rs == null ? "–" : Math.round(s.rs)}</td></tr>`).join("");
@@ -1024,7 +1038,7 @@
     const btSa = bt.backtest.stop_adr || 1;   // the starting stop the history was run on (2x since 25 Nov 2026)
     el.innerHTML = `
       <h2>Backtest <span class="sub" style="font-weight:400">your rules · ${esc(mon(bt.backtest.start))} – ${esc(mon(bt.backtest.end))}</span></h2>
-      <div class="openr" style="margin-top:-2px">A+ and A setups (A only while recent setups are working), buy-stop at the 20-day highest close, stop ${btSa}× ADR below, 0.75% risk a trade${bt.backtest.half_size ? " (half while the index is 10%+ under its 200-day)" : ""}. Then each exit: trail at close − k × ADR once above entry.${btSa < 2 ? " <b>Note:</b> this history is on the 1× ADR stop the app used until 25 Nov 2026; new trades now use a 2× ADR stop, half size while the index is 10%+ under its 200-day (it did better on the same setups in the strategy lab)." : ""} Grades use the price each stock really traded at (old prices are adjusted for later splits, which made future winners look cheap), and the $10k accounts pay 0.1% each way for slippage and commission.
+      <div class="openr" style="margin-top:-2px">A+ and A setups (A only while recent setups are working), buy-stop at the 20-day highest close, stop ${btSa}× ADR below, 0.75% risk a trade${bt.backtest.half_size ? " (half while the index is 10%+ under its 200-day)" : ""}.${bt.backtest.buy_again ? ` A stock already held is bought again on a new breakout, up to ${bt.backtest.buy_again.max} positions, each ${bt.backtest.buy_again.gap}+ trading days after the last buy; a stock you've sold can be bought at its next breakout.` : ""} Then each exit: trail at close − k × ADR once above entry.${btSa < 2 ? " <b>Note:</b> this history is on the 1× ADR stop the app used until 25 Nov 2026; new trades now use a 2× ADR stop, half size while the index is 10%+ under its 200-day." : ""} Grades use the price each stock really traded at (old prices are adjusted for later splits, which made future winners look cheap), and the $10k accounts pay 0.1% each way for slippage and commission.
         ${PIT ? "<b>No hindsight:</b> a stock only counts while it was in the S&P 500 or Nasdaq-100 at the time." : ""}</div>
       ${verdict}
       <div class="panel"><h3>$10k account <span class="sub">${scope}, 0.75% risk a trade, cash-limited, after 0.1% costs each way</span></h3>
@@ -1111,9 +1125,9 @@
       rows: live.positions, book: live.book, fills: live.fills_today || [] };
     if (acct && acct.positions && acct.positions.length) {
       const d = acct.rel_as_of ? new Date(acct.rel_as_of + "T12:00:00").toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : acct.as_of;
-      return { fresh: false, at: d, book: acct.book_rel, fills: [], rows: acct.positions.map((p) => ({
-        symbol: p.symbol, last: p.last, pct_day: p.rel ? p.rel.day_pct : null, r_now: p.r_now, stops: p.stops, rel: p.rel, earnings: p.earnings,
-        breached: (p.hit || []).map((h) => String(h.k)) })) };
+      return { fresh: false, at: d, book: acct.book_rel, fills: [], rows: acct.positions.flatMap((p) => ((p.lots || []).length > 1 ? p.lots.map((l, i) => ({ ...l, label: `${p.symbol} buy ${i + 1} (${l.entry_date})` })) : [p]).map((u) => ({
+        symbol: p.symbol, label: u.label, last: u.last ?? p.last, pct_day: p.rel ? p.rel.day_pct : null, r_now: u.r_now, stops: u.stops, rel: p.rel, earnings: p.earnings,
+        auto_band: u.auto_band, breached: (u.hit || []).map((h) => String(h.k)) }))) };
     }
     return null;
   }
@@ -1127,7 +1141,7 @@
       const gap = p.last && s ? (p.last / s - 1) * 100 : null;
       const r = p.rel;
       const open = openRel.has(p.symbol) && (r || p.earnings);
-      return `<tr class="lrow ${hit ? "hitrow" : ""}" data-rel="${esc(p.symbol)}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.earnings ? `<div>${ernTag(p.earnings, true)}</div>` : ""}${p.new_today ? '<div class="sub">new today</div>' : r && r.beta != null ? `<div class="sub">β ${fmt(r.beta, 1)}${r.peer_etf ? " · " + esc(r.peer_etf) : ""}</div>` : ""}</td>
+      return `<tr class="lrow ${hit ? "hitrow" : ""}" data-rel="${esc(p.symbol)}"><td><a class="tkl" data-ticker="${esc(p.symbol)}"><b>${esc(p.symbol)}</b></a>${p.label ? `<div class="sub">${esc(p.label.slice(p.symbol.length + 1))}</div>` : ""}${p.earnings ? `<div>${ernTag(p.earnings, true)}</div>` : ""}${p.new_today ? '<div class="sub">new today</div>' : r && r.beta != null ? `<div class="sub">β ${fmt(r.beta, 1)}${r.peer_etf ? " · " + esc(r.peer_etf) : ""}</div>` : ""}</td>
         <td>${fmt(p.last)}<div class="sub ${pc(p.pct_day)}">${sgn(p.pct_day)}</div></td>
         <td>${vchip(r)}</td>
         <td class="${pc(p.r_now)}">${rfmt(p.r_now)}</td>
@@ -1290,14 +1304,25 @@
       const mine = (p.hit || []).find((h) => h.k === band);
       const hit = mine ? `⚠ ${bl()} band stop hit ${esc(mine.date)} at ${fmt(mine.price)}` : "";
       const also = (p.hit || []).filter((h) => h.k !== band && h.k !== "auto").map((h) => `${h.k}× out ${esc(h.date)} at ${fmt(h.price)}`).join(" · ");
-      return `<div class="posn ${hit ? "alert" : ""}">
+      // Bought again (more than one lot): each buy has its own starting stop and band, so a row per buy.
+      const multi = (p.lots || []).length > 1;
+      const lotRows = multi ? p.lots.map((l, i) => {
+        const ls = l.stops || {};
+        const lbox = (k, lab, cls) => `<div class="${cls}"><div class="k">${lab}</div><div class="v">${ls[k] == null ? "–" : fmt(ls[k])}</div></div>`;
+        const lhit = (l.hit || []).find((h) => h.k === band);
+        return `<div class="lot"><div class="sub">${gchip(l.grade)}<b>Buy ${i + 1}</b> · ${esc(l.entry_date)} · ${fmt(l.quantity, l.quantity % 1 ? 2 : 0)} @ ${fmt(l.avg_price)} · <span class="${pc(l.r_now)}">${rfmt(l.r_now)}</span>${l.risk_pct != null ? " · " + riskTxt(l.risk_pct) : ""}${lhit ? ` · <b class="neg">⚠ ${bl()} stop hit ${esc(lhit.date)} at ${fmt(lhit.price)}</b>` : ""}</div>
+          <div class="stops">${lbox("initial", (l.stop_adr || 1) + "× ADR", "dim")}${BAND_KS.map((k) => lbox(String(k), k + "×", k === posBand(l) ? "on" : "dim")).join("")}</div></div>`;
+      }).join("") : "";
+      const lotStops = multi ? p.lots.map((l) => (l.stops || {})[String(posBand(l))] ?? (l.stops || {}).initial).filter((x) => x != null) : [];
+      const nearStop = multi ? (lotStops.length ? Math.max(...lotStops) : null) : s[String(posBand(p))];
+      return `<div class="posn ${hit && !multi ? "alert" : ""}">
         <div class="top">${gchip(p.grade)}<a class="tk tkl" data-ticker="${esc(p.symbol)}">${esc(p.symbol)}</a>
           <span class="sub">since ${esc(p.entry_date)}${p.adds > 0 ? ` · ${p.adds} add${p.adds > 1 ? "s" : ""}` : ""}</span>${offPlan(p) ? '<span class="offplan">off plan</span>' : ""}
           <span class="big ${p.r_now > 0 ? "pos-c" : ""}" style="color:${p.r_now == null ? "var(--text)" : p.r_now >= 0 ? "var(--green)" : "var(--red)"}">${rfmt(p.r_now)}</span></div>
         <div class="sub">${fmt(p.quantity, p.quantity % 1 ? 2 : 0)} @ ${fmt(p.avg_price)} · last ${fmt(p.last)} (${p.pct == null ? "–" : (p.pct > 0 ? "+" : "") + fmt(p.pct, 1) + "%"}) · ADR ${fmt(p.adr_pct, 1)}%${p.risk_pct != null ? " · " + riskTxt(p.risk_pct) : ""}</div>
         ${p.earnings ? `<div class="sub" style="margin-top:4px">${ernTag(p.earnings)} ${esc(p.earnings.advice)}</div>` : ""}
-        <div class="stops">${box("initial", (p.stop_adr || 1) + "× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === posBand(p) ? "on" : "dim")).join("")}</div>
-        ${hit ? `<div class="hit">${hit}</div>` : ""}${also ? `<div class="also">Other bands: ${also}</div>` : ""}${pmPosLine(p, s[String(posBand(p))])}</div>`;
+        ${multi ? lotRows : `<div class="stops">${box("initial", (p.stop_adr || 1) + "× ADR", "dim")}${BAND_KS.map((k) => box(String(k), k + "×", k === posBand(p) ? "on" : "dim")).join("")}</div>`}
+        ${hit && !multi ? `<div class="hit">${hit}</div>` : ""}${also && !multi ? `<div class="also">Other bands: ${also}</div>` : ""}${pmPosLine(p, nearStop)}</div>`;
     }).join("") || `<div class="empty" style="padding:14px 0">No open positions${acctGrade === "All" ? "" : " in this grade"}.</div>`;
     const act = acct.activity.map((a) => `<tr><td>${esc(a.date)}</td><td class="${a.side === "BUY" ? "buy" : "sell"}">${a.side === "BUY" ? "Buy" : "Sell"}</td>
       <td><b>${esc(a.symbol)}</b></td><td>${fmt(a.qty, a.qty % 1 ? 2 : 0)}</td><td>${fmt(a.price)}</td></tr>`).join("");
